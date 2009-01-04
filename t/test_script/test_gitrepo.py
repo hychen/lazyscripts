@@ -1,10 +1,10 @@
 from lazyscript.repo import git
-from t import get_repo
+from t import get_repodir
 
-repo = git.Repo(get_repo())
+repo = git.Repo(get_repodir())
 
 def test_get_blob():
-	"""get blob with spefied commit id."""
+	"test to get blob with spefied commit id."
 	blob = repo.get_blob('test_get.sh')
 	assert blob.name == 'test_get.sh'
 
@@ -12,7 +12,7 @@ def test_get_blob():
 	assert blob.name == 'test_2.sh'
 
 def test_get_diffrent_ver():
-	"""get diffrent version content of the file."""
+	"test to get diffrent version content of the file."
 	wants = {
 		# ver 2
 		'a8e7a099d227b0670962644b0407cf436b6cb01d':

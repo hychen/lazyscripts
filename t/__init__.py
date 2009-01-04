@@ -9,9 +9,11 @@ def get_root():
 	root= os_path.abspath(dir)
 	return root
 
+def get_datadir():
+	return get_root()+'/'+testcase+'/datas/'
 
-def get_repo():
-	return get_root()+'/'+testcase+'/datas/'+'singlerepo'
+def get_repodir():
+	return get_datadir()+'singlerepo'
 
 def init_devenv():
 	# set up lib dir.
