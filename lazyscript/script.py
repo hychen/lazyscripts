@@ -47,7 +47,7 @@ class Script(object):
 		self.author = config.author
 		self.website = config.website
 		self.name = config.name or self.backend.name
-		self.run_file = config.run_file or self.backend.name
+		self.runfile = config.runfile or self.backend.name
 
 	def __getattr__(self, key):
 		try:
@@ -72,8 +72,11 @@ class Script(object):
 	@classmethod
 	def from_blob(cls, blob):
 		"""get script from git blob"""
-		raise NotImplemented
+		config = ScriptConfig.from_string(blob.data)
+		if not config:
+			return config
 		
+		return cls(tree, config)
 			
 class ScriptSet(object):
 
@@ -112,11 +115,10 @@ class ScriptSet(object):
 				self._categories[query['category']].append(script)
 
 	@classmethod
-	def from_sourcelist(cls, path):
+	def from_sourcelist(cls, source_list):
 		"""
 		get script set from source list.
 		"""
-		source_list = SourceList(path)
 		# get last version.
 		source_list.update()
 		set =  cls()
