@@ -1,20 +1,53 @@
 import cPickle
+import re
 
-from lazyscript import get_settings_from_string
 from lazyscript.repo import git
 
 class MissingScriptInitFile(IOError):
 	pass
 
+class ScriptConfig(object):
+
+	"""
+	the config of the script.
+	"""
+	def __init__(self, settings):
+		self.__dict__.update(settings)
+
+	@classmethod
+	def from_string(cls, string):
+		"""
+		get the script config from string.
+
+		@parma str string.
+		@return ScriptConfig
+		"""
+		if not string:
+			return None
+
+		return cls(cls.parse_string(string))
+
+	@staticmethod
+	def parse_string(string):
+		attrs = {}
+		# @TODO: use Doxygen Sytanx.
+		import re
+		founds = re.findall('^\s*@(.*?)\s+(.*)$', \
+					string, \
+					re.MULTILINE) 
+		for found in founds:
+			attrs.setdefault(found[0], found[1])
+		return attrs		
+
 class Script(object):
 
-	def __init__(self, backend, kwds):
+	def __init__(self, backend, config):
 		self.backend = backend
-		self.desc = kwds['desc']
-		self.author = kwds['author']
-		self.website = kwds.get('website')
-		self.name = kwds.get('name') or self.backend.name
-		self.run_file = kwds.get('run_file') or self.backend.name
+		self.brief= config.brief
+		self.author = config.author
+		self.website = config.website
+		self.name = config.name or self.backend.name
+		self.run_file = config.run_file or self.backend.name
 
 	def __getattr__(self, key):
 		try:
@@ -30,13 +63,11 @@ class Script(object):
 		if not blob:
 			raise MissingScriptInitFile(tree.name)
 
-		# FIXME: dirty way to load script config.
-		attrs = get_settings_from_string(blob.data)
-		if not attrs:
-			return None
+		config = ScriptConfig.from_string(blob.data)
+		if not config:
+			return config
 
-		script =  cls(tree, attrs)
-		return script
+		return cls(tree, config)
 	
 	@classmethod
 	def from_blob(cls, blob):
