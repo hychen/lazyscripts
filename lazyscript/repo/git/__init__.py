@@ -8,6 +8,12 @@ def is_blob(obj):
 
 class Repo(git.Repo):
 
+	def fork_index(self, path, **kwds):
+		options = {'n':True}
+		options.update(kwds)
+		self.git.clone(self.path, path, **options)
+		return Repo(path)
+
 	def get_blob(self, blob_name, commit_id='', branch=''):
 		"""
 		get blob by commit.

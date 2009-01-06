@@ -1,5 +1,4 @@
 from lazyscript.script import ScriptSet, SourceList
-from lazyscript import get_settings_from_string
 from t import get_repodir, get_datadir
 
 set = ScriptSet.from_repo(get_repodir())
