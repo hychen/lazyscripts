@@ -1,0 +1,39 @@
+# @author Hsin Yi Chen 陳信屹 (hychen) <ossug.hychen at gmail.com>
+Lazy Script Distutils
+=====================
+
+a stupid script distribution system.
+
+Requirements
+============
+	
+* git
+* git-svn
+* GitPython
+* Python Nos
+
+Quick Start for Developer
+=========================
+
+initialize the develope environment.
+
+$ make init_testenv
+
+run test cases in directories t/ without output capture.
+
+$ make devtest
+
+Source
+======
+
+Lazyscript's git repo is available on GitHub, which can be browsed at:
+
+http://github.com/hychen/lazyscript/tree
+
+and clone form
+
+git://github.com/hychen/lazyscript.git
+
+otherwise, the Lazybuntu source can clone from
+
+http://svn.openfoundry.org/lazybuntu/

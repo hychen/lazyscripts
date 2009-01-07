@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+# -*- encoding=utf8 -*-
+## Lazy Script Manage Commander
+#
+# Lazyscript system command-line management program.
+#
+# @author Hsin Yi Chen 陳信屹 (hychen) <ossug.hychen at gmail.com>
+from os import system
+import sys
+
+from lazyscript.repo import sign_repopath
+
+try:
+	cmder=sys.argv[1]
+	action=sys.argv[2]
+	origin_path=sys.argv[3]
+	if 'repo' == cmder.strip():
+		if 'sign' == action:
+			print sign_repopath(origin_path, sys.argv[4])
+except IndexError:
+	print 'see more information in this file content.'
