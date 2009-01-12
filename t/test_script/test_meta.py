@@ -1,0 +1,47 @@
+# -*- encoding=utf8 -*
+from lazyscript import meta
+from lazyscript.script import ScriptMeta
+
+def test_author():
+	"test to parse author mark."
+	e = ('author', '2007 billy')
+	ameta = meta.make_meta(e[0],e[1])
+	assert ameta[0] == 'authors'
+	assert ameta[1] == '2007 billy'
+
+def test_platform():
+	"test to parse platform mark."
+	e = ('platform', 'i386 adm64')
+	ameta = meta.make_meta(e[0],e[1])
+	assert ameta[0] == 'platform'
+	assert ameta[1] == ['i386','adm64']
+
+def test_i18n():
+	"test to i18n process of the meta mark."
+	e = ('name_zhTW', '我是中文')
+	ameta = meta.make_meta(e[0],e[1])
+	assert ameta[0] == 'name'
+	assert ameta[1] == {'zhTW':'我是中文'}
+
+	e = ('desc_zhTW', '我是中文')
+	ameta = meta.make_meta(e[0],e[1])
+	assert ameta[0] == 'desc'
+	assert ameta[1] == {'zhTW':'我是中文'}
+
+	ameta = meta.make_meta('name','no_lang')
+	assert ameta is None,ameta
+	
+def test_get_script_meta():
+	s = """#
+# @name_zhTW '中文script名。'
+# @name_enUS 'english script name.'
+# @desc_zhTW '中文script說明
+#             第2行'
+"""
+	metas = ScriptMeta.from_string(s)
+	metas.lang = 'zhTW'
+	assert metas.name == '中文script名。', metas.name
+	assert metas.desc == """中文script說明
+第2行""", metas.desc
+	metas.lang = 'enUS'
+	assert metas.name == 'english script name.'

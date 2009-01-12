@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<lazy>
+
+<category title="第一人稱射擊" image="">
+
+<tool title="安裝 AssultCube (需要 3D 加速)" command="scripts/getdeb.py AssaultCube 1633" used="0">
+Linux 下相當類似 CS 的遊戲，3D 畫面逼真、流暢，
+硬體需求並不高，遊戲的檔案也不大，可多人連線對戰，
+完全正版，完全免費，強力推薦！
+</tool>
+
+<tool title="安裝 OpenArena (需要 3D 加速)" command="apt-get -y --force-yes install openarena" used="0">
+ID Soft 經典之作 Quake 3 Arena 的 Linux 版本
+開放原始碼之後，後續由社群接手維護的版本。
+</tool>
+
+<tool title="安裝 Sauerbraten (需要 3D 加速)" command="apt-get -y --force-yes install sauerbraten" used="0">
+另一個類似 Quake 的第一人稱 3D 射擊遊戲，使用
+開放原始碼的 Cube 3D 引擎。有任務模式，畫面華麗但AI不強。
+</tool>
+
+<tool title="安裝 Alien Arena (需要 3D 加速)" command="apt-get -y --force-yes install alien-arena" used="0">
+以射擊外星人作為主題的華麗 3D 第一人稱射擊。
+</tool>
+
+</category>
+
+
+<category title="即時戰略" image="">
+
+<tool title="Warzone 2100 (需要 3D 加速)" command="apt-get -y --force-yes install warzone2100" used="0">
+Linux 下超好玩的全 3D 即時戰略遊戲，畫面相當華麗，音效也很棒。
+這不是業餘玩家基於興趣開發的小遊戲，而是專業遊戲公司，
+在 2003 年發行的商業遊戲，後來很慷慨的開放了全部程式碼。
+</tool>
+
+<tool title="Bos Wars" command="scripts/getdeb.py BosWars 1421" used="0">
+滿不錯的即時戰略遊戲，但以今日的遊戲標準來看，畫面不算很華麗。
+</tool>
+
+</category>
+
+<category title="模擬器" image="">
+
+<tool title="KXMame" command="apt-get -y --force-yes install kxmame" used="0">
+Windows 下知名的模擬器軟體 Mame 的 Linux Clone。
+KXMame是較為方便使用的mame前端設定。
+可以模擬執行大型機台的遊戲，例如 KOF (遊戲 ROM 檔需自備)
+</tool>
+
+<tool title="PCSX - Sony PlayStation 模擬器" command="apt-get -y --force-yes install pcsx pcsx-i18n" used="0">
+PCSX-df 是一個進階的 PlayStation (PSX) 模擬器。
+它使用外掛程式架構來對 PSX 的各個 元件提供完整支援，
+能提供對 gamepads、影像、音效、記憶卡、以及其他
+重要的 PSX 元件(必須 安裝對應的外掛程式)，並且能夠
+順利無誤的執行很多遊戲。
+</tool>
+
+<tool title="Dosbox" command="apt-get -y --force-yes install dosbox" used="0">
+MS-DOS 模擬器，讓你在 Linux 下玩古董級的 DOS 遊戲。
+</tool>
+
+</category>
+
+<category title="有趣的小遊戲" image="">
+
+<tool title="安裝寶石方塊" command="apt-get -y --force-yes install gweled" used="0">
+寶石方塊(Gweled)是一款在Linux上相當受歡迎的小遊戲，
+藉由將同色寶石放在一起消去來獲得分數。
+</tool>
+
+</category>
+
+<category title="Windows 遊戲" image="">
+
+<!-- not supported yet
+<tool title="協助安裝魔獸世界 (用 Wine 模擬)" command="scripts/wow" used="0">
+在 Linux 下，透過模擬，可以執行 Windows 版的魔獸世界遊戲。
+注意：你需要自備魔獸世界遊戲安裝光碟。
+</tool>
+-->
+
+</category>
+
+</lazy>

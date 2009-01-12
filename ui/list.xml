@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<lazy>
+
+<category title="中文環境" image="applications-accessories">
+
+<tool title="安裝 Ubuntu 中文支援" command="apt-get -y --force-yes install language-support-zh language-pack-zh language-pack-gnome-zh language-pack-kde-zh" used="1">
+Ubuntu 安裝光碟因為容量的關係，預設沒有包含中文介面。
+安裝中文支援，可以讓系統有完整的中文介面。
+</tool>
+
+<tool title="安裝/設定 中文輸入法" command="scripts/cin.py" used="1">
+讓你安裝你想要的中文輸入法，有 scim, gcin 可選擇。
+</tool>
+
+<tool title="安裝 cwTTF 高品質中文字型" command="scripts/cwttf" used="1">
+cwTTF 原先是 cwTex 排版系統裡面使用的一套中文字型，
+包含圓體、宋體、粗黑體等五種相當美觀的中文字型，經原作者授權，
+由 EdwardLee 前輩轉成 ttf 格式以 GPL 授權釋出，推薦安裝。
+</tool>
+
+<!--
+<tool title="安裝 OpenDesktop 字型" command="scripts/download-install opendesktop-font ftp://ftp.csie.nuk.edu.tw/pub/opendesktop-fonts/opendesktop-fonts_1.4.2-1ubuntu1_all.deb" used="1">
+由 http://www.opendesktop.org.tw/ 提供的中文字型，Unicode 支援完整。
+</tool>
+-->
+
+</category>
+
+<category title="網路應用" image="applications-internet">
+
+<tool title="使用 Firestarter 網路防火牆" command="apt-get -y --force-yes install firestarter" used="1">
+這是圖形介面的防火牆軟體，推薦使用
+</tool>
+
+<tool title="安裝 PCMan X GTK+ 2 BBS 連線軟體" command="scripts/pcmanx" used="1">
+Windows 下知名 BBS 連線軟體 PCMan 的 Linux 版本
+愛上 BBS 的宅男宅女和 Ptt 鄉民必備！
+</tool>
+
+<!--
+<tool title="安裝 Firefox 的 Flash 外掛" command="scripts/flash-beta" used="1">
+讓 Firefox 可以正常顯示 Flash 動畫
+(這裡安裝的是 Adobe 官方網站提供的 9.0 beta 版，不是 Ubuntu 的官方套件)
+</tool>
+-->
+
+<tool title="安裝 Filezilla 3 - 強大好用的 FTP 連線軟體" command="apt-get -y --force-yes install filezilla filezilla-locales" used="1">
+Filezilla 3 是 Windows 下知名 FTP 連線軟體 Filezilla 重新開發的跨平台版本。
+功能強大，介面親和，多國語言支援完善，雖然還在測試發展中，已經足以應付一般需求。
+而因為 Filezilla 3 是重新開發的，所以功能比原 Windows 版少，介面也略有不同。
+</tool>
+
+<tool title="安裝 aMule P2P 軟體 - 在 Linux 下養騾子" command="apt-get -y --force-yes install amule" used="1">
+aMule 是由 Windows 下 eMule 移植而來的跨平台軟體。
+</tool>
+
+<tool title="安裝 Deluge BT 下載軟體" command="apt-get -y --force-yes install deluge-torrent" used="1">
+Linux 下相當好用的 BT 下載軟體，滿足你的 P2P 下載需求。
+</tool>
+
+<tool title="安裝 Internet Explorer 6.0" command="scripts/ie6" used="0">
+你沒有看錯，透過 Wine 和 ie4linux 兩個程式的輔助，Windows 上的
+Internet Explorer 可以在 Linux 安裝並上執行。
+&lt;span color="red" &gt;請注意：根據微軟的授權合約，你需要有正版 Windows 授權才能使用 IE&lt;/span&gt;
+</tool>
+
+<tool title="安裝 Skype 網路電話 2.0" command="scripts/skype.sh" used="1" >
+Skype 網路電話官方發行的 Linux 版本，這是 2.0 正式版，具有許多令人興奮的新功能。
+注意：AMD64版本在安裝後仍需手動設定聲音輸出才可正常使用。
+</tool>
+
+<tool title="安裝 SwiftFox - 非官方最佳化版的 Firefox" command="scripts/swiftfox" used="1">
+針對各種不同 CPU 最佳化編譯的 Firefox，效能勝過 Firefox 官方版本
+</tool>
+
+<tool title="安裝 Liferea - 閱讀 RSS Feed 的利器" command="apt-get -y --force-yes install liferea" used="0">
+Linux 下簡單易用的 RSS Feed 閱讀程式
+</tool>
+
+<!-- Not supported yet
+<tool title="透過 ndiswrapper 安裝 Windows 網卡驅動程式" command="scripts/ndiswrapper" used="0">
+這年頭有良心，會願意提供 Linux 驅動程式的硬體廠商，可說是少之又少...
+雖然全世界一直有 Linux 駭客在破解各種硬體，硬是寫出了許多驅動，
+仍然是有很多硬體，還沒有辦法被支援。
+如果很不幸，你的網路卡無法被 Linux 支援，尤其是無線網卡
+還有最後的機會，用 ndiswrapper 硬上 Windows 驅動程式。
+</tool>
+-->
+
+</category>
+
+<category title="多媒體影音" image="applications-multimedia">
+
+<tool title="加入 Medibuntu 套件庫並安裝 Win32 Codecs" command="scripts/multimedia-repos" used="1">
+Ubuntu 官方因為某些法規及專利問題，沒有支援許多常用的影音格式。
+於是有人成立非官方的 Medibuntu 套件庫，提供多種影音 Codecs
+一般使用者幾乎都會需要用到這個非官方套件庫，建議考慮安裝。
+&lt;span color="red"&gt;請注意：因為各地專利及著作權法規的不同，此套件庫內的套件
+並非全部都保證可以合法使用，請使用者自行斟酌。&lt;/span&gt;
+</tool>
+
+<tool title="安裝 DVD CSS 解碼程式 libdvdcss (Medibuntu 提供)" command="apt-get -y --force-yes install libdvdcss2" used="1">
+若要使用有保護的 DVD 影片 (出租店的幾乎都是)，一定會需要這個套件。
+&lt;span color="red"&gt;請注意：這有可能會侵犯專利，使用者請自行斟酌&lt;/span&gt;
+</tool>
+
+<tool title="安裝 Mplayer 媒體播放程式" command="scripts/mplayer" used="1">
+號稱最強大的多媒體播放程式，連在古董級老舊機器上都可以順暢播放。
+Lazybuntu 協助安裝 Mplayer 之餘，還會協助加入適合中文字幕的設定。
+</tool>
+
+<tool title="安裝 SMplayer - Mplayer 的改良式介面" command="apt-get -y --force-yes install smplayer" used="1">
+有鑑於 Mplayer 官方的操作介面不太方便，有人做了更好的圖形介面出來。
+SMPlayer 的操作介面相當簡單、直觀，相當推薦使用。
+</tool>
+
+<tool title="安裝 VLC 播放程式" command="apt-get -y --force-yes install vlc" used="1">
+另一套強大的多媒體播放軟體，可以播放相當多格式
+對於 DVD 播放，在選單的部份，支援比 Mplayer 要好，相當建議使用。
+</tool>
+
+<tool title="安裝 Audacious - 近似 WinAmp 的音樂播放軟體，可處理 Big5 中文 ID3" command="scripts/audacious" used="1">
+Linux 下有數不清的好用音樂播放軟體，但是對於原 Windows 使用者來說，
+介面較不習慣，再加上目前仍有大量 MP3，還在用相當落伍的 Big5 中文編碼，
+Audacious 在正確設定下，能夠處理大部份的編碼問題，所以仍然是推薦使用。
+</tool>
+
+<tool title="安裝 Real Player 11 播放程式 Linux 版本" command="scripts/realplay" used="1">
+RealNetworks 公司的 RealPlayer 播放程式，官方有推出 Linux 版本，
+可以播放網路上常見的 rm, rmvb 等格式，還有一些串流媒體。
+</tool>
+<tool title="安裝 Hinedo 網路廣播收聽程式" command="scripts/hinedo" used="1">
+透過縮小在工作列的小圖示，叫出選單，輕鬆收聽 Hinet 提供的網路廣播。
+不用看大量的網路廣告，更不用開龐大的網路瀏覽器，就能直接收聽。
+注意:目前Hinedo尚不支援AMD64硬體架構。若勾選此項可能仍不安裝。
+</tool>
+
+<tool title="安裝 GStreamer 的各種影音解碼外掛" command="scripts/gstreamer" used="1">
+GStreamer 是一個影音的程式庫，目前 Linux 上有不少多媒體軟體，需要依賴它才能運作
+但 Ubuntu 官方，礙於某些潛在的可能法律問題，預設拿掉了許多常用的影音解碼器，導致
+許多常見的影音格式無法被支援。選擇這個項目會幫你裝回這些常用的影音格式支援。
+&lt;span color="red"&gt;請注意：這些影音支援，隨各地法規不同，有可能不完全合法，請使用者自行斟酌。&lt;/span&gt;
+</tool>
+
+<tool title="安裝 Audacity - 功能強大的錄音軟體" command="apt-get -y --force-yes install audacity" used="0">
+功能強大的跨平台錄音/音效編輯軟體，介面並不美觀，但是功能不少。
+(若有使用者知道更好的選擇，請提議給 Lazybuntu 開發者)
+</tool>
+
+
+</category>
+
+<category title="光碟工具" image="media-optical">
+
+<tool title="安裝 K3B - Linux 下最強的燒錄軟體" command="apt-get -y --force-yes install k3b k3b-i18n libk3b3-extracodecs" used="1">
+Linux 下最強大的圖形介面燒錄軟體，功能比起 Windows 下的 Nero，絲毫不遜色。
+不論是處理資料、影片、音樂光碟、光碟對拷，都難不倒它，可支援 CD 和 DVD。
+</tool>
+
+<tool title="安裝 K9Copy" command="scripts/k9copy" used="1">
+超好用的強大影音 DVD 拷貝工具，相當於 Windows 下的 DVDShrink
+可以把 9 GB 的 DVD 壓縮後燒錄進 4.7 GB 的空片，並保存原 DVD 選單
+經過壓縮的DVD，畫質比起原母片，只有非常細微的減損。
+除此之外，K9Copy 也內建製作 DVD Rip 轉成 avi 的功能，
+可以說是目前 Linux 下最好的 DVD 備份方案。
+</tool>
+
+<tool title="安裝 AcidRip" command="scripts/acidrip" used="1">
+相當好用的 DVD Rip 製作工具，操作介面相當簡易，轉檔品質優良。
+可將 DVD 影片轉成 avi 檔，同時可保存字幕(以 *.sub 和 *.idx 的格式)。
+</tool>
+
+<tool title="安裝 IsoMaster" command="apt-get install isomaster" used="0">
+讀取/編輯 Iso 光碟映像檔的好用工具。
+</tool>
+
+<tool title="安裝 GMountIso" command="apt-get install gmountiso" used="0">
+能用簡單的方式，將 Iso 光碟映像檔掛載成本機系統上可讀取的資料夾，
+方便使用映像檔內的檔案。  這個小程式功能並不強，但是介面相當簡潔好用。
+</tool>
+
+<!-- Not supported yet
+<tool title="安裝 Acetone" command="./script/acetone" used="0">
+Linux 下用來掛載光碟映像檔的好用工具。
+</tool>
+-->
+
+</category>
+
+<category title="辦公室應用" image="applications-office">
+
+<tool title="安裝 Adobe Reader 8" command="scripts/adobe-reader" used="1">
+Adobe 官方提供的 Linux 版 PDF 閱讀程式
+注意:AMD64硬體架構將安裝medibuntu之Adobe Reader而非官方發行版本。
+</tool>
+
+<tool title="安裝 StarDict 星際譯王及其字典檔" command="scripts/stardict" used="0">
+對岸網友開發的翻譯軟體，功能類似 Windows 下的譯點通，強大好用。
+特色是包含多種豐富的辭典資料庫，並且可以支援滑鼠選取文字自動查詢。
+&lt;span color="red"&gt;請注意：其中有些字典資料來路不明，有違法疑慮，使用者請自行斟酌。&lt;/span&gt;
+</tool>
+
+<tool title="安裝 GNetDict 線上辭典" command="scripts/gnetdict" used="1">
+台灣網友開發的軟體，執行時連線到網路辭典，將查到的內容傳回顯示。
+程式本身不內建任何辭典資料，只會顯示線上查詢的內容。
+</tool>
+
+</category>
+
+<category title="系統調校" image="applications-system">
+
+<tool title="修正 /etc/fstab 磁碟分割設定檔" command="scripts/fix-fstab" used="1">
+/etc/fstab 是 Linux 的磁碟分割區設定檔，Ubuntu 預設建立的設定檔有些小問題，
+可能導致一些 Windows FAT32 分割區的檔名異常，勾選這個選項會視情況幫你修正。
+</tool>
+
+<tool title="安裝幾個好用的 Nautilus(檔案管理程式)外掛" command="scripts/nautilus" used="1">
+nautilus-gksu：以系統管理員權限開啟目錄
+nautilus-open-terminal：在目前目錄下開啟終端機視窗
+nautilus-script-audio-convert：音樂轉檔外掛
+nautilus-image-converter：圖片轉檔外掛
+</tool>
+
+<tool title="安裝 Windows 下幾種常見壓縮檔格式的支援" command="apt-get -y --force-yes install p7zip unrar" used="1">
+7-zip, rar,...等
+</tool>
+
+<tool title="移除無用的 Gnome 小遊戲" command="apt-get -y --force-yes --purge remove gnome-games" used="1">
+Gnome 本身附帶了很多難玩的小遊戲，就像是 Windows 的遊樂場一樣。
+勾選這個選項，可以幫你清掉這些用不到的程式，避免佔用空間。
+</tool>
+
+<!--
+<tool title="把 Ubuntu 佈景主題醜陋的橘色，換成 Vista 的淺藍" command="scripts/blue-theme" used="1">
+相信有不少人不太習慣 Ubuntu 預設佈景主題的色系，以泥土色為基調，
+處處加上亮眼的橘色。這個選項幫你把橘色，改成 Vista 的淺藍色。
+</tool>
+-->
+
+<tool title="安裝漂亮的 nuoveXT 圖示佈景主題" command="scripts/nuovext-icon" used="1">
+Ubuntu 預設的圖示還不難看，不過，nuoveXT 更好看。這個佈景主題
+長久以來，一直蟬聯 Gnome-Look 網站最高使用者評價。
+</tool>
+
+<tool title="安裝Ubuntu Tweak校調工具" command="scripts/ubuntu-tweak.sh" used="1">
+Ubuntu Tweak是一款快速好用的挍調工具，若您在往後的使用中需要
+特定軟體或是調整您的作業系統，Ubuntu Tweak可以提供您一個快速
+方便的設定界面。
+</tool>
+
+</category>
+
+
+<category title="其他未分類" image="applications-other">
+
+<tool title="安裝 MadEdit - 支援 16 進位編輯、中文轉碼的超強國產編輯器" command="scripts/madedit.sh" used="1">
+MadEdit 堪稱臺灣自由軟體之光。 它是目前最強大好用的跨平台文字編輯器之一
+由台灣人所開發。支援 16 進位編輯，語法高亮度彩色、文字編碼自動偵測、完整中文支援、
+Regular expression 搜尋，多重檔案尋找/取代。介面友善美觀、功能強大，絕對值得一試！
+</tool>
+
+<tool title="安裝 Sun Java 環境 (含 Firefox 瀏覽器外掛)" command="DEBIAN_FRONTEND='gnome' apt-get -y --force-yes install sun-java6-jre sun-java6-plugin" used="1">
+Sun Java 6 虛擬機器執行環境，執行 Java 軟體或是網頁上的 Java 小程式需要。
+請注意： 安裝此項目，會在安裝過程中跳出 Sun 的授權合約，需要同意才能正確安裝。
+</tool>
+
+</category>
+
+</lazy>
+
