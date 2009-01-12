@@ -1,26 +1,47 @@
 import cPickle
 import re
+import sys
 
 from lazyscript.repo import git
+from lazyscript import meta
 
 class MissingScriptInitFile(IOError):
 	pass
 
-class ScriptConfig(object):
+class ScriptMeta(object):
 
 	"""
-	the config of the script.
+	the script_meta of the script.
 	"""
 	def __init__(self, settings):
-		self.__dict__.update(settings)
+		self.__dict__['datas'] = settings
+		self.lang = 'zhTW'
+
+	def __getattr__(self, key):
+		try:
+			return getattr(self.datas,key)
+		except:
+			return getattr(self,key)
+
+	@property
+	def name(self, lang=None):
+		if not lang:
+			return self.datas['name'][self.lang]
+		return self.datasp['name'][lang]
+
+	@property
+	def desc(self, lang=None):
+		if not lang:
+			return self.datas['desc'][self.lang]
+		return self.datasp['desc'][lang]
 
 	@classmethod
 	def from_string(cls, string):
 		"""
-		get the script config from string.
+		get the script script_meta from string.
 
 		@parma str string.
-		@return ScriptConfig
+		@return ScriptMeta
 		"""
 		if not string:
 			return None
@@ -30,24 +51,36 @@ class ScriptConfig(object):
 	@staticmethod
 	def parse_string(string):
 		attrs = {}
-		# @TODO: use Doxygen Sytanx.
 		import re
-		founds = re.findall('^\s*@(.*?)\s+(.*)$', \
-					string, \
+		founds = re.findall('\s*@(.*?)\s+\'(.*|.*\n.*)\'', \
+					string ,\
 					re.MULTILINE) 
 		for found in founds:
-			attrs.setdefault(found[0], found[1])
+			meta_entry = meta.make_meta(found[0],found[1])
+			if not meta_entry:
+				continue
+			# @FIXME: dirty hack.
+			if attrs.get(meta_entry[0]):
+				try:
+					attrs[meta_entry[0]].update(meta_entry[1])
+					attrs[meta_entry[0]].extend(meta_entry[1])
+					attrs[meta_entry[0]] = attrs[meta_entry[0]] +\
+											meta_entry[1]
+				except AttributeError:
+					pass
+			else:
+				attrs.setdefault(meta_entry[0], meta_entry[1])
 		return attrs		
 
 class Script(object):
 
-	def __init__(self, backend, config):
+	def __init__(self, backend, script_meta):
 		self.backend = backend
-		self.brief= config.brief
-		self.author = config.author
-		self.website = config.website
-		self.name = config.name or self.backend.name
-		self.runfile = config.runfile or self.backend.name
+		self.desc= script_meta.desc
+		self.author = script_meta.author
+		self.website = script_meta.website
+		self.name = script_meta.name or self.backend.name
+		self.runfile = script_meta.runfile or self.backend.name
 
 	def __getattr__(self, key):
 		try:
@@ -63,20 +96,20 @@ class Script(object):
 		if not blob:
 			raise MissingScriptInitFile(tree.name)
 
-		config = ScriptConfig.from_string(blob.data)
-		if not config:
-			return config
+		script_meta = ScriptMeta.from_string(blob.data)
+		if not script_meta:
+			return script_meta
 
-		return cls(tree, config)
+		return cls(tree, script_meta)
 	
 	@classmethod
 	def from_blob(cls, blob):
 		"""get script from git blob"""
-		config = ScriptConfig.from_string(blob.data)
-		if not config:
-			return config
+		script_meta = ScriptMeta.from_string(blob.data)
+		if not script_meta:
+			return script_meta
 		
-		return cls(tree, config)
+		return cls(tree, script_meta)
 			
 class ScriptSet(object):
 
