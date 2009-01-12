@@ -7,7 +7,7 @@ def test_author():
 	e = ('author', '2007 billy')
 	ameta = meta.make_meta(e[0],e[1])
 	assert ameta[0] == 'authors'
-	assert ameta[1] == '2007 billy'
+	assert ameta[1] == ('2007 billy',)
 
 def test_platform():
 	"test to parse platform mark."
@@ -37,6 +37,9 @@ def test_get_script_meta():
 # @name_enUS 'english script name.'
 # @desc_zhTW '中文script說明
 #             第2行'
+# @author '2007 bob'
+# @author '2007 john'
+# @author '2008 hou'
 """
 	metas = ScriptMeta.from_string(s)
 	metas.lang = 'zhTW'
@@ -45,3 +48,4 @@ def test_get_script_meta():
 第2行""", metas.desc
 	metas.lang = 'enUS'
 	assert metas.name == 'english script name.'
+	assert metas.authors == ('2007 bob','2007 john', '2008 hou'), metas.authors

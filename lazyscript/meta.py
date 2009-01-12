@@ -80,25 +80,25 @@ def author_mark(value):
 	the parser of the reserved word author.
 
 	@param str value string.
-	@reutrn (key, value)
+	@reutrn (key, (value))
 	"""
-	return ('authors', value)
+	return ('authors', (value,))
 
 def maintaner_mark(value):
 	"""
 	the parser of the reserved word maintaner.
 
 	@param str value string.
-	@reutrn (key, value)
+	@reutrn (key, (value))
 	"""
-	return ('mantainers', value)
+	return ('mantainers', (value,))
 
 def platform_mark(value):
 	"""
 	the parser of the reserved word platform.
 
 	@param str value string.
-	@reutrn (key, value)
+	@reutrn (key, [value])
 	"""
 	return ('platform', value.split(' '))
 

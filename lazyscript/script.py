@@ -18,10 +18,7 @@ class ScriptMeta(object):
 		self.lang = 'zhTW'
 
 	def __getattr__(self, key):
-		try:
-			return getattr(self.datas,key)
-		except:
-			return getattr(self,key)
+		return self.datas[key]
 
 	@property
 	def name(self, lang=None):
@@ -60,16 +57,17 @@ class ScriptMeta(object):
 			if not meta_entry:
 				continue
 			# @FIXME: dirty hack.
-			if attrs.get(meta_entry[0]):
-				try:
+			if not attrs.get(meta_entry[0]):
+				attrs.setdefault(meta_entry[0], meta_entry[1])
+
+			else:
+				if type(attrs[meta_entry[0]]) == dict:
 					attrs[meta_entry[0]].update(meta_entry[1])
+				elif type(attrs[meta_entry[0]]) == list:
 					attrs[meta_entry[0]].extend(meta_entry[1])
+				elif type(attrs[meta_entry[0]]) == tuple:
 					attrs[meta_entry[0]] = attrs[meta_entry[0]] +\
 											meta_entry[1]
-				except AttributeError:
-					pass
-			else:
-				attrs.setdefault(meta_entry[0], meta_entry[1])
 		return attrs		
 
 class Script(object):
