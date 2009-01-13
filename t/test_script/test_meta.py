@@ -45,6 +45,7 @@ def test_get_script_meta():
 # @author '2007 bob'
 # @author '2007 john'
 # @author '2008 hou'
+# @debian
 """
 	metas = ScriptMeta.from_string(s)
 	metas.lang = 'zhTW'

@@ -10,14 +10,14 @@ Requirements
 * git
 * git-svn
 * GitPython
-* Python Nos
+* Python Nose
 
 Quick Start for Developer
 =========================
 
-initialize the develope environment.
+initialize for develope environment, wich makes a lot of the test datas.
 
-$ make init_testenv
+$ make init_devenv
 
 run test cases in directories t/ without output capture.
 
