@@ -32,11 +32,16 @@ def test_i18n():
 	assert ameta is None,ameta
 	
 def test_get_script_meta():
+	"""
+	test to get the metadata of the script.
+	"""
 	s = """#
 # @name_zhTW '中文script名。'
 # @name_enUS 'english script name.'
 # @desc_zhTW '中文script說明
 #             第2行'
+# @category 'Custonmize'
+# @maintainer 'billy'
 # @author '2007 bob'
 # @author '2007 john'
 # @author '2008 hou'
@@ -49,3 +54,5 @@ def test_get_script_meta():
 	metas.lang = 'enUS'
 	assert metas.name == 'english script name.'
 	assert metas.authors == ('2007 bob','2007 john', '2008 hou'), metas.authors
+	assert metas.maintainers == ('billy',), metas.maintainers
+	assert metas.category == 'Custonmize', metas.category

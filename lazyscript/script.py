@@ -1,6 +1,7 @@
 import cPickle
 import re
 import sys
+import os
 
 from lazyscript.repo import git
 from lazyscript import meta
@@ -18,7 +19,10 @@ class ScriptMeta(object):
 		self.lang = 'zhTW'
 
 	def __getattr__(self, key):
-		return self.datas[key]
+		try:
+			return self.datas[key]
+		except KeyError:
+			return None
 
 	@property
 	def name(self, lang=None):
@@ -191,7 +195,7 @@ class ScriptSet(object):
 
 class SourceList(object):
 
-	def __init__(self, path):
+	def __init__(self, path=None):
 		self.path = path
 		self.content = ''
 		self._items = []
@@ -213,3 +217,18 @@ class SourceList(object):
 
 	def _unserilize(self, string):
 		return cPickle.loads(string)
+
+	@classmethod
+	def from_dir(self, dir):
+		list = SourceList()
+		for ele in os.listdir(dir):	
+			if ele.startswith('.'):
+				continue
+
+			if os.isfile(ele):
+				file = ele
+			else:
+				file = ele+'/'+ele
+
+#			meta = ScriptMeta.from_file(open(file, 'r'))
+#			list._items.append(meta)

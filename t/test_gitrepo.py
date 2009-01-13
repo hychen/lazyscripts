@@ -5,7 +5,7 @@ from t import get_repodir,get_datadir
 repo = git.Repo(get_repodir())
 
 def test_create_scriptrepo():
-	"create an ensure the local repositery is unique."
+	"test to create an ensure the local repositery is unique."
 	try:
 		signed_repopath = sign_repopath(get_repodir(), get_datadir()+'unexist/')
 	except NoScriptPoll, e:

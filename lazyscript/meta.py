@@ -1,9 +1,11 @@
-
+#!/usr/bin/env python
+# -*- encoding=utf8 -*-
+# @author '2009 Hsin Yi Chen (陳信屹) <ossug.hychen@gmail.com>'
 """reserved words list. these words used to document 
 the metadata of the script."""
 __reserved_words__ = [
 	'category',
-	'maintaner',
+	'maintainer',
 	'author',
 	'ubuntu',
 	'debian',
@@ -84,14 +86,14 @@ def author_mark(value):
 	"""
 	return ('authors', (value,))
 
-def maintaner_mark(value):
+def maintainer_mark(value):
 	"""
 	the parser of the reserved word maintaner.
 
 	@param str value string.
 	@reutrn (key, (value))
 	"""
-	return ('mantainers', (value,))
+	return ('maintainers', (value,))
 
 def platform_mark(value):
 	"""
