@@ -14,7 +14,8 @@ try:
 		action=sys.argv[2]
 		if 'sign' == action:
 			origin_path=sys.argv[3]
-			print sign_repopath(origin_path, sys.argv[4])
+			#print sign_repopath(origin_path, sys.argv[4])
+			print sign_repopath(origin_path)
 	elif 'gui' == cmder:
 		print cmder
 		from ui import GUI

@@ -26,15 +26,26 @@ class ScriptMeta(object):
 
 	@property
 	def name(self, lang=None):
-		if not lang:
-			return self.datas['name'][self.lang]
-		return self.datasp['name'][lang]
+		try:
+			if not lang:
+				return self.datas['name'][self.lang]
+			return self.datasp['name'][lang]
+		except KeyError:
+			return None
 
 	@property
 	def desc(self, lang=None):
-		if not lang:
-			return self.datas['desc'][self.lang]
-		return self.datasp['desc'][lang]
+		try:
+			if not lang:
+				return self.datas['desc'][self.lang]
+			return self.datasp['desc'][lang]
+		except KeyError:
+			return None
+
+	@classmethod
+	def from_file(cls, file):
+		"get the script meta from a file."
+		return cls.from_string( file.read() )
 
 	@classmethod
 	def from_string(cls, string):
@@ -63,7 +74,6 @@ class ScriptMeta(object):
 			# @FIXME: dirty hack.
 			if not attrs.get(meta_entry[0]):
 				attrs.setdefault(meta_entry[0], meta_entry[1])
-
 			else:
 				if type(attrs[meta_entry[0]]) == dict:
 					attrs[meta_entry[0]].update(meta_entry[1])
@@ -111,7 +121,7 @@ class Script(object):
 		if not script_meta:
 			return script_meta
 		
-		return cls(tree, script_meta)
+		return cls(blob, script_meta)
 			
 class ScriptSet(object):
 
@@ -193,18 +203,22 @@ class ScriptSet(object):
 			script = Script.from_blob(obj)
 		return script
 
-class SourceList(object):
+class ScriptList(object):
 
 	def __init__(self, path=None):
-		self.path = path
+		if path:
+			self.path = path
+		else:
+			self.path = 'script.list'
 		self.content = ''
 		self._items = []
 
 	def items(self):
 		return self._items
 
-	def save(self, items):
-		self._items = items
+	def save(self, items=None):
+		if items:
+			self._items = items
 		cPickle.dump(self._items, open(self.path,'w'))
 
 	def update(self):
@@ -219,16 +233,24 @@ class SourceList(object):
 		return cPickle.loads(string)
 
 	@classmethod
-	def from_dir(self, dir):
-		list = SourceList()
-		for ele in os.listdir(dir):	
-			if ele.startswith('.'):
-				continue
+	def from_repo(cls, repo_path):
+		"""
+		make a script list from given repositry path.
 
-			if os.isfile(ele):
-				file = ele
-			else:
-				file = ele+'/'+ele
-
-#			meta = ScriptMeta.from_file(open(file, 'r'))
-#			list._items.append(meta)
+		@param str repo_path repositry path.
+		@return obj ScriptList
+		"""
+		list = ScriptList()
+		repo = git.Repo(repo_path)
+	
+		for category in repo.categories:
+			# @TODO: refactory -> category.scripts()
+			for script_name,script_blob in category.items():
+				script = Script.from_blob(script_blob)
+				entry = {
+						'repo':repo_path,
+						'category':category.name,
+						 'name':script.name,
+						 'id':script_name}
+				list._items.append(entry)
+		return list

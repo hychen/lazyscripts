@@ -7,6 +7,17 @@ def is_blob(obj):
 	return type(obj) == git.Blob
 
 class Repo(git.Repo):
+	
+	@property
+	def categories(self):
+		dir = []
+		try:
+			dirs = self.commits('HEAD')[0].tree.items()
+		except IndexError:
+			return None
+		# the items of the tree element is a tuple. e.x ('name', obj)
+		# so we know the type by second element in tuple.
+		return [ dir[1] for dir in dirs if is_tree(dir[1]) ]
 
 	def fork_index(self, path, **kwds):
 		options = {'n':True}
