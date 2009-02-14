@@ -129,6 +129,20 @@ class Script(object):
             return None
 
         return cls(blob, script_meta)
+
+class ScriptsBuilder(object):
+
+    def __init__(self, repos):
+        self.repos = repos
+        self.entries = []
+
+    def make_scripts(self):
+        ret = {}
+        for entry in self.entries:
+            repo = self.repos.get(entry['repo'])
+            script = Script.from_listentry(repo, entry)
+            ret[script.id] = script
+        return ret
             
 class ScriptSet(object):
 
@@ -156,11 +170,9 @@ class ScriptSet(object):
             for list_entry in list_entries:
                 if not self._categories.get(list_entry['category']):
                     self._categories[list_entry['category']] = \
-                                    Category(name=list_entry['category'])
-                # make a script from repo and put it to category.
-                script = Script.from_listentry(
-                            self.get_repo(list_entry['repo']), list_entry)
-                self._categories[list_entry['category']].add(script)
+                                    Category(name=list_entry['category'], 
+                                             scripts_builder=ScriptsBuilder(self._repos))
+                self._categories[list_entry['category']].add_entry(list_entry)
 
     def get_repo(self, repo_path):
         return self._repos.get(repo_path)

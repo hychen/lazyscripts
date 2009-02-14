@@ -5,7 +5,7 @@ scripts_list = ScriptsList(get_datadir()+'/source.list')
 repo_path = get_repodir()
 
 def test_save_list():
-	"test to save source list."
+	"test to save scripts list."
 	list = []
 	list.append({'name':'firstscript',
 			   'tag':'vim',
@@ -16,7 +16,7 @@ def test_save_list():
 	scripts_list.save(list)
 
 def test_load_list():
-	"test to load source list."
+	"test to load scripts list."
 	scripts_list.update()
 	assert scripts_list.items()[0]['name'] == 'firstscript',\
 			"can not load source."

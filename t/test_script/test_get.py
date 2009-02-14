@@ -1,5 +1,16 @@
-from lazyscript.script import ScriptSet, ScriptsList
+from lazyscript.category import Category
+from lazyscript.script import ScriptSet, ScriptsList, ScriptsBuilder
+from lazyscript.repo import git
 from t import get_repodir, get_datadir
+
+def test_get_script_from_category():
+    "test to get script form a category."
+    repos = {get_datadir()+'/scriptspoll/7796c33a9348485b055f671c686568b0/':
+                git.Repo(get_datadir()+'/scriptspoll/7796c33a9348485b055f671c686568b0/')}
+    cat = Category(name='Networking', scripts_builder=ScriptsBuilder(repos))
+    e = {'repo': get_datadir()+'/scriptspoll/7796c33a9348485b055f671c686568b0/', 'category': 'Networking', 'name': 'ie6_after.sh', 'id': 'ie6_after.sh'}
+    cat.add_entry(e)
+    assert 'Script' == cat.get('ie6_after.sh').__class__.__name__
 
 set = ScriptSet.from_scriptslist(
             ScriptsList(get_datadir()+'/scripts.list'))
