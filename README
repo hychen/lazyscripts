@@ -1,16 +1,16 @@
 # @author Hsin Yi Chen 陳信屹 (hychen) <ossug.hychen at gmail.com>
-LZS - Lazy Script Distutils
+LZS - Lazy Scripts Distribution Tool.
 =====================
 
-a stupid script distribution system.
+a stupid scripts distribution system.
 
 Requirements
 ============
 	
-* git
-* git-svn
-* GitPython
-* Python Nose
+* git.
+* git-svn.
+* GitPython.
+* Python Nose Framwork.
 
 Quick Start for Developer
 =========================
