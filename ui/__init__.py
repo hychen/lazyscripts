@@ -8,6 +8,7 @@ pygtk.require('2.0')
 import gtk, gobject, vte
 import os, sys
 import xml.sax
+from lazyscript.script import ScriptsList, ScriptSet
 
 from lazyscript.ui.gui import query_yes_no, show_error
 from lazyscript.util import detect
@@ -144,7 +145,7 @@ class ToolPage:
         view.append_column (col)
 
         for tool in self.tools:
-            list.append ((tool.used, ("<b>%s</b>：\n%s" % (tool.title, tool.desc)), tool))
+            list.append ((False, ("<b>%s</b>：\n%s" % (tool.name, tool.desc)), tool))
 
         view.set_model (list)
         view.show ()
@@ -232,16 +233,16 @@ class XmlLoader(xml.sax.ContentHandler):
 
 
 class ToolListWidget:
-    def __init__(self, xml_file):
-        self.all_tools=[]
+    def __init__(self, scripts_list_file):
+        self.all_tools = []
 
-        hbox=gtk.HBox(False,2)
-        self.hbox=hbox
+        hbox = gtk.HBox(False, 2)
+        self.hbox = hbox
 
         # left pane
-        tree=gtk.TreeView()
-        self.left_pane=tree
-        scroll=gtk.ScrolledWindow()
+        tree = gtk.TreeView()
+        self.left_pane = tree
+        scroll = gtk.ScrolledWindow()
         scroll.add(tree)
         scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll.set_shadow_type(gtk.SHADOW_IN)
@@ -258,7 +259,7 @@ class ToolListWidget:
 
         list=gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
         self.list=list
-        self.load_tree(list, xml_file)
+        self.load_tree(list, scripts_list_file)
 
         tree.set_model(list)
 
@@ -274,15 +275,20 @@ class ToolListWidget:
 
         hbox.show_all()
 
-    def load_tree(self, list_store, xml_file):
-        parser=xml.sax.make_parser()
-        loader=XmlLoader(self.all_tools)
-        parser.setContentHandler( loader )
-        parser.parse(xml_file)
+    def load_tree(self, list_store, scripts_list_file):
+        scripts_list = ScriptsList(scripts_list_file)
+        scripts_list.update()
+        script_set = ScriptSet.from_scriptslist(scripts_list)
+        for category in script_set.categories():
+            tool_page = ToolPage()
+            tool_page.title = category.name
+            tool_page.img = None
 
-        for category in self.all_tools:
-            category.get_widget()
-            list_store.append( (category.img, category.title, category) )
+            for script in category.items():
+                tool_page.tools.append(script)
+
+            tool_page.get_widget()
+            list_store.append( (tool_page.img, tool_page.title, tool_page) )
 
     def get_widget(self):
         return self.hbox
@@ -333,10 +339,10 @@ class MainWin:
         win.add(vbox)
 
         # upper parts: main GUI
-        self.tool_list=tool_list=ToolListWidget('ui/list.xml')
+        self.tool_list=tool_list=ToolListWidget('scripts.list')
         tool_list.list.insert( 0, ('ubuntu', '歡迎使用', WelcomePage()) )
-        self.games_page=GamesPage()
-        tool_list.list.append( ('applications-games', '各種遊戲', self.games_page) )
+        #self.games_page=GamesPage()
+        #tool_list.list.append( ('applications-games', '各種遊戲', self.games_page) )
         self.final_page=FinalPage()
         tool_list.list.append( ('gnome-app-install', '完成', self.final_page) )
         sel=tool_list.left_pane.get_selection()
