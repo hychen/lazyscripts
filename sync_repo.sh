@@ -20,10 +20,16 @@ read -p "Pull success. Continue push to your repo?(Y/n)" PUSH_REPO
    *)
    echo "Please enter a choice."
    ;;
-   esac
+  esac
 done
 }
 
+function choice_branch(){
+read -p "Enter the branch you want to merge or push enter to merge to master:" BRANCH
+if [ -z $BRANCH ];then
+  BRANCH="master"
+fi
+}
 
 echo "Whos repo you want to sync?"
 echo "1. hychen"
@@ -33,13 +39,16 @@ echo "Please enter your choice:"
 read -p "What do you want to do now? Please enter the number:" ACT
   case $ACT in
    "1")
-   git pull git://github.com/hychen/lazyscript.git && push_repo
+   choice_branch
+   git pull git://github.com/hychen/lazyscript.git $BRANCH && push_repo
    ;;
    "2")
-   git pull git://github.com/yurenju/lazyscript.git && push_repo
+   choice_branch
+   git pull git://github.com/yurenju/lazyscript.git $BRANCH && push_repo
    ;;
    "3")
-   git pull git://github.com/billy3321/lazyscript.git && push_repo
+   choice_branch
+   git pull git://github.com/billy3321/lazyscript.git $BRANCH && push_repo
    ;;
    *)
    echo "Please enter a number."
