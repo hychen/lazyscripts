@@ -1,4 +1,5 @@
 #!/bin/bash
+# -*- coding: UTF-8 -*-
 # Date: 2009/2/17
 # Author: billy3321
 # A simple script use to sync your repo with others.
