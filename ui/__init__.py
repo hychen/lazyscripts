@@ -8,7 +8,7 @@ pygtk.require('2.0')
 import gtk, gobject, vte
 import os, sys
 import xml.sax
-from lazyscript.script import ScriptsList, ScriptSet
+from lazyscript.script import ScriptsList, ScriptSet, ScriptsRunner
 
 from lazyscript.ui.gui import query_yes_no, show_error
 from lazyscript.util import detect
@@ -416,7 +416,16 @@ class MainWin:
         self.apply_btn.set_sensitive(False)
         self.clear_btn.set_sensitive(False)
 
+        selected_scripts = []
+        for page in self.tool_list.all_tools:
+            for script in page.tools:
+                if script.used == TRUE:
+                    selected_scripts.append(script)
+
+        ScriptsRunner.run_scripts(self.final_page.term, selected_scripts)
+        # hychen! here is your block!! start
         # temp dir
+        """
         tmpdir='temp'
         if not os.path.exists(tmpdir):
             os.mkdir(tmpdir, 0777)
@@ -440,10 +449,13 @@ class MainWin:
         os.chmod(script_name, 0775)
 
         self.pid = self.final_page.term.fork_command( "%s/%s" % (os.getcwd(), script_name) )
+        """
+        #hychen!! here is your block!! end
         self.final_page.term.connect('child-exited', self.on_complete)
 
     def on_complete(self, data):
-        self.final_page.term.feed('\r\n\x1b[1;36mLazybuntu - Ubuntu 究極懶人包，執行完畢！ 你的系統現在應該很好用了！\r\n\r\n某些設定可能不會馬上有效，建議重新開機。\x1b[1;32m   祝玩 Ubuntu 愉快！\x1b[m\r\n')
+        self.final_page.term.feed('\r\n\x1b[1;36mLazyscripts - Linux 究極懶人包，執行完畢！ 你的系統現在應該很好用了！\r\n\r\n某些設定可能不會馬上有效，建議重新開機。\x1b[1;32m   祝玩 Linux 愉快！\x1b[m\r\n')
+
         self.cancel_btn.set_label(gtk.STOCK_CLOSE)
         self.complete=True
         self.pid=-1
