@@ -6,6 +6,13 @@ def is_tree(obj):
 def is_blob(obj):
     return type(obj) == git.Blob
 
+def clone_repo(path, dest_dir):
+    from os import system
+    system("git clone %s %s" % (path,dest_dir) )
+
+def is_git_dir(d):
+    return git.utils.is_git_dir(d)
+
 class Repo(git.Repo):
     
     @property

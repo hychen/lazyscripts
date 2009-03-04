@@ -3,7 +3,7 @@ import re
 import sys
 import os
 
-from lazyscript.repo import git
+from lazyscript.repo import git, create_scriptrepo
 from lazyscript import meta
 from lazyscript.category import Category
 
@@ -176,7 +176,8 @@ class ScriptSet(object):
 
         for item in scripts_list.items():
             if not set._repos.has_key(item.get('repo')):
-                set._repos[item.get('repo')] = git.Repo(item.get('repo'))
+                # clone the repostiry if the repositry is not exists.
+                set._repos[item.get('repo')] = create_scriptrepo(item.get('repo'), 'scriptspoll')
 
             if not set._repo_table.get(item.get('repo')):
                 set._repo_table[item.get('repo')] = []
