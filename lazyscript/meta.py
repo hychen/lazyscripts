@@ -10,11 +10,12 @@ __reserved_words__ = [
     'ubuntu',
     'debian',
     'platform',
-    'license'
+    'license',
+    'child'
 ]
 
 """these words has i18n way."""
-__i18n_words__ = ['name','desc']
+__i18n_words__ = ['name','desc','warn']
 
 __reserved_words__.extend(__i18n_words__)
 
@@ -103,6 +104,15 @@ def platform_mark(value):
     @reutrn (key, [value])
     """
     return ('platform', value.split(' '))
+
+def child_mark(value):
+    """
+    the parser of the reserved word child.
+
+    @param str value string.
+    @reutrn (key, [value])
+    """
+    return ('child', value.split(' '))
 
 if __name__ == '__main__':
     make_meta('desc_zhTW', """

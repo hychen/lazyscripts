@@ -155,7 +155,7 @@ class ToolPage:
         # print "toggled"
         it=list.get_iter_from_string(path)
         used, tool=list.get(it, 0, 2)
-        tool.used = not used
+        #tool.used = not used
         list.set( it, 0, not used )
 
     def get_command_lines(self):
@@ -289,6 +289,7 @@ class ToolListWidget:
 
             tool_page.get_widget()
             list_store.append( (tool_page.img, tool_page.title, tool_page) )
+            self.all_tools.append(tool_page)
 
     def get_widget(self):
         return self.hbox
@@ -407,7 +408,6 @@ class MainWin:
         dlg.destroy()
 
     def on_apply(self, btn):
-
         sel=self.tool_list.left_pane.get_selection()
         list=self.tool_list.left_pane.get_model()
         it=list.iter_nth_child( None, list.iter_n_children(None)-1 )
@@ -418,39 +418,12 @@ class MainWin:
 
         selected_scripts = []
         for page in self.tool_list.all_tools:
-            for script in page.tools:
-                if script.used == TRUE:
+            for (used, path, script) in page.list:
+                if used == True:
                     selected_scripts.append(script)
 
-        ScriptsRunner.run_scripts(self.final_page.term, selected_scripts)
-        # hychen! here is your block!! start
-        # temp dir
-        """
-        tmpdir='temp'
-        if not os.path.exists(tmpdir):
-            os.mkdir(tmpdir, 0777)
-
-        script_name="%s/lazybuntu_apply.sh" % tmpdir
-        f=open(script_name, 'w')
-
-        # FIXME: working network should be available before this line
-        f.write ("#!/bin/bash\n\n")
-        f.write( "apt-get update\n" )    # This is required
-        f.write( ". temp/env-export.sh\n" )    # This is required
-
-        for page in self.tool_list.all_tools:
-            f.writelines( page.get_command_lines() )
-        for page in self.games_page.all_tools:
-            f.writelines( page.get_command_lines() )
-        # Dirty hack: fix permission problems of unknown cause...
-        f.write( "echo '\x1b[1;33m正在修正檔案權限問題，請稍候...\x1b[m'\nscripts/fix-perms\n" )
-        f.write( "update-desktop-database\n" )
-        f.close()
-        os.chmod(script_name, 0775)
-
-        self.pid = self.final_page.term.fork_command( "%s/%s" % (os.getcwd(), script_name) )
-        """
-        #hychen!! here is your block!! end
+        runner = ScriptsRunner(self)
+        runner.run_scripts(selected_scripts)
         self.final_page.term.connect('child-exited', self.on_complete)
 
     def on_complete(self, data):
