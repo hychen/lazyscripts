@@ -9,6 +9,8 @@ import gtk, gobject, vte
 import os, sys
 import xml.sax
 from lazyscript.script import ScriptsList, ScriptSet
+import lazyscript.ui.utils
+from lazyscript import info
 #from lazyscript.script import ScriptsRunner
 
 from lazyscript.ui.gui import query_yes_no, show_error
@@ -16,17 +18,14 @@ from lazyscript.util import detect
 
 def connect_test ():    # Dirty trick used to test if the network connection is available
     ''' test availibility of network connection '''
-    zenity_cmd = "zenity --progress --text='測試網路中' --pulsate --auto-close"
-    websites=['http://www.google.com/', 'http://tw.archive.ubuntu.com/']
-    for website in websites:
-        if os.system ("wget --tries=2 --timeout=120 -O -" +
-                        "%s >/dev/null 2>&1 | %s" % (website, zenity_cmd)) == 0:
-            return True
-    return False
+    progress = lazyscript.ui.utils.Progress ("connection testing...")
+    result = detect.test_network ()
+    progress.set_finish ()
+    return result
 
 def ensure_network ():
     ''' test availibility of network connection '''
-    distro, codename = detect.get_distro()
+    distro, codename = info.get_distro()
 
     if connect_test () == True:
         return True;
@@ -480,8 +479,11 @@ class GUI:
 		"""
 		launchs the application.
 		"""
-		MainWin()
-		gtk.main()
+        if not ensure_network ():
+            show_error ("沒有可用的網路連線，Lazybuntu 無法執行。", "錯誤")
+            exit(1)
+        MainWin()
+        gtk.main()
 
 if __name__ == '__main__':
 	GUI().start()
