@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007 洪任諭 Hong Jen Yee (PCMan) <pcman.tw@gmail.com>
-# Released under GNU General Public License
 
 import pygtk
 pygtk.require('2.0')
@@ -97,12 +95,12 @@ def ensure_apt_sources():
 使用 Lazyscript，需要正確設定系統上的 APT 軟體套件來源，
 才有辦法正確從網路上安裝各種軟體。
 Lazyscript 將會嘗試加入你的國家/地區的區域性伺服器。\n
-你是否願意讓 Lazybuntu 修改你的套件庫設定？
+你是否願意讓 Lazyscripts 修改你的套件庫設定？
 """
     if query_yes_no (msg):
         os.system ('scripts/add_official_repos.py');
     else:
-        show_error ('Lazybuntu 不會變更你的設定，' +
+        show_error ('Lazyscripts 不會變更你的設定，' +
                     '請自行妥善設定你的套件庫。\n\n' +
                     '提示：請開啟 main, universe, ' +
                     'multiverse, 及 restricted')
@@ -173,15 +171,14 @@ class WelcomePage:
         view=gtk.Viewport()
         label=gtk.Label()
         label.set_markup(
-            '<b><big>Lazybuntu - Ubuntu 懶人包' +
+            '<b><big>Lazyscripts - Linux 懶人包' +
             '，Linux 新手的好朋友</big></b>\n\n' +
             '幫你解決安裝後煩人的小設定，安裝一些好用軟體，\n' +
             '省去在茫茫網海中搜尋的時間。\n\n' +
             '請從左邊的清單中，點選各個分類，選擇你要套用的項目。\n\n\n' +
-            'Copyright (C) 2007, Design and developed by PCMan and Yuren Ju\n' +
-            'Powered by Ubuntu Taiwan Community\n\n' +
-            'Project Lazybuntu - ' +
-            '<span color="blue">http://lazybuntu.openfoundry.org/</span>')
+            'Copyright (C) 2007, Design and developed by PCMan, Yuren Ju, hychen and billy\n\n' +
+            'Project Lazyscripts - ' +
+            '<span color="blue">FIXME: HERE IS WEBSITE URL</span>')
 
         view.add(label)
         view.show_all()
@@ -328,7 +325,7 @@ class MainWin:
     def __init__(self):
 
         win=gtk.Window(gtk.WINDOW_TOPLEVEL)
-        win.set_title('Lazybuntu - Ubuntu 懶人包')
+        win.set_title('Lazyscripts - Linux 懶人包')
         try:
             self.icon=gtk.icon_theme_get_default().load_icon('gnome-app-install', 48,0)
         except:
@@ -343,7 +340,7 @@ class MainWin:
 
         # upper parts: main GUI
         self.tool_list=tool_list=ToolListWidget('scripts.list')
-        tool_list.list.insert( 0, ('ubuntu', '歡迎使用', WelcomePage()) )
+        tool_list.list.insert( 0, ('lazyscripts', '歡迎使用', WelcomePage()) )
         #self.games_page=GamesPage()
         #tool_list.list.append( ('applications-games', '各種遊戲', self.games_page) )
         self.final_page=FinalPage()
@@ -399,13 +396,13 @@ class MainWin:
         dlg = gtk.AboutDialog()
         dlg.set_name('Lazyscripts')
         dlg.set_version(VERSION)
-        dlg.set_website('http://lazybuntu.openfoundry.org/')
+        dlg.set_website('http://TBD/')
         if self.icon:
             dlg.set_logo(self.icon)
-        dlg.set_authors(['洪任諭 (PCMan) <pcman.tw@gmail.com>', '朱昱任 (Yuren Ju) <yurenju@gmail.com>', '林哲瑋 (billy3321,雨蒼) <billy3321@gmail.com>'])
-        dlg.set_copyright('Copyright (C) 2007 by Lazybuntu project')
+        dlg.set_authors(['洪任諭 (PCMan) <pcman.tw@gmail.com>', '朱昱任 (Yuren Ju) <yurenju@gmail.com>', '林哲瑋 (billy3321,雨蒼) <billy3321@gmail.com>', '陳信屹 (Hychen) <ossug.hychen@gmail.com>'])
+        dlg.set_copyright('Copyright (C) 2007 by Lazyscripts project')
         dlg.set_license('GNU General Public License')
-        dlg.set_comments('台灣社群專用 Ubuntu 懶人包')
+        dlg.set_comments('台灣社群專用 Linux 懶人包')
         dlg.run()
         dlg.destroy()
 
@@ -454,7 +451,7 @@ class GUI:
 		launchs the application.
 		"""
         if not ensure_network ():
-            show_error ("沒有可用的網路連線，Lazybuntu 無法執行。", "錯誤")
+            show_error ("沒有可用的網路連線，Lazyscripts 無法執行。", "錯誤")
             exit(1)
 
         ensure_apt_sources ()
