@@ -23,15 +23,7 @@ def connect_test ():    # Dirty trick used to test if the network connection is 
     progress.set_finish ()
     return result
 
-def ensure_network ():
-    ''' test availibility of network connection '''
-    distro, codename = info.get_distro()
-
-    if connect_test () == True:
-        return True;
-    elif distro == 'Debian':
-        return False;
-
+def create_network_dialog ():
     dlg = gtk.MessageDialog \
         (None, gtk.DIALOG_MODAL,  \
         gtk.MESSAGE_QUESTION, \
@@ -68,7 +60,19 @@ def ensure_network ():
     no_btn.set_active (True)
     dlg.vbox.pack_start (no_btn, False, True, 2)
     dlg.vbox.show_all ()
+    return dlg
 
+
+def ensure_network ():
+    ''' test availibility of network connection '''
+    distro, codename = info.get_distro()
+
+    if connect_test () == True:
+        return True;
+    elif distro == 'Debian':
+        return False;
+
+    dlg = create_network_dialog ()
     ret = dlg.run ()
     use_adsl = adsl_btn.get_active ()
     use_other = other_btn.get_active ()
@@ -88,7 +92,6 @@ def ensure_network ():
         os.system('network-admin')
 
     return connect_test()    # test again after settings
-
 
 def ensure_apt_sources():
     msg ="""
@@ -395,7 +398,7 @@ class MainWin:
 
     def on_about(self, item ):
         dlg = gtk.AboutDialog()
-        dlg.set_name('Lazybuntu')
+        dlg.set_name('Lazyscripts')
         dlg.set_version(VERSION)
         dlg.set_website('http://lazybuntu.openfoundry.org/')
         if self.icon:
@@ -474,7 +477,6 @@ class MainWin:
                 it = category.list.iter_next(it)
 	
 class GUI:
-
 	def start(self):
 		"""
 		launchs the application.
@@ -482,6 +484,8 @@ class GUI:
         if not ensure_network ():
             show_error ("沒有可用的網路連線，Lazybuntu 無法執行。", "錯誤")
             exit(1)
+
+        ensure_apt_sources ()
         MainWin()
         gtk.main()
 
