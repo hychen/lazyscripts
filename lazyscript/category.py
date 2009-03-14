@@ -22,6 +22,7 @@ class Category(object):
         "add entry information from scripts.list."
         self._entries.append(entry)
 
+
     def items(self):
         """get scripts."""
         self._lazyinit_scripts()

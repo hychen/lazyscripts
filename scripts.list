@@ -2,7 +2,7 @@
 (dp2
 S'repo'
 p3
-S'/home/yurenju/projects/lazyscript/t/datas/scriptspoll/7796c33a9348485b055f671c686568b0/'
+S'git://github.com/billy3321/lazyscript_pool.git'
 p4
 sS'category'
 p5
@@ -408,7 +408,7 @@ sg5
 S'Game'
 p117
 sg7
-S'\xe5\xae\x89\xe8\xa3\x9d Sauerbraten'
+S'\xe5\xae\x89\xe8\xa3\x9d Sauerbraten (\xe9\x9c\x80\xe8\xa6\x81 3D \xe5\x8a\xa0\xe9\x80\x9f)'
 p118
 sg9
 S'Sauerbraten.sh'
@@ -419,7 +419,7 @@ g4
 sg5
 g117
 sg7
-S'\xe5\xae\x89\xe8\xa3\x9d AssultCube'
+S'\xe5\xae\x89\xe8\xa3\x9d AssultCube (\xe9\x9c\x80\xe8\xa6\x81 3D \xe5\x8a\xa0\xe9\x80\x9f)'
 p121
 sg9
 S'AssultCube.sh'
@@ -430,7 +430,7 @@ g4
 sg5
 g117
 sg7
-S'\xe5\xae\x89\xe8\xa3\x9d OpenArena'
+S'\xe5\xae\x89\xe8\xa3\x9d OpenArena (\xe9\x9c\x80\xe8\xa6\x81 3D \xe5\x8a\xa0\xe9\x80\x9f)'
 p124
 sg9
 S'OpenArena.sh'
@@ -441,7 +441,7 @@ g4
 sg5
 g117
 sg7
-S'\xe5\xae\x89\xe8\xa3\x9d Warzone 2100'
+S'\xe5\xae\x89\xe8\xa3\x9d Warzone 2100 (\xe9\x9c\x80\xe8\xa6\x81 3D \xe5\x8a\xa0\xe9\x80\x9f)'
 p127
 sg9
 S'Warzone2001.sh'
@@ -485,7 +485,7 @@ g4
 sg5
 g117
 sg7
-S'\xe5\xae\x89\xe8\xa3\x9d Alien Arena'
+S'\xe5\xae\x89\xe8\xa3\x9d Alien Arena (\xe9\x9c\x80\xe8\xa6\x81 3D \xe5\x8a\xa0\xe9\x80\x9f)'
 p139
 sg9
 S'Alien-Arena.sh'

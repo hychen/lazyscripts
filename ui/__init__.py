@@ -8,10 +8,9 @@ pygtk.require('2.0')
 import gtk, gobject, vte
 import os, sys
 import xml.sax
-from lazyscript.script import ScriptsList, ScriptSet
+from lazyscript.script import ScriptsList, ScriptSet, ScriptsRunner
 import lazyscript.ui.utils
 from lazyscript import info
-#from lazyscript.script import ScriptsRunner
 
 from lazyscript.ui.gui import query_yes_no, show_error
 from lazyscript.util import detect
@@ -425,35 +424,8 @@ class MainWin:
                 if used == True:
                     selected_scripts.append(script)
 
-        #ScriptsRunner.run_scripts(self.final_page.term, selected_scripts)
-        # hychen! here is your block!! start
-        # temp dir
-        """
-        tmpdir='temp'
-        if not os.path.exists(tmpdir):
-            os.mkdir(tmpdir, 0777)
-
-        script_name="%s/lazybuntu_apply.sh" % tmpdir
-        f=open(script_name, 'w')
-
-        # FIXME: working network should be available before this line
-        f.write ("#!/bin/bash\n\n")
-        f.write( "apt-get update\n" )    # This is required
-        f.write( ". temp/env-export.sh\n" )    # This is required
-
-        for page in self.tool_list.all_tools:
-            f.writelines( page.get_command_lines() )
-        for page in self.games_page.all_tools:
-            f.writelines( page.get_command_lines() )
-        # Dirty hack: fix permission problems of unknown cause...
-        f.write( "echo '\x1b[1;33m正在修正檔案權限問題，請稍候...\x1b[m'\nscripts/fix-perms\n" )
-        f.write( "update-desktop-database\n" )
-        f.close()
-        os.chmod(script_name, 0775)
-
-        self.pid = self.final_page.term.fork_command( "%s/%s" % (os.getcwd(), script_name) )
-        """
-        #hychen!! here is your block!! end
+        runner = ScriptsRunner(self)
+        runner.run_scripts(selected_scripts)
         self.final_page.term.connect('child-exited', self.on_complete)
 
     def on_complete(self, data):

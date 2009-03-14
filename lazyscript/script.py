@@ -3,7 +3,7 @@ import re
 import sys
 import os
 
-from lazyscript.repo import git
+from lazyscript.repo import git, create_scriptrepo
 from lazyscript import meta
 from lazyscript.category import Category
 
@@ -18,27 +18,12 @@ class ScriptMeta(object):
 
     def __getattr__(self, key):
         try:
-            return self.datas[key]
+            try:
+                return self.datas[key][self.lang]
+            except:
+                return self.datas[key]
         except KeyError:
-            return None
-
-    @property
-    def name(self, lang=None):
-        try:
-            if not lang:
-                return self.datas['name'][self.lang]
-            return self.datasp['name'][lang]
-        except KeyError:
-            return None
-
-    @property
-    def desc(self, lang=None):
-        try:
-            if not lang:
-                return self.datas['desc'][self.lang]
-            return self.datasp['desc'][lang]
-        except KeyError:
-            return None
+            return ''
 
     @classmethod
     def from_file(cls, file):
@@ -94,9 +79,9 @@ class Script(object):
 
     def __getattr__(self, key):
         try:
-            return getattr(self, key)
-        except AttributeError:
             return getattr(self.backend, key)
+        except AttributeError:
+            return getattr(self, key)
 
     @classmethod
     def from_listentry(cls, repo, list_entry):
@@ -109,6 +94,7 @@ class Script(object):
     @classmethod
     def from_tree(cls, tree):
         """get a script from git tree."""
+        #@FIXME: unused code here.
         blob = tree.get('__init__.py')
 
         if not blob:
@@ -190,7 +176,8 @@ class ScriptSet(object):
 
         for item in scripts_list.items():
             if not set._repos.has_key(item.get('repo')):
-                set._repos[item.get('repo')] = git.Repo(item.get('repo'))
+                # clone the repostiry if the repositry is not exists.
+                set._repos[item.get('repo')] = create_scriptrepo(item.get('repo'), 'scriptspoll')
 
             if not set._repo_table.get(item.get('repo')):
                 set._repo_table[item.get('repo')] = []
@@ -259,3 +246,54 @@ class ScriptsList(object):
                          'id':script_name}
                 list._items.append(entry)
         return list
+
+class ScriptsRunner:
+
+    def __init__(self, ui):
+        self.tmp_dirname = 'temp'
+        self.startup_filename = 'lazybuntu_apply.sh'
+        self.startup_path = "%s/%s" % (self.tmp_dirname, 
+                                        self.startup_filename)
+        self.ui = ui
+
+    def run_scripts(self, scripts):
+        self.checkout_scripts(scripts)
+        #@TODO:generic UI class interface.
+        self.ui.pid = self.ui.final_page.term.fork_command(self.startup_path)
+
+    def checkout_scripts(self, scripts):
+        """
+        storage the content of the scripts to temp dir, and write 
+        the script fiel path down to startup file will excute.
+        
+        @param scripts Script
+        """
+        self._init_tmpdir()
+        excute_entries = []
+
+        for script in scripts:
+            excute_entries.append("./%s/%s\n" % 
+                                    (self.tmp_dirname, script.id))
+            self._create_file(self.tmp_dirname+'/'+script.id, script.data)
+
+        startup_file = self._create_file(self.startup_path)
+        startup_file.writelines(excute_entries)
+
+    def _init_tmpdir(self):
+        """
+        create a clear temp dir.
+        """
+        if os.path.exists(self.tmp_dirname):
+            import shutil
+            shutil.rmtree(self.tmp_dirname)
+        os.mkdir(self.tmp_dirname, 0777)
+
+    def _create_file(self, path, content=None):
+        """
+        create a excutabel file.
+        """
+        file = open(path, 'w')
+        if content:
+            file.write(content)
+        os.chmod(path, 0755)
+        return file
