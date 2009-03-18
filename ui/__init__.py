@@ -12,6 +12,7 @@ from lazyscript import info
 
 from lazyscript.ui.gui import query_yes_no, show_error
 from lazyscript.util import detect
+import lazyscript.util.add_official_repos
 
 def create_network_dialog ():
     dlg = gtk.MessageDialog \
@@ -71,7 +72,8 @@ Lazyscript 將會嘗試加入你的國家/地區的區域性伺服器。\n
 你是否願意讓 Lazyscripts 修改你的套件庫設定？
 """
     if query_yes_no (msg):
-        os.system ('scripts/add_official_repos.py');
+        lazyscript.util.add_official_repos.main ()
+        #os.system ('scripts/add_official_repos.py');
     else:
         show_error ('Lazyscripts 不會變更你的設定，' +
                     '請自行妥善設定你的套件庫。\n\n' +
@@ -107,11 +109,14 @@ class ToolPage:
 
         render = gtk.CellRendererToggle ()
         render.set_property ('activatable', True)
+        render.set_property ('width', 20)
         render.connect ('toggled', self.on_toggled, list)
-        col = gtk.TreeViewColumn ('可選用的項目')
+        col = gtk.TreeViewColumn ()
         col.pack_start (render)
         col.set_attributes (render, active=0)
+        view.append_column (col)
 
+        col = gtk.TreeViewColumn ("可選用的項目")
         render=gtk.CellRendererText ()
         col.pack_start (render)
         col.set_attributes (render, markup=1)
