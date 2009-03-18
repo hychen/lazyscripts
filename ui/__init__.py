@@ -13,13 +13,6 @@ from lazyscript import info
 from lazyscript.ui.gui import query_yes_no, show_error
 from lazyscript.util import detect
 
-def connect_test ():    # Dirty trick used to test if the network connection is available
-    ''' test availibility of network connection '''
-    progress = lazyscript.ui.utils.Progress ("connection testing...")
-    result = detect.test_network ()
-    progress.set_finish ()
-    return result
-
 def create_network_dialog ():
     dlg = gtk.MessageDialog \
         (None, gtk.DIALOG_MODAL,  \
@@ -29,25 +22,12 @@ def create_network_dialog ():
     dlg.set_markup ('<b>Lazyscript 需要網路才能執行，' +
                     '請選擇你使用的網路種類：</b>')
 
-    adsl_btn=gtk.RadioButton (None, 
-        '使用需要使用者名稱與密碼的寬頻連線來連線\n' +
-        ' (需要帳號密碼的 ADSL 請選擇此項，' + 
-        '例如浮動 IP 的 Hinet ADSL)')
-
-    if codename != "hardy" and codename != 'intrepid':
-        dlg.vbox.pack_start (adsl_btn, False, True, 2)
-
     other_btn = \
-        gtk.RadioButton (adsl_btn, 
-            '透過其他方式' +
-            '- DHCP 自動取得、固定 IP、' +
-            '或是數據機電話撥接...\n' +
-            '( 固定 IP 的 ADSL，視服務業者' +
-            '，有可能需要使用此項，例如 Hinet, So-net)')
-
+        gtk.RadioButton (None, 
+            '開啟網路管理員以連接網路')
     dlg.vbox.pack_start (other_btn, False, True, 2)
 
-    no_btn = gtk.RadioButton (adsl_btn, 
+    no_btn = gtk.RadioButton (other_btn, 
         '我已連接到網際網路，' +
         '不需要額外設定\n ' +
         '(使用無線網路，' +
@@ -57,21 +37,17 @@ def create_network_dialog ():
     no_btn.set_active (True)
     dlg.vbox.pack_start (no_btn, False, True, 2)
     dlg.vbox.show_all ()
-    return dlg
-
+    return dlg, other_btn
 
 def ensure_network ():
     ''' test availibility of network connection '''
     distro, codename = info.get_distro()
 
-    if connect_test () == True:
+    if detect.test_network () == True:
         return True;
-    elif distro == 'Debian':
-        return False;
 
-    dlg = create_network_dialog ()
+    dlg, other_btn = create_network_dialog ()
     ret = dlg.run ()
-    use_adsl = adsl_btn.get_active ()
     use_other = other_btn.get_active ()
     dlg.destroy ()
 
@@ -82,13 +58,10 @@ def ensure_network ():
     while gtk.events_pending ():
        gtk.main_iteration ()
 
-    if use_adsl:
-        os.system('scripts/pppoeconf')
-        os.system('pon dsl-provider')
-    elif use_other:
-        os.system('network-admin')
+    if use_other:
+        os.system('/usr/bin/nm-connection-editor')
 
-    return connect_test()    # test again after settings
+    return detect.test_network ()   # test again after settings
 
 def ensure_apt_sources():
     msg ="""
