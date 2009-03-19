@@ -6,13 +6,13 @@ pygtk.require('2.0')
 import gtk, gobject, vte
 import os, sys
 import xml.sax
-from lazyscript.script import ScriptsList, ScriptSet, ScriptsRunner
-import lazyscript.ui.utils
-from lazyscript import info
+from lazyscripts.script import ScriptsList, ScriptSet, ScriptsRunner
+import lazyscripts.ui.utils
+from lazyscripts import info
 
-from lazyscript.ui.gui import query_yes_no, show_error
-from lazyscript.util import detect
-import lazyscript.util.add_official_repos
+from lazyscripts.ui.gui import query_yes_no, show_error
+from lazyscripts.util import detect
+import lazyscripts.util.add_official_repos
 
 def create_network_dialog ():
     dlg = gtk.MessageDialog \

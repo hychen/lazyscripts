@@ -33,7 +33,7 @@ class Category(object):
 
     @property
     def name(self, lang=None):
-        if not lang or self.lang == 'enUS':
+        if not lang and self.lang == 'enUS':
             return self._name
 
         if lang:
