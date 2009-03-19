@@ -6,7 +6,7 @@
 from md5 import md5
 from os import path as os_path
 
-from lazyscript.repo import git
+from lazyscripts.repo import git
 
 def sign_repopath(path):
     """

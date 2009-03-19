@@ -1,6 +1,6 @@
-from lazyscript.category import Category
-from lazyscript.script import ScriptSet, ScriptsList, ScriptsBuilder
-from lazyscript.repo import git
+from lazyscripts.category import Category
+from lazyscripts.script import ScriptSet, ScriptsList, ScriptsBuilder
+from lazyscripts.repo import git
 from t import get_repodir, get_datadir
 
 def test_get_script_from_category():

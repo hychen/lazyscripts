@@ -7,8 +7,8 @@
 from os import system
 import sys
 
-from lazyscript.util.detect import run_asroot
-from lazyscript.util.pkg import install_pkg
+from lazyscripts.util.detect import run_asroot
+from lazyscripts.util.pkg import install_pkg
 
 if not run_asroot():
     print "please run as root or use slzs command to launch."

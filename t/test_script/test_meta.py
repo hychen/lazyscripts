@@ -1,6 +1,6 @@
 # -*- encoding=utf8 -*
-from lazyscript import meta
-from lazyscript.script import ScriptMeta
+from lazyscripts import meta
+from lazyscripts.script import ScriptMeta
 
 def test_author():
 	"test to parse author mark."

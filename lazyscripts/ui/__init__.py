@@ -1,4 +1,4 @@
-from lazyscript import get_version
+from lazyscripts import get_version
 
 class BaseUI:
 
