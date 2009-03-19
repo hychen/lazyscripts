@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- encoding=utf8 -*-
+# @author '2009 Hsin Yi Chen (陳信屹) <ossug.hychen@gmail.com>'
 import cPickle
 import re
 import sys
