@@ -29,6 +29,7 @@ def test_get_categories():
                 'Multimedia']
     for ast_category in ast_cats:
         cat = set.categories(ast_category)
+        cat.lang = 'enUS'
         assert ast_category == cat.name, cat.name
 
 def test_get_sccript_from_category():

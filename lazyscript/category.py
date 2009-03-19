@@ -26,10 +26,20 @@ class Category(object):
         @param obj ScriptsBuilder a builder that can make scripts instace.
         """
         self.lang = 'zhTW'
-        self.name = _i18n_name[self.lang][name]
+        self._name = name
         self._entries = []
         self._items = {}
         self._scripts_builder = scripts_builder
+
+    @property
+    def name(self, lang=None):
+        if not lang or self.lang == 'enUS':
+            return self._name
+
+        if lang:
+            return _i18n_name[lang][self._name]
+        if self.lang:
+            return _i18n_name[self.lang][self._name]
 
     def _lazyinit_scripts(self):
         "lazy initialize Script instance."
