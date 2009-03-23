@@ -7,18 +7,23 @@
 from os import system
 import sys
 
+from lazyscripts.util.detect import run_asroot
+
+if not run_asroot():
+    print "please run as root or use slzs command to launch."
+    sys.exit()
+
 try:
 	cmder=sys.argv[1]
 	if 'repo' == cmder.strip():
-		from lazyscript.repo import sign_repopath
+		from lazyscripts.repo import sign_repopath
 		action=sys.argv[2]
 		if 'sign' == action:
 			origin_path=sys.argv[3]
 			#print sign_repopath(origin_path, sys.argv[4])
 			print sign_repopath(origin_path)
 	elif 'gui' == cmder:
-		print cmder
 		from ui import GUI
 		GUI().start()
-except KeyError:#IndexError:
+except IndexError:
 	print 'see more information in this file content.'

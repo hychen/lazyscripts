@@ -1,4 +1,4 @@
-from lazyscript import info
+from lazyscripts import info
 
 def test_distro():
     "test to get the information about current distrobution."

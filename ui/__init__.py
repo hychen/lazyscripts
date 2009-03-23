@@ -1,37 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright (C) 2007 洪任諭 Hong Jen Yee (PCMan) <pcman.tw@gmail.com>
-# Released under GNU General Public License
 
 import pygtk
 pygtk.require('2.0')
 import gtk, gobject, vte
 import os, sys
 import xml.sax
-from lazyscript.script import ScriptsList, ScriptSet, ScriptsRunner
+from lazyscripts.script import ScriptsList, ScriptSet, ScriptsRunner
+import lazyscripts.ui.utils
+from lazyscripts import info
 
-from lazyscript.ui.gui import query_yes_no, show_error
-from lazyscript.util import detect
+from lazyscripts.ui.gui import query_yes_no, show_error
+from lazyscripts.util import detect
+import lazyscripts.util.add_official_repos
 
-def connect_test ():    # Dirty trick used to test if the network connection is available
-    ''' test availibility of network connection '''
-    zenity_cmd = "zenity --progress --text='測試網路中' --pulsate --auto-close"
-    websites=['http://www.google.com/', 'http://tw.archive.ubuntu.com/']
-    for website in websites:
-        if os.system ("wget --tries=2 --timeout=120 -O -" +
-                        "%s >/dev/null 2>&1 | %s" % (website, zenity_cmd)) == 0:
-            return True
-    return False
-
-def ensure_network ():
-    ''' test availibility of network connection '''
-    distro, codename = detect.get_distro()
-
-    if connect_test () == True:
-        return True;
-    elif distro == 'Debian':
-        return False;
-
+def create_network_dialog ():
     dlg = gtk.MessageDialog \
         (None, gtk.DIALOG_MODAL,  \
         gtk.MESSAGE_QUESTION, \
@@ -40,25 +23,12 @@ def ensure_network ():
     dlg.set_markup ('<b>Lazyscript 需要網路才能執行，' +
                     '請選擇你使用的網路種類：</b>')
 
-    adsl_btn=gtk.RadioButton (None, 
-        '使用需要使用者名稱與密碼的寬頻連線來連線\n' +
-        ' (需要帳號密碼的 ADSL 請選擇此項，' + 
-        '例如浮動 IP 的 Hinet ADSL)')
-
-    if codename != "hardy" and codename != 'intrepid':
-        dlg.vbox.pack_start (adsl_btn, False, True, 2)
-
     other_btn = \
-        gtk.RadioButton (adsl_btn, 
-            '透過其他方式' +
-            '- DHCP 自動取得、固定 IP、' +
-            '或是數據機電話撥接...\n' +
-            '( 固定 IP 的 ADSL，視服務業者' +
-            '，有可能需要使用此項，例如 Hinet, So-net)')
-
+        gtk.RadioButton (None, 
+            '開啟網路管理員以連接網路')
     dlg.vbox.pack_start (other_btn, False, True, 2)
 
-    no_btn = gtk.RadioButton (adsl_btn, 
+    no_btn = gtk.RadioButton (other_btn, 
         '我已連接到網際網路，' +
         '不需要額外設定\n ' +
         '(使用無線網路，' +
@@ -68,9 +38,17 @@ def ensure_network ():
     no_btn.set_active (True)
     dlg.vbox.pack_start (no_btn, False, True, 2)
     dlg.vbox.show_all ()
+    return dlg, other_btn
 
+def ensure_network ():
+    ''' test availibility of network connection '''
+    distro, codename = info.get_distro()
+
+    if detect.test_network () == True:
+        return True;
+
+    dlg, other_btn = create_network_dialog ()
     ret = dlg.run ()
-    use_adsl = adsl_btn.get_active ()
     use_other = other_btn.get_active ()
     dlg.destroy ()
 
@@ -81,26 +59,23 @@ def ensure_network ():
     while gtk.events_pending ():
        gtk.main_iteration ()
 
-    if use_adsl:
-        os.system('scripts/pppoeconf')
-        os.system('pon dsl-provider')
-    elif use_other:
-        os.system('network-admin')
+    if use_other:
+        os.system('/usr/bin/nm-connection-editor')
 
-    return connect_test()    # test again after settings
-
+    return detect.test_network ()   # test again after settings
 
 def ensure_apt_sources():
     msg ="""
 使用 Lazyscript，需要正確設定系統上的 APT 軟體套件來源，
 才有辦法正確從網路上安裝各種軟體。
 Lazyscript 將會嘗試加入你的國家/地區的區域性伺服器。\n
-你是否願意讓 Lazybuntu 修改你的套件庫設定？
+你是否願意讓 Lazyscripts 修改你的套件庫設定？
 """
     if query_yes_no (msg):
-        os.system ('scripts/add_official_repos.py');
+        lazyscript.util.add_official_repos.main ()
+        #os.system ('scripts/add_official_repos.py');
     else:
-        show_error ('Lazybuntu 不會變更你的設定，' +
+        show_error ('Lazyscripts 不會變更你的設定，' +
                     '請自行妥善設定你的套件庫。\n\n' +
                     '提示：請開啟 main, universe, ' +
                     'multiverse, 及 restricted')
@@ -134,11 +109,14 @@ class ToolPage:
 
         render = gtk.CellRendererToggle ()
         render.set_property ('activatable', True)
+        render.set_property ('width', 20)
         render.connect ('toggled', self.on_toggled, list)
-        col = gtk.TreeViewColumn ('可選用的項目')
+        col = gtk.TreeViewColumn ()
         col.pack_start (render)
         col.set_attributes (render, active=0)
+        view.append_column (col)
 
+        col = gtk.TreeViewColumn ("可選用的項目")
         render=gtk.CellRendererText ()
         col.pack_start (render)
         col.set_attributes (render, markup=1)
@@ -171,15 +149,14 @@ class WelcomePage:
         view=gtk.Viewport()
         label=gtk.Label()
         label.set_markup(
-            '<b><big>Lazybuntu - Ubuntu 懶人包' +
+            '<b><big>Lazyscripts - Linux 懶人包' +
             '，Linux 新手的好朋友</big></b>\n\n' +
             '幫你解決安裝後煩人的小設定，安裝一些好用軟體，\n' +
             '省去在茫茫網海中搜尋的時間。\n\n' +
             '請從左邊的清單中，點選各個分類，選擇你要套用的項目。\n\n\n' +
-            'Copyright (C) 2007, Design and developed by PCMan and Yuren Ju\n' +
-            'Powered by Ubuntu Taiwan Community\n\n' +
-            'Project Lazybuntu - ' +
-            '<span color="blue">http://lazybuntu.openfoundry.org/</span>')
+            'Copyright (C) 2007, Design and developed by PCMan, Yuren Ju, hychen and billy\n\n' +
+            'Project Lazyscripts - ' +
+            '<span color="blue">FIXME: HERE IS WEBSITE URL</span>')
 
         view.add(label)
         view.show_all()
@@ -326,7 +303,7 @@ class MainWin:
     def __init__(self):
 
         win=gtk.Window(gtk.WINDOW_TOPLEVEL)
-        win.set_title('Lazybuntu - Ubuntu 懶人包')
+        win.set_title('Lazyscripts - Linux 懶人包')
         try:
             self.icon=gtk.icon_theme_get_default().load_icon('gnome-app-install', 48,0)
         except:
@@ -341,7 +318,7 @@ class MainWin:
 
         # upper parts: main GUI
         self.tool_list=tool_list=ToolListWidget('scripts.list')
-        tool_list.list.insert( 0, ('ubuntu', '歡迎使用', WelcomePage()) )
+        tool_list.list.insert( 0, ('lazyscripts', '歡迎使用', WelcomePage()) )
         #self.games_page=GamesPage()
         #tool_list.list.append( ('applications-games', '各種遊戲', self.games_page) )
         self.final_page=FinalPage()
@@ -395,15 +372,15 @@ class MainWin:
 
     def on_about(self, item ):
         dlg = gtk.AboutDialog()
-        dlg.set_name('Lazybuntu')
+        dlg.set_name('Lazyscripts')
         dlg.set_version(VERSION)
-        dlg.set_website('http://lazybuntu.openfoundry.org/')
+        dlg.set_website('http://TBD/')
         if self.icon:
             dlg.set_logo(self.icon)
-        dlg.set_authors(['洪任諭 (PCMan) <pcman.tw@gmail.com>', '朱昱任 (Yuren Ju) <yurenju@gmail.com>', '林哲瑋 (billy3321,雨蒼) <billy3321@gmail.com>'])
-        dlg.set_copyright('Copyright (C) 2007 by Lazybuntu project')
+        dlg.set_authors(['洪任諭 (PCMan) <pcman.tw@gmail.com>', '朱昱任 (Yuren Ju) <yurenju@gmail.com>', '林哲瑋 (billy3321,雨蒼) <billy3321@gmail.com>', '陳信屹 (Hychen) <ossug.hychen@gmail.com>'])
+        dlg.set_copyright('Copyright (C) 2007 by Lazyscripts project')
         dlg.set_license('GNU General Public License')
-        dlg.set_comments('台灣社群專用 Ubuntu 懶人包')
+        dlg.set_comments('台灣社群專用 Linux 懶人包')
         dlg.run()
         dlg.destroy()
 
@@ -447,13 +424,17 @@ class MainWin:
                 it = category.list.iter_next(it)
 	
 class GUI:
-
 	def start(self):
 		"""
 		launchs the application.
 		"""
-		MainWin()
-		gtk.main()
+        if not ensure_network ():
+            show_error ("沒有可用的網路連線，Lazyscripts 無法執行。", "錯誤")
+            exit(1)
+
+        ensure_apt_sources ()
+        MainWin()
+        gtk.main()
 
 if __name__ == '__main__':
 	GUI().start()

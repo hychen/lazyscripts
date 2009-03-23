@@ -1,4 +1,4 @@
-from lazyscript.script import ScriptsList
+from lazyscripts.script import ScriptsList
 from t import get_repodir, get_datadir
 
 scripts_list = ScriptsList(get_datadir()+'/source.list')
