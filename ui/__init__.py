@@ -20,7 +20,7 @@ def create_network_dialog ():
         gtk.MESSAGE_QUESTION, \
         gtk.BUTTONS_OK_CANCEL)
 
-    dlg.set_markup ('<b>Lazyscript 需要網路才能執行，' +
+    dlg.set_markup ('<b>Lazyscripts 需要網路才能執行，' +
                     '請選擇你使用的網路種類：</b>')
 
     other_btn = \
@@ -66,9 +66,9 @@ def ensure_network ():
 
 def ensure_apt_sources():
     msg ="""
-使用 Lazyscript，需要正確設定系統上的 APT 軟體套件來源，
+使用 Lazyscripts，需要正確設定系統上的 APT 軟體套件來源，
 才有辦法正確從網路上安裝各種軟體。
-Lazyscript 將會嘗試加入你的國家/地區的區域性伺服器。\n
+Lazyscripts 將會嘗試加入你的國家/地區的區域性伺服器。\n
 你是否願意讓 Lazyscripts 修改你的套件庫設定？
 """
     if query_yes_no (msg):
