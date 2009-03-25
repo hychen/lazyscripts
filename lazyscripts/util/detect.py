@@ -1,3 +1,4 @@
+from commands import getoutput
 import os
 
 def run_asroot():
@@ -6,7 +7,7 @@ def run_asroot():
 
 	@return True if run as root.
 	"""
-	if 'root' == os.getlogin():
+	if 'root' == getoutput("whoami"):
 		return True
 
 def test_network():

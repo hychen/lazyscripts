@@ -1,11 +1,14 @@
+#!/usr/bin/env python
+# -*- encoding=utf8 -*-
+# @author '2009 Hsin Yi Chen (陳信屹) <ossug.hychen@gmail.com>'
 import cPickle
 import re
 import sys
 import os
 
-from lazyscript.repo import git, create_scriptrepo
-from lazyscript import meta
-from lazyscript.category import Category
+from lazyscripts.repo import git, create_scriptrepo
+from lazyscripts import meta
+from lazyscripts.category import Category
 
 class ScriptMeta(object):
 

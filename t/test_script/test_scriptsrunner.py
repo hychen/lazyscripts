@@ -1,4 +1,4 @@
-from lazyscript.script import ScriptsRunner
+from lazyscripts.script import ScriptsRunner
 
 class Term:
 
