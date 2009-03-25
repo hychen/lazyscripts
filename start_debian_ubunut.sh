@@ -22,7 +22,7 @@ fi
 
 wget http://lazyscripts.googlecode.com/files/python-git_0.1.6-1_all.deb
 
-apt-get install git git-core python-setuptools python-nose
+apt-get -y --force-yes install git-core python-setuptools python-nose
 
 dpkg -i python-git_0.1.6-1_all.deb
 
