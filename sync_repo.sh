@@ -50,7 +50,7 @@ read -p "What do you want to do now? Please enter the number:" ACT
    ;;
    "3")
    choice_branch
-   git pull git://github.com/billy3321/lazyscript.git $BRANCH && push_repo
+   git pull git://github.com/billy3321/lazyscripts.git $BRANCH && push_repo
    ;;
    "4")
    choice_branch
