@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import gettext
+
 import pygtk
 pygtk.require('2.0')
 import gtk, gobject, vte
@@ -14,26 +16,31 @@ from lazyscripts.ui.gui import query_yes_no, show_error
 from lazyscripts.util import detect
 import lazyscripts.util.add_official_repos
 
+APP_NAME = "lazyscripts"
+APP_PATH = os.path.abspath (os.getcwd())
+LOCALE_DIR = os.path.join (APP_PATH, 'locale')
+
+gettext.textdomain(APP_NAME)
+gettext.bindtextdomain(APP_NAME, LOCALE_DIR)
+_ = gettext.gettext
+
 def create_network_dialog ():
     dlg = gtk.MessageDialog \
         (None, gtk.DIALOG_MODAL,  \
         gtk.MESSAGE_QUESTION, \
         gtk.BUTTONS_OK_CANCEL)
 
-    dlg.set_markup ('<b>Lazyscripts 需要網路才能執行，' +
-                    '請選擇你使用的網路種類：</b>')
+    dlg.set_markup (_('<b>Lazyscripts need internet connection to execute,') +
+                    _('please select type of internet connection: </b>'))
 
     other_btn = \
         gtk.RadioButton (None, 
-            '開啟網路管理員以連接網路')
+            _('Open netowrk manager to connect to internet'))
     dlg.vbox.pack_start (other_btn, False, True, 2)
 
     no_btn = gtk.RadioButton (other_btn, 
-        '我已連接到網際網路，' +
-        '不需要額外設定\n ' +
-        '(使用無線網路，' +
-        '請點選螢幕右上角工作列中' + 
-        '的無線網路圖示，即可連線)')
+        _('I already connect to internet') +
+        _(', i don\'t need any other configuration \n'))
 
     no_btn.set_active (True)
     dlg.vbox.pack_start (no_btn, False, True, 2)
@@ -65,20 +72,18 @@ def ensure_network ():
     return detect.test_network ()   # test again after settings
 
 def ensure_apt_sources():
-    msg ="""
-使用 Lazyscripts，需要正確設定系統上的 APT 軟體套件來源，
-才有辦法正確從網路上安裝各種軟體。
-Lazyscripts 將會嘗試加入你的國家/地區的區域性伺服器。\n
-你是否願意讓 Lazyscripts 修改你的套件庫設定？
-"""
+    msg =_("""
+we need to modify your software sources,
+do you want to let lazyscripts modify your software sources?
+""")
     if query_yes_no (msg):
         lazyscripts.util.add_official_repos.main ()
         #os.system ('scripts/add_official_repos.py');
     else:
-        show_error ('Lazyscripts 不會變更你的設定，' +
-                    '請自行妥善設定你的套件庫。\n\n' +
-                    '提示：請開啟 main, universe, ' +
-                    'multiverse, 及 restricted')
+        show_error (_('Lazyscripts will not change your settings') +
+                    _('please ensure your software sources right\n\n') +
+                    _('comment: please enable main, universe, ') +
+                    _('multiverse and restricted section'))
 
         # update GUI
         while gtk.events_pending ():
@@ -116,7 +121,8 @@ class ToolPage:
         col.set_attributes (render, active=0)
         view.append_column (col)
 
-        col = gtk.TreeViewColumn ("可選用的項目")
+        #col = gtk.TreeViewColumn ("可選用的項目")
+        col = gtk.TreeViewColumn (_("items"))
         render=gtk.CellRendererText ()
         col.pack_start (render)
         col.set_attributes (render, markup=1)
@@ -149,14 +155,11 @@ class WelcomePage:
         view=gtk.Viewport()
         label=gtk.Label()
         label.set_markup(
-            '<b><big>Lazyscripts - Linux 懶人包' +
-            '，Linux 新手的好朋友</big></b>\n\n' +
-            '幫你解決安裝後煩人的小設定，安裝一些好用軟體，\n' +
-            '省去在茫茫網海中搜尋的時間。\n\n' +
-            '請從左邊的清單中，點選各個分類，選擇你要套用的項目。\n\n\n' +
-            'Copyright (C) 2007, Design and developed by PCMan, Yuren Ju, hychen and billy\n\n' +
-            'Project Lazyscripts - ' +
-            '<span color="blue">FIXME: HERE IS WEBSITE URL</span>')
+            _('<b><big>Lazyscripts - Linux lazy pack') +
+            _('，Linux end user\'s good friend</big></b>\n\n\n') +
+            _('Copyright (C) 2007, Design and developed by PCMan, Yuren Ju, hychen and billy\n\n') +
+            _('Project Lazyscripts - ') +
+            _('<span color="blue">FIXME: HERE IS WEBSITE URL</span>'))
 
         view.add(label)
         view.show_all()
@@ -168,7 +171,7 @@ class FinalPage:
         hbox=gtk.HBox(False, 0)
         term=vte.Terminal()
         term.set_scrollback_lines(65535)    # Will this value be too big?
-        term.feed('要執行的動作：\r\n')
+        term.feed(_('execute action: \n'))
         term.set_cursor_blinks(True)
         self.term=term
         scroll=gtk.VScrollbar( term.get_adjustment() )
@@ -303,7 +306,7 @@ class MainWin:
     def __init__(self):
 
         win=gtk.Window(gtk.WINDOW_TOPLEVEL)
-        win.set_title('Lazyscripts - Linux 懶人包')
+        win.set_title(_('Lazyscripts - Linux lazy pack'))
         try:
             self.icon=gtk.icon_theme_get_default().load_icon('gnome-app-install', 48,0)
         except:
@@ -318,11 +321,11 @@ class MainWin:
 
         # upper parts: main GUI
         self.tool_list=tool_list=ToolListWidget('scripts.list')
-        tool_list.list.insert( 0, ('lazyscripts', '歡迎使用', WelcomePage()) )
+        tool_list.list.insert( 0, ('lazyscripts', _('Welcome'), WelcomePage()) )
         #self.games_page=GamesPage()
         #tool_list.list.append( ('applications-games', '各種遊戲', self.games_page) )
         self.final_page=FinalPage()
-        tool_list.list.append( ('gnome-app-install', '完成', self.final_page) )
+        tool_list.list.append( ('gnome-app-install', _('fininsh'), self.final_page) )
         sel=tool_list.left_pane.get_selection()
         sel.select_path('0')
 
@@ -359,7 +362,7 @@ class MainWin:
         self.complete=False
 
     def confirm_close(self):
-        if self.complete or query_yes_no('確定要結束程式？', self.win):
+        if self.complete or query_yes_no(_('do you want to quit lazyscripts?'), self.win):
             gtk.main_quit()
             return True
         return False
@@ -380,7 +383,7 @@ class MainWin:
         dlg.set_authors(['洪任諭 (PCMan) <pcman.tw@gmail.com>', '朱昱任 (Yuren Ju) <yurenju@gmail.com>', '林哲瑋 (billy3321,雨蒼) <billy3321@gmail.com>', '陳信屹 (Hychen) <ossug.hychen@gmail.com>'])
         dlg.set_copyright('Copyright (C) 2007 by Lazyscripts project')
         dlg.set_license('GNU General Public License')
-        dlg.set_comments('台灣社群專用 Linux 懶人包')
+        dlg.set_comments(_('Linux Lazy pack'))
         dlg.run()
         dlg.destroy()
 
@@ -404,7 +407,7 @@ class MainWin:
         self.final_page.term.connect('child-exited', self.on_complete)
 
     def on_complete(self, data):
-        self.final_page.term.feed('\r\n\x1b[1;36mLazyscripts - Linux 究極懶人包，執行完畢！ 你的系統現在應該很好用了！\r\n\r\n某些設定可能不會馬上有效，建議重新開機。\x1b[1;32m   祝玩 Linux 愉快！\x1b[m\r\n')
+        self.final_page.term.feed(_('\n\x1b[1;36mLazyscripts - linux lazy pack run finish!\x1b[1;32m   have fun for linux!\x1b[m\n'))
 
         self.cancel_btn.set_label(gtk.STOCK_CLOSE)
         self.complete=True
@@ -429,7 +432,7 @@ class GUI:
 		launchs the application.
 		"""
         if not ensure_network ():
-            show_error ("沒有可用的網路連線，Lazyscripts 無法執行。", "錯誤")
+            show_error (_("no avalible internet connection, lazyscripts cannot execute."), _("error"))
             exit(1)
 
         ensure_apt_sources ()
