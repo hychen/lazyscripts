@@ -15,6 +15,17 @@ _i18n_name['zhTW'] = {
     'Customize':'客制化'
     }
 
+icon_path_name = {
+    "Productivity": "applications-office",
+    "Multimedia": "applications-multimedia",
+    "Game": "applications-games",
+    "Networking": "applications-internet",
+    "Graphic": "applications-graphics",
+    "Entertain": "applications-multimedia",
+    "Localization": "config-language",
+    "Customize": "applications-utilities"
+    }
+
 
 class Category(object):
 
@@ -30,6 +41,7 @@ class Category(object):
         self._entries = []
         self._items = {}
         self._scripts_builder = scripts_builder
+        self._icon_name = icon_path_name[name]
 
     @property
     def name(self, lang=None):

@@ -72,7 +72,7 @@ Lazyscripts 將會嘗試加入你的國家/地區的區域性伺服器。\n
 你是否願意讓 Lazyscripts 修改你的套件庫設定？
 """
     if query_yes_no (msg):
-        lazyscript.util.add_official_repos.main ()
+        lazyscripts.util.add_official_repos.main ()
         #os.system ('scripts/add_official_repos.py');
     else:
         show_error ('Lazyscripts 不會變更你的設定，' +
@@ -259,7 +259,7 @@ class ToolListWidget:
         for category in script_set.categories():
             tool_page = ToolPage()
             tool_page.title = category.name
-            tool_page.img = None
+            tool_page.img = category._icon_name
 
             for script in category.items():
                 tool_page.tools.append(script)
