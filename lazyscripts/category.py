@@ -48,16 +48,14 @@ class Category(object):
         if not lang and self.lang == 'enUS':
             return self._name
 
-        if lang:
-            return _i18n_name[lang][self._name]
-        if self.lang:
-            return _i18n_name[self.lang][self._name]
+        if not lang:
+            lang = self.lang
+        return _i18n_name[lang][self._name]
 
     def _lazyinit_scripts(self):
         "lazy initialize Script instance."
-        if not self._items:
-            self._scripts_builder.entries = self._entries
-            self._items = self._scripts_builder.make_scripts()
+        self._scripts_builder.entries = self._entries
+        self._items = self._scripts_builder.make_scripts()
 
     def add_entry(self, entry):
         "add entry information from scripts.list."
@@ -70,5 +68,6 @@ class Category(object):
         return self._items.values()
 
     def get(self, obj_id):
-        self._lazyinit_scripts()
+        if not self._items.has_key(obj_id):
+            self._lazyinit_scripts()
         return self._items.get(obj_id)

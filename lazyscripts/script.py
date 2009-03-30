@@ -10,6 +10,13 @@ from lazyscripts.repo import git, create_scriptrepo
 from lazyscripts import meta
 from lazyscripts.category import Category
 
+def create_file(content, path):
+    file = open(path, 'w')
+    if content:
+        file.write(content)
+    os.chmod(path, 0755)
+    return file
+
 class ScriptMeta(object):
 
     """
@@ -79,12 +86,42 @@ class Script(object):
         self.website = script_meta.website
         self.name = script_meta.name or self.backend.name
         self.id = script_meta.id or self.backend.name
+        self.childs = script_meta.childs
+        self.hide = script_meta.hide
 
     def __getattr__(self, key):
         try:
             return getattr(self.backend, key)
         except AttributeError:
             return getattr(self, key)
+
+    def get_subscripts(self):
+        """
+        get sub scripts depency.
+
+        @return list Script
+        """
+        ret = []
+        for script_meta in self.childs:
+            if script_meta.has_key('category'):
+                set = self.repo.get(script_meta.get('category'))
+            else:
+                set = self.repo
+
+            script = Script.from_blob(set.get(script_meta.get('id')))
+            if script:
+                ret.append(script)
+        return ret
+
+    def save(self, dir_path):
+        """
+        create a excutabel file.
+        """
+        path = dir_path+self.id
+        create_file(self.data, path)
+
+        for subscript in self.get_subscripts():
+            subscript.save(dir_path)
 
     @classmethod
     def from_listentry(cls, repo, list_entry):
@@ -130,7 +167,8 @@ class ScriptsBuilder(object):
         for entry in self.entries:
             repo = self.repos.get(entry['repo'])
             script = Script.from_listentry(repo, entry)
-            ret[script.id] = script
+            if not script.hide:
+                ret[script.id] = script
         return ret
             
 class ScriptSet(object):
@@ -253,7 +291,7 @@ class ScriptsList(object):
 class ScriptsRunner:
 
     def __init__(self, ui):
-        self.tmp_dirname = 'temp'
+        self.tmp_dirname = '/tmp/lzs_run/'
         self.startup_filename = 'lazybuntu_apply.sh'
         self.startup_path = "%s/%s" % (self.tmp_dirname, 
                                         self.startup_filename)
@@ -277,7 +315,7 @@ class ScriptsRunner:
         for script in scripts:
             excute_entries.append("./%s/%s\n" % 
                                     (self.tmp_dirname, script.id))
-            self._create_file(self.tmp_dirname+'/'+script.id, script.data)
+            script.save(self.tmp_dirname+'/')
 
         startup_file = self._create_file(self.startup_path)
         startup_file.writelines(excute_entries)
