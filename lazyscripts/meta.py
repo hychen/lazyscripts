@@ -11,7 +11,8 @@ __reserved_words__ = [
     'debian',
     'platform',
     'license',
-    'child'
+    'child',
+    'hide'
 ]
 
 """these words has i18n way."""
@@ -109,10 +110,31 @@ def child_mark(value):
     """
     the parser of the reserved word child.
 
+        @child Customize/ie6_after.sh Customize/ie6_bal.sh
+
     @param str value string.
     @reutrn (key, [value])
     """
-    return ('child', value.split(' '))
+    ret = []
+    splited = value.split(' ')
+    for e in splited:
+        splited_e = e.split('/')
+
+        count = len(splited)
+        se = {}
+        try:
+            if count == 1:
+                se['id'] = splited_e[0]
+            elif count == 2:
+                se['id'] = splited_e[1]
+                se['category'] = splited_e[0]
+            else:
+                raise "Meta Data Child Syntax Error" 
+        except IndexError:
+            continue
+        ret.append(se)
+    return ('childs', ret)
+    
 
 if __name__ == '__main__':
     make_meta('desc_zhTW', """

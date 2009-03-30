@@ -23,6 +23,12 @@ class MonkScript:
         self.id = name
         self.data = data
 
+    def get_subscripts(self):
+        pass
+
+    def save(self,path):
+        pass
+
 def test_checkout_scripts():
     scs = []
     for i in range(0,5):

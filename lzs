@@ -25,5 +25,5 @@ try:
 	elif 'gui' == cmder:
 		from ui import GUI
 		GUI().start()
-except IndexError:
+except KeyError:#IndexError:
 	print 'see more information in this file content.'
