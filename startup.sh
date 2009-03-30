@@ -27,7 +27,7 @@ case "$DISTRIB_ID" in
     "Ubuntu")
     export PLAT_NAME="`uname -a | cut -d " " -f 12`"
     echo "export PLAT_NAME=\"`uname -a | cut -d " " -f 12`\"" >> $ENV_EXPORT_SCRIPT
-    cat distrib/package_debian_ubunut.sh >> $ENV_EXPORT_SCRIPT
+    cat distrib/package_debian_ubuntu.sh >> $ENV_EXPORT_SCRIPT
     ;;
     "Debian")
     export PLAT_NAME="`uname -a | cut -d " " -f 12`"
