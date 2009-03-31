@@ -124,8 +124,9 @@ def child_mark(value):
         se = {}
         try:
             if count == 1:
-                se['id'] = splited_e[0]
-            elif count == 2:
+                se['id'] = splited_e[1]
+                se['category'] = splited_e[0]
+            elif count >= 2:
                 se['id'] = splited_e[1]
                 se['category'] = splited_e[0]
             else:
