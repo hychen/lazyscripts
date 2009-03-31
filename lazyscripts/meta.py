@@ -120,7 +120,7 @@ def child_mark(value):
     for e in splited:
         splited_e = e.split('/')
 
-        count = len(splited)
+        count = len(splited_e)
         se = {}
         try:
             if count == 1:
@@ -129,6 +129,9 @@ def child_mark(value):
                 se['id'] = splited_e[1]
                 se['category'] = splited_e[0]
             else:
+                print "[DEBUG] count: %d" % count
+                print "[DEBUG] string value: %s" % value
+                print "[DEBUG] string e: %s" % e
                 raise "Meta Data Child Syntax Error" 
         except IndexError:
             continue
