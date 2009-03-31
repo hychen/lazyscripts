@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import gettext
+import locale
 
 import pygtk
 pygtk.require('2.0')
@@ -15,6 +16,11 @@ from lazyscripts import info
 from lazyscripts.ui.gui import query_yes_no, show_error
 from lazyscripts.util import detect
 import lazyscripts.util.add_official_repos
+
+try:
+    locale.setlocale (locale.LC_ALL, "")
+except:
+    locale.setlocale (locale.LC_ALL, "en_US.UTF-8")
 
 APP_NAME = "lazyscripts"
 APP_PATH = os.path.abspath (os.getcwd())
@@ -121,7 +127,6 @@ class ToolPage:
         col.set_attributes (render, active=0)
         view.append_column (col)
 
-        #col = gtk.TreeViewColumn ("可選用的項目")
         col = gtk.TreeViewColumn (_("items"))
         render=gtk.CellRendererText ()
         col.pack_start (render)
@@ -256,10 +261,18 @@ class ToolListWidget:
         hbox.show_all()
 
     def load_tree(self, list_store, scripts_list_file):
+        loc = locale.getlocale (locale.LC_ALL)
+        lzs_loc = ""
+        if (loc[0] == None):
+            lzs_loc = "enUS"
+        else:
+            lzs_loc = loc[0].replace ("_", "")
+
         scripts_list = ScriptsList(scripts_list_file)
         scripts_list.update()
         script_set = ScriptSet.from_scriptslist(scripts_list)
         for category in script_set.categories():
+            category.lang = lzs_loc
             tool_page = ToolPage()
             tool_page.title = category.name
             tool_page.img = category._icon_name
