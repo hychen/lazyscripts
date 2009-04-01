@@ -5,6 +5,7 @@
 # i18n name mapping.
 _i18n_name = {}
 _i18n_name['zhTW'] = {
+    'Common':'共用',
     'Productivity':'辦公軟體',
     'Multimedia':'多媒體',
     'Game':'遊戲',
@@ -16,6 +17,7 @@ _i18n_name['zhTW'] = {
     }
 
 icon_path_name = {
+    'Common':'',
     "Productivity": "applications-office",
     "Multimedia": "applications-multimedia",
     "Game": "applications-games",

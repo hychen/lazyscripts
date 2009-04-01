@@ -23,6 +23,14 @@ run test cases in directories t/ without output capture.
 
 $ make devtest
 
+How to build a scripts list file
+================================
+
+just type this command, and this means that creating a new scripts list file 
+for remote git repositry.
+
+$ ./lzs list build git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git
+
 Source
 ======
 

@@ -6,7 +6,7 @@ import re
 import sys
 import os
 
-from lazyscripts.repo import git, create_scriptrepo
+from lazyscripts.repo import git, create_scriptrepo, sign_repopath
 from lazyscripts import meta
 from lazyscripts.category import Category
 
@@ -266,7 +266,7 @@ class ScriptsList(object):
         return cPickle.loads(string)
 
     @classmethod
-    def from_repo(cls, repo_path):
+    def from_repo(cls, repo_path, local_dir=None):
         """
         make a script list from given repositry path.
 
@@ -274,7 +274,10 @@ class ScriptsList(object):
         @return obj ScriptsList
         """
         list = ScriptsList()
-        repo = git.Repo(repo_path)
+        if local_dir:
+            repo = git.Repo(local_dir+'/'+sign_repopath(repo_path))
+        else:
+            repo = git.Repo(repo_path)
     
         for category in repo.categories:
             # @TODO: refactory -> category.scripts()

@@ -15,4 +15,4 @@ fetch:
 
 init_devenv:
 	# clone lazybuntu scripts for testing.
-	git clone git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git ${TESTDIR}datas/scriptspoll/`./lzs repo sign git://github.com/billy3321/lazyscripts_pool_debian_ubuntu`
+	git clone git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git ${TESTDIR}datas/scriptspoll/`./lzs repo sign git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git`
