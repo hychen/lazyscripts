@@ -321,6 +321,7 @@ class ScriptsRunner:
             excute_entries.append("%s/%s\n" % 
                                     (self.tmp_dirname, script.id))
             script.save(self.tmp_dirname+'/')
+        excute_entries.append("chown -R $REAL_USER: $REAL_HOME\n")
 
         startup_file = self._create_file(self.startup_path)
         startup_file.writelines(excute_entries)
