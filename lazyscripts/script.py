@@ -294,7 +294,7 @@ class ScriptsList(object):
 class ScriptsRunner:
 
     def __init__(self, ui):
-        self.tmp_dirname = '/tmp/lzs_run/'
+        self.tmp_dirname = '/tmp/lzs_run'
         self.startup_filename = 'lazybuntu_apply.sh'
         self.startup_path = "%s/%s" % (self.tmp_dirname, 
                                         self.startup_filename)
@@ -316,7 +316,7 @@ class ScriptsRunner:
         excute_entries = []
 
         for script in scripts:
-            excute_entries.append("./%s/%s\n" % 
+            excute_entries.append("%s/%s\n" % 
                                     (self.tmp_dirname, script.id))
             script.save(self.tmp_dirname+'/')
 
