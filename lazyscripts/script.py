@@ -313,7 +313,9 @@ class ScriptsRunner:
         @param scripts Script
         """
         self._init_tmpdir()
-        excute_entries = []
+        excute_entries = [ 
+            '#!/bin/bash'
+            'cd '+self.tmp_dirname ]
 
         for script in scripts:
             excute_entries.append("%s/%s\n" % 
