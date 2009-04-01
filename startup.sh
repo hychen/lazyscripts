@@ -27,12 +27,24 @@ case "$DISTRIB_ID" in
     "Ubuntu")
     export PLAT_NAME="`uname -a | cut -d " " -f 12`"
     echo "export PLAT_NAME=\"`uname -a | cut -d " " -f 12`\"" >> $ENV_EXPORT_SCRIPT
-    cat distrib/package_debian_ubuntu.sh >> $ENV_EXPORT_SCRIPT
+    echo "Check for required packsges..."
+    if dpkg -l python-nose python-git ; then
+        echo "Require packages installed."
+    else
+        echo "Require packages not installed."
+        cat distrib/package_debian_ubuntu.sh >> $ENV_EXPORT_SCRIPT
+    fi
     ;;
     "Debian")
     export PLAT_NAME="`uname -a | cut -d " " -f 12`"
     echo "export PLAT_NAME=\"`uname -a | cut -d " " -f 12`\"" >> $ENV_EXPORT_SCRIPT
-    cat distrib/package_debian_ubuntu.sh >> $ENV_EXPORT_SCRIPT 
+    echo "Check for required packsges..."
+    if dpkg -l python-nose python-git ; then
+        echo "Require packages installed."
+    else
+        echo "Require packages not installed."
+        cat distrib/package_debian_ubuntu.sh >> $ENV_EXPORT_SCRIPT
+    fi
     ;;
     "SUSE LINUX")
     export PLAT_NAME="`uname -i`"
