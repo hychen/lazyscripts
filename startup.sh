@@ -3,8 +3,12 @@
 
 
 
-mkdir -p temp
-ENV_EXPORT_SCRIPT="temp/env-export.sh"
+mkdir -p tmp
+ENV_EXPORT_SCRIPT="tmp/env-export.sh"
+if [ -f ${ENV_EXPORT_SCRIPT} ];then
+      rm $ENV_EXPORT_SCRIPT
+fi
+
 touch "$ENV_EXPORT_SCRIPT"
 chmod a+x "$ENV_EXPORT_SCRIPT"
 echo "#!/bin/bash" > "$ENV_EXPORT_SCRIPT"
