@@ -12,6 +12,13 @@ Requirements
 * GitPython.
 * Python Nose Framwork.
 
+Quick Start for User
+=========================
+
+Start the Lazyscripts GUI:
+
+$ ./slzs gui
+
 Quick Start for Developer
 =========================
 
@@ -34,7 +41,7 @@ $ ./lzs list build git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git
 Source
 ======
 
-Lazyscript's git repo is available on GitHub, which can be browsed at:
+Lazyscripts's git repo is available on GitHub, which can be browsed at:
 
 http://github.com/hychen/lazyscript/tree
 
