@@ -89,4 +89,4 @@ echo "export REAL_HOME=\"$HOME\"" >> $ENV_EXPORT_SCRIPT
 export WGET="wget --tries=2 --timeout=120 -c"
 echo "export WGET=\"wget --tries=2 --timeout=120 -c\"" >> $ENV_EXPORT_SCRIPT
                                                                                             
-echo '../lzs $@'  >> $ENV_EXPORT_SCRIPT
+echo './lzs $@'  >> $ENV_EXPORT_SCRIPT
