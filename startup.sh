@@ -55,17 +55,17 @@ case "$DISTRIB_ID" in
     echo "export PLAT_NAME=\"`uname -i`\"" 
     case $WINDOWMANAGER in
         '/usr/bin/gnome')
-        WIN_MGR='gnome'
-        echo "$WIN_MGR=\"gnome\"" >> $ENV_EXPORT_SCRIPT
+        export WIN_MGR='gnome'
+        echo "export WIN_MGR=\"gnome\"" >> $ENV_EXPORT_SCRIPT
         ;;
         '/usr/bin/startkde')
-        WIN_MGR='kde'
-        echo "$WIN_MGR=\"kde\"" >> $ENV_EXPORT_SCRIPT
+        export WIN_MGR='kde'
+        echo "export WIN_MGR=\"kde\"" >> $ENV_EXPORT_SCRIPT
         ;;
         *)
         echo "can't identified your window manager"
-        WIN_MGR=''
-        echo "$WIN_MGR=\"\"" >> $ENV_EXPORT_SCRIPT
+        export WIN_MGR=''
+        echo "export WIN_MGR=\"\"" >> $ENV_EXPORT_SCRIPT
         ;;
     esac"
 
