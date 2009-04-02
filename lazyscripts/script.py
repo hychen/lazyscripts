@@ -286,6 +286,8 @@ class ScriptsList(object):
             repo = git.Repo(local_dir+'/'+sign_repopath(repo_path))
         else:
             repo = git.Repo(repo_path)
+        # update scripts.
+        repo.rebase()
     
         for category in repo.categories:
             # @TODO: refactory -> category.scripts()

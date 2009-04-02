@@ -61,9 +61,6 @@ def _call_parser(word, value, lang=None):
     if callable(fn):
         (word, value) = fn(value)
 
-    if not value:
-        value = True
-
     if not lang:
         return (word, value)
     else:
@@ -74,6 +71,15 @@ def _call_parser(word, value, lang=None):
 # if the function has `_mark` extention, it is a parser.
 # for instance, the parser of the mark @author is author_mark 
 # function in this module.
+def debian_mark(value):
+    return ('debian', True)
+
+def ubuntu_mark(value):
+    return ('ubuntu', True)
+
+def hide_mark(value):
+    return ('hide', True)
+
 def desc_mark(value):
     ret = []
     for row in value.splitlines():
