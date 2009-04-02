@@ -52,7 +52,7 @@ case "$DISTRIB_ID" in
     ;;
     "SUSE LINUX")
     export PLAT_NAME="`uname -i`"
-    echo "export PLAT_NAME=\"`uname -i`\"" 
+    echo "export PLAT_NAME=\"`uname -i`\"" $ENV_EXPORT_SCRIPT
     case $WINDOWMANAGER in
         '/usr/bin/gnome')
         export WIN_MGR='gnome'
@@ -67,7 +67,7 @@ case "$DISTRIB_ID" in
         export WIN_MGR=''
         echo "export WIN_MGR=\"\"" >> $ENV_EXPORT_SCRIPT
         ;;
-    esac"
+    esac
 
     cat distrib/package_opensuse.sh >> $ENV_EXPORT_SCRIPT
     ;;
