@@ -53,6 +53,22 @@ case "$DISTRIB_ID" in
     "SUSE LINUX")
     export PLAT_NAME="`uname -i`"
     echo "export PLAT_NAME=\"`uname -i`\"" 
+    case $WINDOWMANAGER in
+        '/usr/bin/gnome')
+        WIN_MGR='gnome'
+        echo "$WIN_MGR=\"gnome\"" >> $ENV_EXPORT_SCRIPT
+        ;;
+        '/usr/bin/startkde')
+        WIN_MGR='kde'
+        echo "$WIN_MGR=\"kde\"" >> $ENV_EXPORT_SCRIPT
+        ;;
+        *)
+        echo "can't identified your window manager"
+        WIN_MGR=''
+        echo "$WIN_MGR=\"\"" >> $ENV_EXPORT_SCRIPT
+        ;;
+    esac"
+
     cat distrib/package_opensuse.sh >> $ENV_EXPORT_SCRIPT
     ;;
     *)
