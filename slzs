@@ -18,10 +18,10 @@ case $DISTRIB_ID in
     case $WIN_MGR in
 #FIXME: arguments?
         'gnome')
-        gnomesu
+        gnomesu --command="tmp/env-export.sh $@"
         ;;
         'kde')
-        kdesu
+        kdesu --command="tmp/env-export.sh $@"
         ;;
     esac
 
