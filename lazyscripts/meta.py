@@ -28,8 +28,9 @@ def make_meta(word, value):
     @param value str the value of the reserved word.
     @return (key,value)
     """
-    if not word or not value:
-        return None
+    if not word: 
+        return None 
+
     # process the value with basic i18n.
     try:
         (keyword, lang) = word.split('_')
@@ -59,7 +60,10 @@ def _call_parser(word, value, lang=None):
 
     if callable(fn):
         (word, value) = fn(value)
-    
+
+    if not value:
+        value = True
+
     if not lang:
         return (word, value)
     else:
