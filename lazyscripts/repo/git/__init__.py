@@ -33,7 +33,7 @@ class Repo(git.Repo):
         return Repo(path)
 
     def rebase(self):
-        s = "cd %s && git pull master" % self.path.replace('.git','')
+        s = "cd %s && git pull" % self.path.replace('.git','')
         system(s)
 
     def get(self, name):
