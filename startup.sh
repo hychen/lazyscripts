@@ -1,54 +1,46 @@
 #!/bin/bash
 
+function get_distro_info () {
+    export DISTRIB_CODENAME=`lsb_release -cs`
+    echo "export DISTRIB_CODENAME=`lsb_release -cs`" >> "$ENV_EXPORT_SCRIPT"
 
+    export DISTRIB_VERSION=`lsb_release -rs`
+    echo "export DISTRIB_VERSION=`lsb_release -rs`" >> "$ENV_EXPORT_SCRIPT"
 
+    export DISTRIB_ID=`lsb_release -is`
+    echo "export DISTRIB_ID=`lsb_release -is`" >> "$ENV_EXPORT_SCRIPT"
+}
 
-mkdir -p tmp
-ENV_EXPORT_SCRIPT="tmp/env-export.sh"
-if [ -f ${ENV_EXPORT_SCRIPT} ];then
-      rm $ENV_EXPORT_SCRIPT
-fi
+function init_export_script () {
+    mkdir -p tmp
+    ENV_EXPORT_SCRIPT="tmp/env-export.sh"
+    if [ -f ${ENV_EXPORT_SCRIPT} ];then
+        rm $ENV_EXPORT_SCRIPT
+    fi
 
-touch "$ENV_EXPORT_SCRIPT"
-chmod a+x "$ENV_EXPORT_SCRIPT"
-echo "#!/bin/bash" > "$ENV_EXPORT_SCRIPT"
-            
+    touch "$ENV_EXPORT_SCRIPT"
+    chmod a+x "$ENV_EXPORT_SCRIPT"
+    echo "#!/bin/bash" > "$ENV_EXPORT_SCRIPT"
+}
             
 DIR=`dirname $0`
 cd "$DIR"
 
+#init_export_script
+#get_distro_info
 
-export DISTRIB_CODENAME=`lsb_release -cs`
-echo "export DISTRIB_CODENAME=`lsb_release -cs`" >> "$ENV_EXPORT_SCRIPT"
-
-export DISTRIB_VERSION=`lsb_release -rs`
-echo "export DISTRIB_VERSION=`lsb_release -rs`" >> "$ENV_EXPORT_SCRIPT"
-
-export DISTRIB_ID=`lsb_release -is`
-echo "export DISTRIB_ID=`lsb_release -is`" >> "$ENV_EXPORT_SCRIPT"
 
 case "$DISTRIB_ID" in
-    "Ubuntu")
-    export PLAT_NAME="`uname -a | cut -d " " -f 12`"
-    echo "export PLAT_NAME=\"`uname -a | cut -d " " -f 12`\"" >> $ENV_EXPORT_SCRIPT
-    echo "Check for required packsges..."
-    if dpkg -l python-nose python-git ; then
-        echo "Require packages installed."
-    else
-        echo "Require packages not installed."
-        cat distrib/package_debian_ubuntu.sh >> $ENV_EXPORT_SCRIPT
-    fi
-    ;;
-    "Debian")
-    export PLAT_NAME="`uname -a | cut -d " " -f 12`"
-    echo "export PLAT_NAME=\"`uname -a | cut -d " " -f 12`\"" >> $ENV_EXPORT_SCRIPT
-    echo "Check for required packsges..."
-    if dpkg -l python-nose python-git ; then
-        echo "Require packages installed."
-    else
-        echo "Require packages not installed."
-        cat distrib/package_debian_ubuntu.sh >> $ENV_EXPORT_SCRIPT
-    fi
+    "Ubuntu" | "Debian")
+        export PLAT_NAME="`uname -a | cut -d " " -f 12`"
+        echo "export PLAT_NAME=\"`uname -a | cut -d " " -f 12`\"" >> $ENV_EXPORT_SCRIPT
+        echo "Check for required packsges..."
+        if dpkg -l python-nose python-git ; then
+            echo "Require packages installed."
+        else
+            echo "Require packages not installed."
+            cat distrib/package_debian_ubuntu.sh >> $ENV_EXPORT_SCRIPT
+        fi
     ;;
     "SUSE LINUX")
     export PLAT_NAME="`uname -i`"
@@ -69,10 +61,9 @@ case "$DISTRIB_ID" in
         ;;
     esac
 
-    cat distrib/package_opensuse.sh >> $ENV_EXPORT_SCRIPT
     ;;
     *)
-    echo "Sorry, Lazyscripts does not supoort $DISTRIB_ID"
+        echo "Sorry, Lazyscripts does not supoort $DISTRIB_ID"
     ;;
 esac
 
