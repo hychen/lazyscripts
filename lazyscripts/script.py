@@ -57,13 +57,19 @@ class ScriptMeta(object):
     def parse_string(string):
         attrs = {}
         import re
-        founds = re.findall('\s*@(.*?)\s+\'(.*|.*\n.*)\'', \
+        founds = re.findall('\s*@(.*?)\s+(\'(.*|.*\n.*)\')?', \
                     string ,\
                     re.MULTILINE) 
         for found in founds:
-            meta_entry = meta.make_meta(found[0],found[1])
+            meta_entry = ()
+            if len(found) == 3:
+                meta_entry = meta.make_meta(found[0],found[2])
+            elif len(found) == 1:
+                meta_entry = meta.make_meta(found[0],None)
+            # skip line of the script content with wrong meta sytax.
             if not meta_entry:
                 continue
+
             # @FIXME: dirty hack.
             if not attrs.get(meta_entry[0]):
                 attrs.setdefault(meta_entry[0], meta_entry[1])
@@ -88,6 +94,8 @@ class Script(object):
         self.id = script_meta.id or self.backend.name
         self.childs = script_meta.childs
         self.hide = script_meta.hide
+        self.debian = script_meta.debian
+        self.ubuntu = script_meta.ubuntu
 
     def __getattr__(self, key):
         try:
@@ -278,6 +286,8 @@ class ScriptsList(object):
             repo = git.Repo(local_dir+'/'+sign_repopath(repo_path))
         else:
             repo = git.Repo(repo_path)
+        # update scripts.
+        repo.rebase()
     
         for category in repo.categories:
             # @TODO: refactory -> category.scripts()
@@ -288,6 +298,8 @@ class ScriptsList(object):
                         'category':category.name,
                          'name':script.name,
                          'id':script_name}
+                if category.name == 'Common':
+                    entry['selected'] == 'y'
                 list._items.append(entry)
         return list
 
