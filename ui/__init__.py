@@ -97,11 +97,9 @@ do you want to let lazyscripts modify your software sources?
         os.system ('software-properties-gtk');
 
 class Tool:
-    def __init__ (self, title, command, used=True):
-        self.title = title
-        self.desc = ''
-        self.command = command
+    def __init__ (self, script, used=True):
         self.used = used
+        self.script = script
 
 class ToolPage:
     def __init__ (self):
@@ -134,18 +132,17 @@ class ToolPage:
         view.append_column (col)
 
         for tool in self.tools:
-            list.append ((False, ("<b>%s</b>：\n%s" % (tool.name, tool.desc)), tool))
+            list.append ((tool.used, ("<b>%s</b>：\n%s" % (tool.script.name, tool.script.desc)), tool))
 
         view.set_model (list)
         view.show ()
         return view
 
     def on_toggled (self, render, path, list):
-        # print "toggled"
-        it=list.get_iter_from_string(path)
-        used, tool=list.get(it, 0, 2)
-        #tool.used = not used
-        list.set( it, 0, not used )
+        it = list.get_iter_from_string(path)
+        used, tool = list.get (it, 0, 2)
+        tool.used = not used
+        list.set (it, 0, not used)
 
     def get_command_lines(self):
         lines=[]
@@ -187,35 +184,6 @@ class FinalPage:
         view.add(hbox)
         view.show_all()
         return view
-
-
-class XmlLoader(xml.sax.ContentHandler):
-    def __init__(self, list):
-        self.cur_cat=None
-        self.cur_tool=-1
-        self.list=list
-
-    def startElement(self, name, attrs):
-        if name=='category':
-            self.cur_cat = ToolPage()
-            self.cur_cat.title=attrs['title']
-            self.cur_cat.img=attrs['image']
-        elif name=='tool':
-            tool=Tool(attrs['title'], attrs['command'], attrs['used']=='1' )
-            self.cur_cat.tools.append(tool)
-            self.cur_tool=len(self.cur_cat.tools)-1
-
-    def endElement(self, name):
-        if name=='category':
-            self.list.append(self.cur_cat)
-        elif name=='tool':
-            self.cur_cat.tools[self.cur_tool].desc=self.cur_cat.tools[self.cur_tool].desc.strip()
-            self.cur_tool=-1
-
-    def characters(self, text):
-        if self.cur_tool != -1:
-            self.cur_cat.tools[self.cur_tool].desc +=text
-
 
 class ToolListWidget:
     def __init__(self, scripts_list_file):
@@ -278,7 +246,8 @@ class ToolListWidget:
             tool_page.img = category._icon_name
 
             for script in category.items():
-                tool_page.tools.append(script)
+                tool = Tool (script, False)
+                tool_page.tools.append(tool)
 
             tool_page.get_widget()
             list_store.append( (tool_page.img, tool_page.title, tool_page) )
@@ -294,26 +263,6 @@ class ToolListWidget:
         if old != None:
             self.right_pane.remove(old)
         self.right_pane.add(tool[0].get_widget())
-
-
-class GamesPage(ToolListWidget):
-    def __init__(self):
-        ToolListWidget.__init__(self, 'ui/games.xml')
-        view=gtk.Viewport()
-        widget=ToolListWidget.get_widget(self)
-        sel=self.left_pane.get_selection()
-        sel.select_path("0")
-        view.add(widget)
-        view.show_all()
-
-        # We need to keep the object to hold a reference;
-        # otherwise, this widget will be destroyed
-        # when removed from scrolled window.
-        self.view_port=view
-
-    def get_widget(self):
-        return self.view_port
-
 
 class MainWin:
     def __init__(self):
@@ -335,8 +284,6 @@ class MainWin:
         # upper parts: main GUI
         self.tool_list=tool_list=ToolListWidget('scripts.list')
         tool_list.list.insert( 0, ('lazyscripts', _('Welcome'), WelcomePage()) )
-        #self.games_page=GamesPage()
-        #tool_list.list.append( ('applications-games', '各種遊戲', self.games_page) )
         self.final_page=FinalPage()
         tool_list.list.append( ('gnome-app-install', _('fininsh'), self.final_page) )
         sel=tool_list.left_pane.get_selection()
