@@ -1,4 +1,5 @@
 import git
+from os import system
 
 def is_tree(obj):
     return type(obj) == git.Tree
@@ -7,7 +8,6 @@ def is_blob(obj):
     return type(obj) == git.Blob
 
 def clone_repo(path, dest_dir):
-    from os import system
     system("git clone %s %s" % (path,dest_dir) )
 
 def is_git_dir(d):
@@ -31,6 +31,10 @@ class Repo(git.Repo):
         options.update(kwds)
         self.git.clone(self.path, path, **options)
         return Repo(path)
+
+    def rebase(self):
+        s = "cd %s && git pull" % self.path.replace('.git','')
+        system(s)
 
     def get(self, name):
         return self.get_blob(name)
