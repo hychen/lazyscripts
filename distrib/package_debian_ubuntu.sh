@@ -7,6 +7,7 @@
 # with all architecture.
 # Please run as root.
 
+set -x
 
 TOPDIR=`pwd`
 TMPDIR="/tmp"
@@ -15,22 +16,13 @@ cd $TMPDIR
 
 echo "正在下載並安裝lazyscripts執行所需的套件...."
 
-if [ -f python-git_lastest_all.deb ];then
- rm -f python-git_lastest_all.deb
-fi
-
-
-wget http://lazyscripts.googlecode.com/files/python-git_lastest_all.deb
+source /etc/profile
 
 apt-get -y --force-yes install git-core python-setuptools python-nose
-
-dpkg -i python-git_lastest_all.deb
+easy_install GitPython
 
 cd $TOPDIR
 
 echo "執行完畢！即將啟動lazyscripts..."
-
-
-
 
 #END

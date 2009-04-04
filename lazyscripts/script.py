@@ -298,8 +298,9 @@ class ScriptsList(object):
                         'category':category.name,
                          'name':script.name,
                          'id':script_name}
-                if category.name == 'Common':
-                    entry['selected'] == 'y'
+                #TODO please fix me
+                #if category.name == 'Common':
+                #    entry['selected'] == 'y'
                 list._items.append(entry)
         return list
 

@@ -358,9 +358,9 @@ class MainWin:
 
         selected_scripts = []
         for page in self.tool_list.all_tools:
-            for (used, path, script) in page.list:
+            for (used, path, tool) in page.list:
                 if used == True:
-                    selected_scripts.append(script)
+                    selected_scripts.append(tool.script)
 
         runner = ScriptsRunner(self)
         runner.run_scripts(selected_scripts)
