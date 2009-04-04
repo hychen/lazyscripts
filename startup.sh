@@ -26,8 +26,8 @@ function init_export_script () {
 DIR=`dirname $0`
 cd "$DIR"
 
-#init_export_script
-#get_distro_info
+init_export_script
+get_distro_info
 
 
 case "$DISTRIB_ID" in
