@@ -63,12 +63,13 @@ case "$DISTRIB_ID" in
 
     ;;
     *)
+    #Sample code for other distribution.
         echo "Sorry, Lazyscripts can't distinguish your Linux distribution."
         echo "Please choice your distribution in the list."
         DISTRIB_ID=`zenity --list --title="Choice your linux distribution" --radiolist --column "" --column "Linux Distribution" FALSE Fedora`
         case $DISTRIB_ID in
             Fedora)
-            DISTRIB_VERSION=`zenity --list --title="Choice your linux distribution version" --radiolist --column "" --column "Linux Distribution Version" FALSE 10`
+            DISTRIB_VERSION=`zenity --list --title="Choice your linux distribution version" --radiolist --column "" --column "Linux Distribution Version" FALSE "Fedora 10"`
             ;;
         esac
     ;;
