@@ -55,7 +55,7 @@ case "$DISTRIB_ID" in
         echo "export WIN_MGR=\"kde\"" >> $ENV_EXPORT_SCRIPT
         ;;
         *)
-        echo "can't identified your window manager"
+        echo "Lazysciprs can't identified your window manager"
         export WIN_MGR=''
         echo "export WIN_MGR=\"\"" >> $ENV_EXPORT_SCRIPT
         ;;
@@ -63,7 +63,14 @@ case "$DISTRIB_ID" in
 
     ;;
     *)
-        echo "Sorry, Lazyscripts does not supoort $DISTRIB_ID"
+        echo "Sorry, Lazyscripts can't distinguish your Linux distribution."
+        echo "Please choice your distribution in the list."
+        DISTRIB_ID=`zenity --list --title="Choice your linux distribution" --radiolist --column "" --column "Linux Distribution" FALSE Fedora`
+        case $DISTRIB_ID in
+            Fedora)
+            DISTRIB_VERSION=`zenity --list --title="Choice your linux distribution version" --radiolist --column "" --column "Linux Distribution Version" FALSE 10`
+            ;;
+        esac
     ;;
 esac
 
