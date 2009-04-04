@@ -47,12 +47,12 @@ case "$DISTRIB_ID" in
     echo "export PLAT_NAME=\"`uname -i`\"" $ENV_EXPORT_SCRIPT
     case $WINDOWMANAGER in
         '/usr/bin/gnome')
-        export WIN_MGR='gnome'
-        echo "export WIN_MGR=\"gnome\"" >> $ENV_EXPORT_SCRIPT
+        export WIN_MGR='Gnome'
+        echo "export WIN_MGR=\"Gnome\"" >> $ENV_EXPORT_SCRIPT
         ;;
         '/usr/bin/startkde')
-        export WIN_MGR='kde'
-        echo "export WIN_MGR=\"kde\"" >> $ENV_EXPORT_SCRIPT
+        export WIN_MGR='KDE'
+        echo "export WIN_MGR=\"KDE\"" >> $ENV_EXPORT_SCRIPT
         ;;
         *)
         echo "Lazysciprs can't identified your window manager"
@@ -66,10 +66,12 @@ case "$DISTRIB_ID" in
     #Sample code for other distribution.
         echo "Sorry, Lazyscripts can't distinguish your Linux distribution."
         echo "Please choice your distribution in the list."
+        zenity --info --text "Sorry, Lazyscripts can't distinguish your Linux distribution.\nPlease choice your distribution in the list by your self.\nNote: If you can't find your Linux distribution in the list, It means Lazyscripts not support your distribution.\nPlease contact develpers. http://code.google.com/p/lazyscripts/"
         DISTRIB_ID=`zenity --list --title="Choice your linux distribution" --radiolist --column "" --column "Linux Distribution" FALSE Fedora`
         case $DISTRIB_ID in
             Fedora)
             DISTRIB_VERSION=`zenity --list --title="Choice your linux distribution version" --radiolist --column "" --column "Linux Distribution Version" FALSE "Fedora 10"`
+            WIN_MGR=`zenity --list --title="Choice your window manager" --radiolist --column "" --column "Linux Distribution Version" FALSE "Gnome" FALSE "KDE"`
             ;;
         esac
     ;;
