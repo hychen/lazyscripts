@@ -66,7 +66,7 @@ case "$DISTRIB_ID" in
     #Sample code for other distribution.
         echo "Sorry, Lazyscripts can't distinguish your Linux distribution."
         echo "Please choice your distribution in the list."
-        zenity --info --text "Sorry, Lazyscripts can't distinguish your Linux distribution.\nPlease choice your distribution in the list by your self.\nNote: If you can't find your Linux distribution in the list, It means Lazyscripts not support your distribution.\nPlease contact develpers. http://code.google.com/p/lazyscripts/"
+        zenity --info --text "Sorry, Lazyscripts can't distinguish your Linux distribution. Please choice your distribution in the list by your self.\n\nNote: If you can't find your Linux distribution in the list, It means Lazyscripts not support your distribution. Please contact develpers. http://code.google.com/p/lazyscripts/"
         DISTRIB_ID=`zenity --list --title="Choice your linux distribution" --radiolist --column "" --column "Linux Distribution" FALSE Fedora`
         case $DISTRIB_ID in
             Fedora)
