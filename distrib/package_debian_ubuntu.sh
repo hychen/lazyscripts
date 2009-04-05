@@ -18,7 +18,7 @@ echo "正在下載並安裝lazyscripts執行所需的套件...."
 
 source /etc/profile
 
-apt-get -y --force-yes install git-core python-setuptools python-nose
+apt-get -y --force-yes install git-core python-setuptools python-nose make
 easy_install GitPython
 
 cd $TOPDIR
