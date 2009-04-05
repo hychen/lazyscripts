@@ -39,7 +39,7 @@ case "$DISTRIB_ID" in
             echo "Require packages installed."
         else
             echo "Require packages not installed."
-            cat distrib/package_debian_ubuntu.sh >> $ENV_EXPORT_SCRIPT
+            echo "distrib/package_debian_ubuntu.sh" >> $ENV_EXPORT_SCRIPT
         fi
     ;;
     "SUSE LINUX")
@@ -111,5 +111,6 @@ export WGET="wget --tries=2 --timeout=120 -c"
 echo "export WGET=\"wget --tries=2 --timeout=120 -c\"" >> $ENV_EXPORT_SCRIPT
 
 echo 'make fetch' >> $ENV_EXPORT_SCRIPT
+echo 'rm -rf scripts.list' >> $ENV_EXPORT_SCRIPT
 echo './lzs list build git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git' >> $ENV_EXPORT_SCRIPT
 echo './lzs $@'  >> $ENV_EXPORT_SCRIPT

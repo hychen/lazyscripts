@@ -298,8 +298,9 @@ class ScriptsList(object):
                         'category':category.name,
                          'name':script.name,
                          'id':script_name}
-                if category.name == 'Common':
-                    entry['selected'] == 'y'
+                #TODO please fix me
+                #if category.name == 'Common':
+                #    entry['selected'] == 'y'
                 list._items.append(entry)
         return list
 
@@ -327,7 +328,8 @@ class ScriptsRunner:
         self._init_tmpdir()
         excute_entries = [ 
             '#!/bin/bash\n'
-            'cd '+self.tmp_dirname+'\n' ]
+            'cd '+self.tmp_dirname+'\n'
+            'apt-get update\n' ]
 
         for script in scripts:
             excute_entries.append("%s/%s\n" % 
