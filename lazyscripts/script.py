@@ -328,7 +328,8 @@ class ScriptsRunner:
         self._init_tmpdir()
         excute_entries = [ 
             '#!/bin/bash\n'
-            'cd '+self.tmp_dirname+'\n' ]
+            'cd '+self.tmp_dirname+'\n'
+            'apt-get update\n' ]
 
         for script in scripts:
             excute_entries.append("%s/%s\n" % 
