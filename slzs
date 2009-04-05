@@ -10,11 +10,24 @@
 
 # run Lazyscripts with root access
 case $DISTRIB_ID in
-    "Debian"|"Ubuntu")
+    "Ubuntu")
 
     gksu --message "執行 'Lazyscripts 懶人包' 會修改系統設定，並會安裝新軟體，所以需要系統管理員權限。 請輸入系統管理密碼，才能繼續執行。 (在 Lazyscripts 下，預設這就是你登入系統時所用的密碼。)" --preserve-env tmp/env-export.sh $@
     ;;
+    "Debian")
+
+    gksu --message "執行 'Lazyscripts 懶人包' 會修改系統設定，並會安裝新軟體，所以需要系統管理員權限。 請輸入系統管理密碼，才能繼續執行。 (在 Lazyscripts 下，預設這就是你登入系統時所用的密碼。)" tmp/env-export.sh $@
+    ;;
     "SUSE LINUX")
+    case $WIN_MGR in
+#FIXME: arguments?
+        'Gnome')
+        gnomesu --command="tmp/env-export.sh $@"
+        ;;
+        'KDE')
+        kdesu --command="tmp/env-export.sh $@"
+        ;;
+    esac
 
     ;;
     *)
