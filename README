@@ -1,4 +1,5 @@
 # @author Hsin Yi Chen 陳信屹 (hychen) <ossug.hychen at gmail.com>
+# @author 朱昱任 (Yuren Ju) <yurenju at gmail.com>
 LZS - Lazy Scripts Distribution Tool.
 =====================
 
@@ -11,6 +12,7 @@ Requirements
 * git-svn.
 * GitPython.
 * Python Nose Framwork.
+* make
 
 Quick Start for User
 =========================
@@ -52,3 +54,24 @@ git://github.com/hychen/lazyscript.git
 otherwise, the Lazybuntu source can clone from
 
 http://svn.openfoundry.org/lazybuntu/
+
+Debian Users
+============
+
+Lazyscripts need sudo to execute some command, please install sudo and add
+your account to /etc/sudoers. Please follow below steps:
+
+    $ su -
+    (please type root password)
+
+    # visudo
+
+then find line "root ALL=(ALL) ALL", and add line below it:
+
+    <your account> ALL=(ALL) ALL
+
+so your /etc/sudoers looks like:
+
+    root    ALL=(ALL) ALL
+    john    ALL=(ALL) ALL
+
