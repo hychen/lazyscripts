@@ -22,6 +22,21 @@ function init_export_script () {
     chmod a+x "$ENV_EXPORT_SCRIPT"
     echo "#!/bin/bash" > "$ENV_EXPORT_SCRIPT"
 }
+
+function choice_repo () {
+    if [ ${DISTRIB_ID} -eq "SUSE LINUX" ] ; then
+        DISTRIB_NAME="openSUSE"
+    else
+        DISTRIB_NAME=${DISTRIB_ID}
+    fi
+    AVAILABLE_REPO=($(cat distrib/repository.conf  | grep "${DISTRIB_NAME}" | cut -d " " -f 1 | grep "^[git].*[git]$"))
+    SHOW_REPO=$(for uri in ${A[*]} ; do echo -n "FALSE $uri " ; done)
+    USE_REPO=`zenity --list --title="Choice Scripts Repository You Want to Use" --radiolist --column "" --column "Repository URL" ${SHOW_REPO}`
+    REPO_URL=($(echo ${USE_REPO/|/ }))
+    REPO_NUM=${#REPO_URL[@]}
+    echo "REPO_URL=($(echo ${USE_REPO/|/ }))" >> $ENV_EXPORT_SCRIPT
+    echo "REPO_NUM=${#REPO_URL[@]}" >> $ENV_EXPORT_SCRIPT
+}
             
 DIR=`dirname $0`
 cd "$DIR"
@@ -41,6 +56,7 @@ case "$DISTRIB_ID" in
             echo "Require packages not installed."
             echo "distrib/package_debian_ubuntu.sh" >> $ENV_EXPORT_SCRIPT
         fi
+        
     ;;
     "SUSE LINUX")
     export PLAT_NAME="`uname -i`"
@@ -60,6 +76,8 @@ case "$DISTRIB_ID" in
         echo "export WIN_MGR=\"\"" >> $ENV_EXPORT_SCRIPT
         ;;
     esac
+    
+    
 
     ;;
     *)
@@ -76,6 +94,8 @@ case "$DISTRIB_ID" in
         esac
     ;;
 esac
+
+choice_repo
 
 # check the path of desktop dir
 XDG_USER_DIRS=~/.config/user-dirs.dirs
@@ -112,5 +132,5 @@ echo "export WGET=\"wget --tries=2 --timeout=120 -c\"" >> $ENV_EXPORT_SCRIPT
 
 echo 'make fetch' >> $ENV_EXPORT_SCRIPT
 echo 'rm -rf scripts.list' >> $ENV_EXPORT_SCRIPT
-echo './lzs list build git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git' >> $ENV_EXPORT_SCRIPT
+echo "./lzs list build ${REPO_URL}" >> $ENV_EXPORT_SCRIPT
 echo './lzs $@'  >> $ENV_EXPORT_SCRIPT
