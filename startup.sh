@@ -50,7 +50,7 @@ case "$DISTRIB_ID" in
         export PLAT_NAME="`uname -a | cut -d " " -f 12`"
         echo "export PLAT_NAME=\"`uname -a | cut -d " " -f 12`\"" >> $ENV_EXPORT_SCRIPT
         echo "Check for required packsges..."
-        if dpkg -l python-nose python-git ; then
+        if dpkg -l python-nose ; then
             echo "Require packages installed."
         else
             echo "Require packages not installed."
