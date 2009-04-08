@@ -36,10 +36,10 @@ easy_install GitPython
 
 *)
 
-echo "抱歉，lazyscripts並不支援 ${ARCH_NAME} 作業系統平台。"
+echo "抱歉，Lazyscripts並不支援 ${ARCH_NAME} 作業系統平台。"
 ;;
 esac
 
-echo "執行完畢！即將啟動lazyscripts..."
+echo "執行完畢！即將啟動Lazyscripts..."
 
 #END

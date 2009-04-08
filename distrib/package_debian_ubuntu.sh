@@ -14,7 +14,7 @@ TMPDIR="/tmp"
 
 cd $TMPDIR
 
-echo "正在下載並安裝lazyscripts執行所需的套件...."
+echo "正在下載並安裝Lazyscripts執行所需的套件...."
 
 source /etc/profile
 
@@ -24,6 +24,6 @@ easy_install GitPython
 
 cd $TOPDIR
 
-echo "執行完畢！即將啟動lazyscripts..."
+echo "執行完畢！即將啟動Lazyscripts..."
 
 #END
