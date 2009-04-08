@@ -20,14 +20,18 @@ i386)
 
 zypper install http://lazyscripts.googlecode.com/files/python-nose-lastest.i586.rpm
 
-zypper install http://lazyscripts.googlecode.com/files/python-git-lastest.i586.rpm
+# zypper install http://lazyscripts.googlecode.com/files/python-git-lastest.i586.rpm
+easy_install GitPython
+
 ;;
 
 x86_64)
 
 zypper install http://lazyscripts.googlecode.com/files/python-nose-lastest.x86_64.rpm
 
-zypper install http://lazyscripts.googlecode.com/files/python-git-lastest.x86_64.rpm
+# zypper install http://lazyscripts.googlecode.com/files/python-git-lastest.x86_64.rpm
+easy_install GitPython
+
 ;;
 
 *)
