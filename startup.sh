@@ -34,6 +34,11 @@ function choice_repo () {
     USE_REPO=`zenity --list --title="Choice Scripts Repository You Want to Use" --radiolist --column "" --column "Repository URL" ${SHOW_REPO}`
     REPO_URL=($(echo ${USE_REPO/|/ }))
     REPO_NUM=${#REPO_URL[@]}
+    for ((num=0;num<${REPO_NUM};num=$num+1)); do 
+
+        REPO_DIR[$num]="./scriptspoll/$(./lzs repo sign ${REPO_URL[${num}]})"
+        echo "git clone ${REPO_URL[$num]} ${REPO_DIR[$num]}" >> $ENV_EXPORT_SCRIPT
+    done
     echo "REPO_URL=($(echo ${USE_REPO/|/ }))" >> $ENV_EXPORT_SCRIPT
     echo "REPO_NUM=${#REPO_URL[@]}" >> $ENV_EXPORT_SCRIPT
 }
@@ -134,7 +139,8 @@ echo "export REAL_HOME=\"$HOME\"" >> $ENV_EXPORT_SCRIPT
 export WGET="wget --tries=2 --timeout=120 -c"
 echo "export WGET=\"wget --tries=2 --timeout=120 -c\"" >> $ENV_EXPORT_SCRIPT
 
-echo 'make fetch' >> $ENV_EXPORT_SCRIPT
+
+echo  >> $ENV_EXPORT_SCRIPT
 echo 'rm -rf scripts.list' >> $ENV_EXPORT_SCRIPT
 echo "./lzs list build ${REPO_URL}" >> $ENV_EXPORT_SCRIPT
 echo './lzs $@'  >> $ENV_EXPORT_SCRIPT
