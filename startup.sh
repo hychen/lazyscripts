@@ -92,9 +92,10 @@ case "$DISTRIB_ID" in
         zenity --info --text "Sorry, Lazyscripts can't distinguish your Linux distribution. Please choice your distribution in the list by your self.\n\nNote: If you can't find your Linux distribution in the list, It means Lazyscripts not support your distribution. Please contact develpers. http://code.google.com/p/lazyscripts/"
         DISTRIB_ID=`zenity --list --title="Choice your linux distribution" --radiolist --column "" --column "Linux Distribution" FALSE Fedora FALSE others`
         case $DISTRIB_ID in
-            Fedora)
+            "Fedora")
             DISTRIB_VERSION=`zenity --list --title="Choice your linux distribution version" --radiolist --column "" --column "Linux Distribution Version" FALSE "Fedora 10"`
             WIN_MGR=`zenity --list --title="Choice your window manager" --radiolist --column "" --column "Linux Distribution Version" FALSE "Gnome" FALSE "KDE"`
+            ;;
             *)
             zenity --info --text "Sorry, Lazyscripts not support your Distribution. The program will exit"
             rm $ENV_EXPORT_SCRIPT
