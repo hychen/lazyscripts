@@ -64,7 +64,7 @@ case "$DISTRIB_ID" in
     ;;
     "SUSE LINUX")
     export PLAT_NAME="`uname -i`"
-    echo "export PLAT_NAME=\"`uname -i`\"" $ENV_EXPORT_SCRIPT
+    echo "export PLAT_NAME=\"`uname -i`\"" >> $ENV_EXPORT_SCRIPT
     case $WINDOWMANAGER in
         '/usr/bin/gnome')
         export WIN_MGR='Gnome'
