@@ -41,6 +41,7 @@ def main ():
     has_swiftfox_source = 0
     has_winehq_source = 0
     has_ubuntu_fonts = 0
+    has_playonlinux = 0
     for source in sourceslist:
      if source.disabled == False:
       if source.uri == "http://packages.medibuntu.org/":
@@ -53,6 +54,8 @@ def main ():
        has_winehq_source = 1
       if source.uri == "http://ppa.launchpad.net/fonts/ubuntu":
        has_ubuntu_fonts = 1
+      if source.uri == "http://deb.mulx.net/":
+       has_playonlinux = 1
 
     [entry.set_enabled (False) for entry in sourceslist if entry.invalid == False]
 
@@ -98,6 +101,10 @@ def main ():
        elif distro.id == "Ubuntu":
            ubuntu_fonts_dist = distro.codename
        distro.add_source (uri=ubuntu_fonts_url, dist=ubuntu_fonts_dist, comps=ubuntu_fonts_comps, comment="the source of Ubuntu Fonts (Add by Lazyscripts)")
+    if has_playonlinux:
+       playonlinux_uri = "http://deb.mulx.net/"
+       playonlinux_comps = ["main"]
+       distro.add_source (uri=playonlinux_uri, comps=playonlinux_comps, comment="PlayOnLinux Install Source (Add by Lazyscripts)")
 
 
     sourceslist.backup ()
