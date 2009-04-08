@@ -24,7 +24,7 @@ function init_export_script () {
 }
 
 function choice_repo () {
-    if [ "$DISTRIB_ID" -eq "SUSE LINUX" ] ; then
+    if [ $((DISTRIB_ID)) -eq "SUSE LINUX" ] ; then
         DISTRIB_NAME="openSUSE"
     else
         DISTRIB_NAME="$DISTRIB_ID"
