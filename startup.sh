@@ -27,7 +27,7 @@ function choice_repo () {
     if [ "$DISTRIB_ID" -eq "SUSE LINUX" ] ; then
         DISTRIB_NAME="openSUSE"
     else
-        DISTRIB_NAME=${DISTRIB_ID}
+        DISTRIB_NAME="$DISTRIB_ID"
     fi
     AVAILABLE_REPO=($(cat distrib/repository.conf  | grep "${DISTRIB_NAME}" | cut -d " " -f 1 | grep "^[git].*[git]$"))
     SHOW_REPO=$(for uri in ${AVAILABLE_REPO[*]} ; do echo -n "FALSE $uri " ; done)
