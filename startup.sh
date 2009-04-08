@@ -34,13 +34,12 @@ function choice_repo () {
     USE_REPO=`zenity --list --title="Choice Scripts Repository You Want to Use" --radiolist --column "" --column "Repository URL" ${SHOW_REPO}`
     REPO_URL=($(echo ${USE_REPO/|/ }))
     REPO_NUM=${#REPO_URL[@]}
-    for ((num=0;num<${REPO_NUM};num=$num+1)); do 
-
-        REPO_DIR[$num]="./scriptspoll/$(./lzs repo sign ${REPO_URL[${num}]})"
-        echo "git clone ${REPO_URL[$num]} ${REPO_DIR[$num]}" >> $ENV_EXPORT_SCRIPT
-    done
     echo "REPO_URL=($(echo ${USE_REPO/|/ }))" >> $ENV_EXPORT_SCRIPT
     echo "REPO_NUM=${#REPO_URL[@]}" >> $ENV_EXPORT_SCRIPT
+    for ((num=0;num<${REPO_NUM};num=$num+1)); do 
+        REPO_DIR[$num]="./scriptspoll/\`./lzs repo sign ${REPO_URL[${num}]}\`"
+        echo "git clone ${REPO_URL[$num]} \${REPO_DIR[$num]}" >> $ENV_EXPORT_SCRIPT
+    done
 }
             
 DIR=`dirname $0`
