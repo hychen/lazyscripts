@@ -123,6 +123,13 @@ case "$DISTRIB_ID" in
          DISTRIB_VERSION="10"
          ;;
     esac 
+cat >> ${ENV_EXPORT_SCRIPT} << EOF
+YUMBACK_PID=`pgrep -fl PackageKit | cut -d " " -f 1`
+if [ -z "$YUMBACK_PID" ]; then
+    echo "Kill yumBackend to unlock yum"
+    kill $YUMBACK_PID
+fi  
+EOF
     if rpm -q python-nose python-setuptools git-core ; then
         echo "Require packages installed."
     else
