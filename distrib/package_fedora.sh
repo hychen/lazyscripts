@@ -8,8 +8,8 @@
 
 echo "正在下載與安裝Lazyscripts執行行所需的套件....."
 
-yum update
-yum install git-core python-nose python-setuptools
+yum check-update
+yum -y install git-core python-nose python-setuptools-devel
 
 easy_install GitPython
 

@@ -127,9 +127,9 @@ case "$DISTRIB_ID" in
          ;;
     esac 
 cat >> ${ENV_EXPORT_SCRIPT} << EOF
-YUMBACK_PID=`pgrep -fl PackageKit | cut -d " " -f 1`
-if [ -n "$YUMBACK_PID" ]; then
+if [ -f "/var/run/yum.pid" ]; then
     echo "Remove the lock file"
+    kill `cat /var/run/yum.pid`
     rm -f /var/run/yum.pid
 fi  
 EOF
