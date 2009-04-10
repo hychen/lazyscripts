@@ -12,6 +12,7 @@ export ARCH_NAME="`uname -i`"
 
 echo "正在下載並安裝lazyscripts執行所需的套件...."
 
+zypper ref
 zypper install git git-core python-setuptools
 
 case $ARCH_NAME in
