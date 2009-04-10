@@ -129,8 +129,8 @@ case "$DISTRIB_ID" in
 cat >> ${ENV_EXPORT_SCRIPT} << EOF
 YUMBACK_PID=`pgrep -fl PackageKit | cut -d " " -f 1`
 if [ -n "$YUMBACK_PID" ]; then
-    echo "Kill yumBackend to unlock yum"
-    kill $YUMBACK_PID
+    echo "Remove the lock file"
+    rm -f /var/run/yum.pid
 fi  
 EOF
     if rpm -q python-nose python-setuptools git-core ; then
