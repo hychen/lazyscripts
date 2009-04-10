@@ -47,14 +47,17 @@ function choice_repo () {
     AVAILABLE_REPO=($(cat distrib/repository.conf  | grep "${DISTRIB_NAME}" | cut -d " " -f 1 | grep "^[git].*[git]$"))
     SHOW_REPO=$(for uri in ${AVAILABLE_REPO[*]} ; do echo -n "FALSE $uri " ; done)
     USE_REPO=`zenity --list --title="Choice Scripts Repository You Want to Use" --radiolist --column "" --column "Repository URL" ${SHOW_REPO}`
-    export REPO_URL=($(echo ${USE_REPO/|/ }))
+    REPO_URL=($(echo ${USE_REPO/|/ }))
+    export REPO_URL
     export REPO_NUM=${#REPO_URL[@]}
-    echo "export REPO_URL=($(echo ${USE_REPO/|/ }))" >> $ENV_EXPORT_SCRIPT
+    echo "REPO_URL=($(echo ${USE_REPO/|/ }))" >> $ENV_EXPORT_SCRIPT
+    echo "export REPO_URL" >> $ENV_EXPORT_SCRIPT
     echo "export REPO_NUM=${#REPO_URL[@]}" >> $ENV_EXPORT_SCRIPT
     for ((num=0;num<${REPO_NUM};num=$num+1)); do 
-        echo "export REPO_DIR[$num]=\"./scriptspoll/\`./lzs repo sign ${REPO_URL[${num}]}\`\"" >> $ENV_EXPORT_SCRIPT 
+        echo "REPO_DIR[$num]=\"./scriptspoll/\`./lzs repo sign ${REPO_URL[${num}]}\`\"" >> $ENV_EXPORT_SCRIPT 
         echo "git clone ${REPO_URL[$num]} \${REPO_DIR[$num]}" >> $ENV_EXPORT_SCRIPT
     done
+    echo "export REPO_DIR" >> $ENV_EXPORT_SCRIPT
 }
             
 DIR=`dirname $0`
