@@ -24,11 +24,12 @@ function init_export_script () {
 }
 
 function choice_repo () {
-    if [ "$DISTRIB_ID" == "SUSE LINUX" ] ; then
-        DISTRIB_NAME="openSUSE"
-    else
-        DISTRIB_NAME="$DISTRIB_ID"
-    fi
+#    if [ "$DISTRIB_ID" == "SUSE LINUX" ] ; then
+#        DISTRIB_NAME="openSUSE"
+#    else
+#        DISTRIB_NAME="$DISTRIB_ID"
+#    fi
+    DISTRIB_NAME="$DISTRIB_ID"
     AVAILABLE_REPO=($(cat distrib/repository.conf  | grep "${DISTRIB_NAME}" | cut -d " " -f 1 | grep "^[git].*[git]$"))
     SHOW_REPO=$(for uri in ${AVAILABLE_REPO[*]} ; do echo -n "FALSE $uri " ; done)
     USE_REPO=`zenity --list --title="Choice Scripts Repository You Want to Use" --radiolist --column "" --column "Repository URL" ${SHOW_REPO}`
@@ -48,13 +49,20 @@ cd "$DIR"
 init_export_script
 get_distro_info
 
+if [ "$DISTRIB_ID" == "SUSE LINUX" ] ; then
+    case "$DISTRIB_VERSION" in
+        "11.1"|"11.0")
+            DISTRIB_ID="openSUSE"
+        ;;
+    esac
+fi
 
 case "$DISTRIB_ID" in
     "Ubuntu" | "Debian")
         export PLAT_NAME="`uname -a | cut -d " " -f 12`"
         echo "export PLAT_NAME=\"`uname -a | cut -d " " -f 12`\"" >> $ENV_EXPORT_SCRIPT
         echo "Check for required packsges..."
-        if dpkg -l python-nose ; then
+        if dpkg -l python-nose python-setuptools git-core ; then
             echo "Require packages installed."
         else
             echo "Require packages not installed."
@@ -62,7 +70,7 @@ case "$DISTRIB_ID" in
         fi
         
     ;;
-    "SUSE LINUX")
+    "openSUSE")
     export PLAT_NAME="`uname -i`"
     echo "export PLAT_NAME=\"`uname -i`\"" >> $ENV_EXPORT_SCRIPT
     case $WINDOWMANAGER in
@@ -80,7 +88,12 @@ case "$DISTRIB_ID" in
         echo "export WIN_MGR=\"\"" >> $ENV_EXPORT_SCRIPT
         ;;
     esac
-    
+    if rpm -q python-nose python-setuptools git-core ; then 
+        echo "Require packages installed."
+    else
+        echo "Require packages not installed."
+        echo "distrib/package_opensuse.sh" >> $ENV_EXPORT_SCRIPT
+    fi 
     
 
     ;;
@@ -92,8 +105,24 @@ case "$DISTRIB_ID" in
         DISTRIB_ID=`zenity --list --title="Choice your linux distribution" --radiolist --column "" --column "Linux Distribution" FALSE Fedora FALSE others`
         case $DISTRIB_ID in
             "Fedora")
+            export PLAT_NAME="`uname -i`"
+            echo "export PLAT_NAME=\"`uname -i`\"" >> $ENV_EXPORT_SCRIPT
+
+
             DISTRIB_VERSION=`zenity --list --title="Choice your linux distribution version" --radiolist --column "" --column "Linux Distribution Version" FALSE "Fedora 10"`
             WIN_MGR=`zenity --list --title="Choice your window manager" --radiolist --column "" --column "Linux Distribution Version" FALSE "Gnome" FALSE "KDE"`
+            case $DISTRIB_VERSION in 
+                "Fedora 10")
+                DISTRIB_VERSION="10"
+                ;;
+            esac 
+            if rpm -q python-nose python-setuptools git-core ; then
+                echo "Require packages installed."
+            else
+                echo "Require packages not installed."
+                echo "distrib/package_fedora.sh" >> $ENV_EXPORT_SCRIPT
+            fi
+
             ;;
             *)
             zenity --info --text "Sorry, Lazyscripts not support your Distribution. The program will exit"
