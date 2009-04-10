@@ -101,7 +101,7 @@ case "$DISTRIB_ID" in
         echo "Require packages not installed."
         echo "distrib/package_opensuse.sh" >> $ENV_EXPORT_SCRIPT
     fi 
-    
+    ;;
     
     "Fedora")
     export PLAT_NAME="`uname -i`"
