@@ -1,14 +1,28 @@
 #!/bin/bash
 
 function get_distro_info () {
-    export DISTRIB_CODENAME=`lsb_release -cs`
-    echo "export DISTRIB_CODENAME=`lsb_release -cs`" >> "$ENV_EXPORT_SCRIPT"
-
-    export DISTRIB_VERSION=`lsb_release -rs`
-    echo "export DISTRIB_VERSION=`lsb_release -rs`" >> "$ENV_EXPORT_SCRIPT"
-
+if which lsb_release ; then
     export DISTRIB_ID=`lsb_release -is`
+    export DISTRIB_CODENAME=`lsb_release -cs`
+    export DISTRIB_VERSION=`lsb_release -rs`
+    if [ "$DISTRIB_ID" == "SUSE LINUX" ] ; then
+        case "$DISTRIB_VERSION" in
+            "11.1"|"11.0")
+                export DISTRIB_ID="openSUSE"
+            ;;
+        esac
+    fi
+    echo "export DISTRIB_CODENAME=`lsb_release -cs`" >> "$ENV_EXPORT_SCRIPT"
+    echo "export DISTRIB_VERSION=`lsb_release -rs`" >> "$ENV_EXPORT_SCRIPT"
     echo "export DISTRIB_ID=`lsb_release -is`" >> "$ENV_EXPORT_SCRIPT"
+else
+    echo "Sorry, Lazyscripts can't distinguish your Linux distribution."
+    echo "Please choice your distribution in the list."
+    zenity --info --text "Sorry, Lazyscripts can't distinguish your Linux distribution. Please choice your distribution in the list by your self.\n      \nNote: If you can't find your Linux distribution in the list, It means Lazyscripts not support your distribution. Please contact develpers. http://code.google.com/p/lazyscripts/"
+    DISTRIB_ID=`zenity --list --title="Choice your linux distribution" --radiolist --column "" --column "Linux Distribution" FALSE Fedora FALSE others`
+    export DISTRIB_ID=${DISTRIB_ID}
+    echo "export DISTRIB_ID=${DISTRIB_ID}" >> "$ENV_EXPORT_SCRIPT"
+fi
 }
 
 function init_export_script () {
@@ -33,12 +47,12 @@ function choice_repo () {
     AVAILABLE_REPO=($(cat distrib/repository.conf  | grep "${DISTRIB_NAME}" | cut -d " " -f 1 | grep "^[git].*[git]$"))
     SHOW_REPO=$(for uri in ${AVAILABLE_REPO[*]} ; do echo -n "FALSE $uri " ; done)
     USE_REPO=`zenity --list --title="Choice Scripts Repository You Want to Use" --radiolist --column "" --column "Repository URL" ${SHOW_REPO}`
-    REPO_URL=($(echo ${USE_REPO/|/ }))
-    REPO_NUM=${#REPO_URL[@]}
-    echo "REPO_URL=($(echo ${USE_REPO/|/ }))" >> $ENV_EXPORT_SCRIPT
-    echo "REPO_NUM=${#REPO_URL[@]}" >> $ENV_EXPORT_SCRIPT
+    export REPO_URL=($(echo ${USE_REPO/|/ }))
+    export REPO_NUM=${#REPO_URL[@]}
+    echo "export REPO_URL=($(echo ${USE_REPO/|/ }))" >> $ENV_EXPORT_SCRIPT
+    echo "export REPO_NUM=${#REPO_URL[@]}" >> $ENV_EXPORT_SCRIPT
     for ((num=0;num<${REPO_NUM};num=$num+1)); do 
-        echo "REPO_DIR[$num]=\"./scriptspoll/\`./lzs repo sign ${REPO_URL[${num}]}\`\"" >> $ENV_EXPORT_SCRIPT 
+        echo "export REPO_DIR[$num]=\"./scriptspoll/\`./lzs repo sign ${REPO_URL[${num}]}\`\"" >> $ENV_EXPORT_SCRIPT 
         echo "git clone ${REPO_URL[$num]} \${REPO_DIR[$num]}" >> $ENV_EXPORT_SCRIPT
     done
 }
@@ -49,13 +63,6 @@ cd "$DIR"
 init_export_script
 get_distro_info
 
-if [ "$DISTRIB_ID" == "SUSE LINUX" ] ; then
-    case "$DISTRIB_VERSION" in
-        "11.1"|"11.0")
-            DISTRIB_ID="openSUSE"
-        ;;
-    esac
-fi
 
 case "$DISTRIB_ID" in
     "Ubuntu" | "Debian")
@@ -95,41 +102,39 @@ case "$DISTRIB_ID" in
         echo "distrib/package_opensuse.sh" >> $ENV_EXPORT_SCRIPT
     fi 
     
+    
+    "Fedora")
+    export PLAT_NAME="`uname -i`"
+    echo "export PLAT_NAME=\"`uname -i`\"" >> $ENV_EXPORT_SCRIPT
+
+    DISTRIB_VERSION=`zenity --list --title="Choice your linux distribution version" --radiolist --column "" --column "Linux Distribution Version" FALSE "Fedora 10"`
+    case $DISTRIB_VERSION in
+        "Fedora 10")
+        export DISTRIB_VERSION="10"
+        ;;
+    esac
+    echo "export DISTRIB_VERSION=${DISTRIB_VERSION}" >> $ENV_EXPORT_SCRIPT
+
+    WIN_MGR=`zenity --list --title="Choice your window manager" --radiolist --column "" --column "Linux Distribution Version" FALSE "Gnome" FALSE "KDE"`
+    export WIN_MGR=${WIN_MGR}
+    echo "export WIN_MGR=${WIN_MGR}" >> $ENV_EXPORT_SCRIPT
+    case $DISTRIB_VERSION in 
+         "Fedora 10")
+         DISTRIB_VERSION="10"
+         ;;
+    esac 
+    if rpm -q python-nose python-setuptools git-core ; then
+        echo "Require packages installed."
+    else
+        echo "Require packages not installed."
+        echo "distrib/package_fedora.sh" >> $ENV_EXPORT_SCRIPT
+    fi
 
     ;;
     *)
-    #Sample code for other distribution.
-        echo "Sorry, Lazyscripts can't distinguish your Linux distribution."
-        echo "Please choice your distribution in the list."
-        zenity --info --text "Sorry, Lazyscripts can't distinguish your Linux distribution. Please choice your distribution in the list by your self.\n\nNote: If you can't find your Linux distribution in the list, It means Lazyscripts not support your distribution. Please contact develpers. http://code.google.com/p/lazyscripts/"
-        DISTRIB_ID=`zenity --list --title="Choice your linux distribution" --radiolist --column "" --column "Linux Distribution" FALSE Fedora FALSE others`
-        case $DISTRIB_ID in
-            "Fedora")
-            export PLAT_NAME="`uname -i`"
-            echo "export PLAT_NAME=\"`uname -i`\"" >> $ENV_EXPORT_SCRIPT
-
-
-            DISTRIB_VERSION=`zenity --list --title="Choice your linux distribution version" --radiolist --column "" --column "Linux Distribution Version" FALSE "Fedora 10"`
-            WIN_MGR=`zenity --list --title="Choice your window manager" --radiolist --column "" --column "Linux Distribution Version" FALSE "Gnome" FALSE "KDE"`
-            case $DISTRIB_VERSION in 
-                "Fedora 10")
-                DISTRIB_VERSION="10"
-                ;;
-            esac 
-            if rpm -q python-nose python-setuptools git-core ; then
-                echo "Require packages installed."
-            else
-                echo "Require packages not installed."
-                echo "distrib/package_fedora.sh" >> $ENV_EXPORT_SCRIPT
-            fi
-
-            ;;
-            *)
-            zenity --info --text "Sorry, Lazyscripts not support your Distribution. The program will exit"
-            rm $ENV_EXPORT_SCRIPT
-            exit
-            ;;
-        esac
+    zenity --info --text "Sorry, Lazyscripts not support your Distribution. The program will exit"
+    rm $ENV_EXPORT_SCRIPT
+    exit
     ;;
 esac
 
