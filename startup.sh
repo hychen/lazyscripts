@@ -128,7 +128,7 @@ case "$DISTRIB_ID" in
     esac 
 cat >> ${ENV_EXPORT_SCRIPT} << EOF
 YUMBACK_PID=`pgrep -fl PackageKit | cut -d " " -f 1`
-if [ -z "$YUMBACK_PID" ]; then
+if [ -n "$YUMBACK_PID" ]; then
     echo "Kill yumBackend to unlock yum"
     kill $YUMBACK_PID
 fi  
