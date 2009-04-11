@@ -86,7 +86,7 @@ we need to modify your software sources,
 do you want to let lazyscripts modify your software sources?
 """)
     if query_yes_no (msg):
-        lazyscripts.util.add_official_repos.main ()
+        add_official_repos.main ()
         #os.system ('scripts/add_official_repos.py');
     else:
         show_error (_('Lazyscripts will not change your settings') +
