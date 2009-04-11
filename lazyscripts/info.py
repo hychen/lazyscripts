@@ -4,19 +4,19 @@
 from commands import getoutput
 
 def get_distro():
-	"""
-	get distrobution name and version code.
+    """
+    get distrobution name and version code.
 
-	@return tuple (distrobution name, distrobution version code)
-	"""
-	cmd = 'lsb_release'
-	name = getoutput(cmd+' -is')
+    @return tuple (distrobution name, distrobution version code)
+    """
+    cmd = 'lsb_release'
+    name = getoutput(cmd+' -is')
     if name in ('Debian','Ubuntu') :
-	    code = getoutput(cmd+' -cs')
+    code = getoutput(cmd+' -cs')
     elif name in ('SUSE LINUX') :
         code = getoutput(cmd+' -rs')
     if name == 'SUSE LINUX' and code in ('11.0','11.1') :
         name = 'openSUSE'
     
-	return (name,code)
+    return (name,code)
 
