@@ -133,7 +133,7 @@ if [ -f "/var/run/yum.pid" ]; then
     rm -f /var/run/yum.pid
 fi  
 EOF
-    if rpm -q python-nose python-setuptools git-core ; then
+    if rpm -q python-nose python-setuptools-devel git-core ; then
         echo "Require packages installed."
     else
         echo "Require packages not installed."
