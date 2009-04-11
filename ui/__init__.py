@@ -15,7 +15,10 @@ from lazyscripts import info
 
 from lazyscripts.ui.gui import query_yes_no, show_error
 from lazyscripts.util import detect
-import lazyscripts.util.add_official_repos
+distro, codename = info.get_distro()
+if distro in ('Ubuntu','Debian') :
+    import lazyscripts.util.add_official_repos_debian_ubuntu as add_official_repos
+
 
 try:
     locale.setlocale (locale.LC_ALL, "")

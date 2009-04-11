@@ -6,6 +6,9 @@
 # read and change the config of source.list through aptsources module.
 # read everyline in source.list as sourcelist[:] object, every attribute means a column
 # Released under GNU General Public License
+"""
+Change the repositorys in /etc/apt/sources.list as faster mirror.
+"""
 
 import aptsources
 from aptsources.sourceslist import SourcesList

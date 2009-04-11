@@ -11,5 +11,8 @@ def get_distro():
 	"""
 	cmd = 'lsb_release'
 	name = getoutput(cmd+' -is')
-	code = getoutput(cmd+' -cs')
+    if name in ('Debian','Ubuntu') :
+	    code = getoutput(cmd+' -cs')
+    elif name in ('SUSE LINUX') :
+        code = getoutput(cmd+' -rs')
 	return (name,code)
