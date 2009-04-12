@@ -1,0 +1,84 @@
+Quick Start For Developer
+=========================
+
+How To Setup Developement Enviorment
+====================================
+
+Thanks for your interesting in our project, to develop lazyscripts, 
+you must install the following packages.
+
+    1. Python Nose - the python test utils framwork.
+    2. Git -  the stupid content tracker.
+    3. GitPython - the python git binding library.
+   
+Python Setuptools Installation
+===============================
+
+python setuptools is also a good way to install python modules, in some
+cases, it's a much better when the python modules you want to use is too 
+new.
+
+    root@host # apt-get install python-setuptools
+
+Python Nose Installation
+========================
+
+For software quality issue, we wrote a lot of test cases which based on 
+Python Nose Test Framwork to catch exceptions or errors we don't know 
+after the codes is modified. It recommands that you writing test case 
+before writing your codes.
+
+then install python nose
+
+    root@host # apt-get install python-nose
+
+Git Installation
+================
+
+No matter that the lazsycrtips backend is based on git, or we use git to 
+control our codes, you always play git as you are a lazyscripts developer
+,so you have to know git.
+
+installation in debian or ubuntu.
+
+    root@host # apt-get install git
+
+GitPytyhon Installation
+=======================
+
+so on, we also need a git python binding library, it's also eazy to 
+install that useing python setuptools.
+
+    root@host # eazy_install gitpython
+
+Prepare Test Datas
+==================
+
+    user@host $ make init_devenv
+
+Run Test Cases
+==============
+
+excute tests but no error output.
+
+    user@host $ make test
+
+excute tests and display error output.
+
+    user@host $ make devtest
+
+Fetch Scripts Repositry To Local Machain.
+========================================
+
+    user@host $ make fetch
+
+How to build a scripts list file
+================================
+
+type this command, and this means that creating a new scripts list file 
+for the remote git repositry whch has updated. 
+
+now, the official repositry is mantianed by billy.
+
+$ ./lzs list build git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git
+
