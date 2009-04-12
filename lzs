@@ -17,7 +17,6 @@ def _check_root():
 try:
     cmder=sys.argv[1]
     if 'repo' == cmder.strip():
-        _check_root()
         from lazyscripts.repo import sign_repopath
         action=sys.argv[2]
         if 'sign' == action:
