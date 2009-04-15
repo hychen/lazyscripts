@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR ORGANIZATION
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Yuren Ju <yurenju@gmail.com, 2009.
 #
 msgid ""
 msgstr ""
@@ -79,16 +79,12 @@ msgstr "<b><big>Lazyscripts - Linux 懶人包"
 
 #: ui/__init__.py:202
 msgid ""
-"\357\274\214Linux end user's good friend</big></b>\n"
+", Linux end user's good friend</big></b>\n"
 "\n"
 "\n"
 msgstr ""
 "，Linux 新手的好朋友</big></b>\n"
-"幫你解決安裝後煩人的小設定，安裝一些好用軟體，\n"
-"省去在茫茫網海中搜尋的時間。\n"
-"\n"
-"請從左邊的清單中，點選各個分類，選擇你要套用的項目。\n"
-"\n"
+"幫你解決安裝後煩人的小設定，安裝一些好用軟體，\n省去在茫茫網海中搜尋的時間。\n\n請從左邊的清單中，點選各個分類，選擇你要套用的項目。\n"
 "\n"
 
 #: ui/__init__.py:203
@@ -96,13 +92,16 @@ msgid ""
 "Copyright (C) 2007, Design and developed by PCMan, Yuren Ju, hychen and billy\n"
 "\n"
 msgstr ""
+"Copyright (C) 2009, 由 Lazyscripts 開發者共同設計、開發\n"
+"\n"
+
 
 #: ui/__init__.py:204
 msgid "Project Lazyscripts - "
-msgstr ""
+msgstr "Lazyscripts 專案"
 
 #: ui/__init__.py:205
-msgid "<span color=\"blue\">FIXME: HERE IS WEBSITE URL</span>"
+msgid "<span color=\"blue\">http://sites.google.com/site/lazyscripts/</span>"
 msgstr ""
 
 #: ui/__init__.py:218
@@ -123,23 +122,25 @@ msgstr "結束"
 
 #: ui/__init__.py:413
 msgid "do you want to quit lazyscripts?"
-msgstr ""
+msgstr "你是否要離開 Lazyscripts 懶人包？"
 
 #: ui/__init__.py:435
 msgid "Linux Lazy pack"
-msgstr ""
+msgstr "Linux 懶人包"
 
 #: ui/__init__.py:460
 msgid ""
 "\n"
 "\033[1;36mLazyscripts - linux lazy pack run finish!\033[1;32m   have fun for linux!\033[m\n"
 msgstr ""
+"\n"
+"\033[1;36mLazyscripts - Linux 懶人包執行完成！\033[1;32m   祝你使用 Linux 愉快！\033[m\n"
 
 #: ui/__init__.py:486
 msgid "error"
-msgstr ""
+msgstr "錯誤"
 
 #: ui/__init__.py:486
 msgid "no avalible internet connection, lazyscripts cannot execute."
-msgstr ""
+msgstr "沒有可用的網路連線，Lazyscripts 無法執行。"
 
