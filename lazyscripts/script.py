@@ -90,6 +90,8 @@ class Script(object):
         self.hide = script_meta.hide
         self.debian = script_meta.debian
         self.ubuntu = script_meta.ubuntu
+        # is it selected?
+        self.selected = False
 
     def __getattr__(self, key):
         try:
@@ -131,7 +133,9 @@ class Script(object):
         cat_tree = repo.get(list_entry['category'])
         if not cat_tree:
             return None
-        return cls.from_blob(cat_tree.get(list_entry['id']))
+        script =  cls.from_blob(cat_tree.get(list_entry['id']))
+        script.selected = list_entry['selected']
+        return script
 
     @classmethod
     def from_tree(cls, tree):
