@@ -4,6 +4,9 @@ from os import path as os_path
 libdir = 'lazyscript'
 testcase = 't'
 
+# defult scriptspool repositry path for testing.
+remote_repo = "git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git"
+
 def get_root():
 	dir = os_path.dirname(__file__)+'/../'
 	root= os_path.abspath(dir)

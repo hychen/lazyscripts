@@ -36,10 +36,7 @@ class Repo(git.Repo):
         s = "cd %s && git pull" % self.path.replace('.git','')
         system(s)
 
-    def get(self, name):
-        return self.get_blob(name)
-
-    def get(self, obj_name, commit_id='', branch=''):
+    def get(self, obj_name, commit_id='HEAD', branch=None):
         """
         get object by commit.
 
@@ -53,7 +50,7 @@ class Repo(git.Repo):
             commit_id += branch+'~'+commit_id
 
         try:
-            tree = self.commits(commit_id)[0].tree
+           tree = self.commits(commit_id)[0].tree
         except IndexError:
             return None
 

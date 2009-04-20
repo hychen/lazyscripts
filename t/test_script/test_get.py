@@ -1,26 +1,26 @@
 from lazyscripts.category import Category
 from lazyscripts.script import ScriptSet, ScriptsList, ScriptsBuilder
-from lazyscripts.repo import git
-from t import get_repodir, get_datadir
+from lazyscripts.repo import git, sign_repopath
+from t import get_repodir, get_datadir, remote_repo
 
 set = ScriptSet.from_scriptslist(
-            ScriptsList(get_datadir()+'/scripts.list'))
+            ScriptsList(get_datadir()+'/scripts.list'), True)
 
-_repos = {get_datadir()+'/scriptspoll/7796c33a9348485b055f671c686568b0/':
-                git.Repo(get_datadir()+'/scriptspoll/7796c33a9348485b055f671c686568b0/')}
-
+_repos = {remote_repo:git.Repo(get_repodir()+'/'+sign_repopath(remote_repo))}
 _cat = Category(name='Networking', scripts_builder=ScriptsBuilder(_repos))
+e = {'repo': remote_repo, 
+    'category': 'Networking',
+    'name': 'ie6', 
+    'id': 'ie6',
+    'selected':False}
+_cat.add_entry(e)
 
 def test_get_script_from_category():
     "test to get script form a category."
-    e = {'repo': get_datadir()+'/scriptspoll/7796c33a9348485b055f671c686568b0/', 'category': 'Networking', 'name': 'ie6_after.sh', 'id': 'ie6_after.sh'}
-    _cat.add_entry(e)
-    assert 'Script' == _cat.get('ie6_after.sh').__class__.__name__
+    assert 'Script' == _cat.get('ie6').__class__.__name__
 
 def test_get_categories():
     'test to get categories form scripts list'
-    set = ScriptSet.from_scriptslist(
-                ScriptsList(get_datadir()+'/scripts.list'))
     # checks all items are Category class.
     for category in set.categories():
         assert 'Category' == category.__class__.__name__, category.__class__
@@ -41,7 +41,5 @@ def test_get_sccript_from_category():
     assert 'Script' == script.__class__.__name__
 
 def test_get_subscript():
-    e = {'repo': get_datadir()+'/scriptspoll/7796c33a9348485b055f671c686568b0/', 'category': 'Networking', 'name': 'ie6', 'id': 'ie6'}
-    _cat.add_entry(e)
     subscripts = _cat.get('ie6').get_subscripts()
-    assert subscripts[0].name == 'ie6_seluser.py', subscripts[0].name
+    assert subscripts[0].name == 'add-apt-sources', subscripts[0].name

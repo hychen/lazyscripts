@@ -249,7 +249,7 @@ class ToolListWidget:
             tool_page.img = category._icon_name
 
             for script in category.items():
-                tool = Tool (script, False)
+                tool = Tool (script, script.selected)
                 tool_page.tools.append(tool)
 
             tool_page.get_widget()

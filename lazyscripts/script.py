@@ -211,7 +211,7 @@ class ScriptSet(object):
         return self._repos.get(repo_path)
 
     @classmethod
-    def from_scriptslist(cls, scripts_list):
+    def from_scriptslist(cls, scripts_list, testmode=False):
         """
         get script set from source list.
         """
@@ -224,7 +224,11 @@ class ScriptSet(object):
         for item in scripts_list.items():
             if not set._repos.has_key(item.get('repo')):
                 # clone the repostiry if the repositry is not exists.
-                set._repos[item.get('repo')] = create_scriptrepo(item.get('repo'), 'scriptspoll')
+                if testmode:
+                    local_dir = 't/datas/scriptspoll'
+                else:
+                    local_dir = 'scriptspoll'
+                set._repos[item.get('repo')] = create_scriptrepo(item.get('repo'), local_dir)
 
             if not set._repo_table.get(item.get('repo')):
                 set._repo_table[item.get('repo')] = []
@@ -295,10 +299,8 @@ class ScriptsList(object):
                         'repo':repo_path,
                         'category':category.name,
                          'name':script.name,
-                         'id':script_name}
-                #TODO please fix me
-                #if category.name == 'Common':
-                #    entry['selected'] == 'y'
+                         'id':script_name,
+                         'selected':False}
                 list._items.append(entry)
         return list
 

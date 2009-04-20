@@ -1,7 +1,7 @@
 from lazyscripts.script import ScriptsList
-from t import get_repodir, get_datadir
+from t import get_repodir, get_datadir, remote_repo
 
-scripts_list = ScriptsList(get_datadir()+'/source.list')
+scripts_list = ScriptsList(get_datadir()+'/scripts.list')
 repo_path = get_repodir()
 
 def test_save_list():
@@ -21,9 +21,8 @@ def test_load_list():
 	assert scripts_list.items()[0]['name'] == 'firstscript',\
 			"can not load source."
 
-# @FIXME the scripts poll name is changed.
-def _test_from_repo():
+def test_from_repo():
 	"test to create a source list from a git repositry."
-	list = ScriptsList.from_repo(get_datadir()+'scriptspoll/7796c33a9348485b055f671c686568b0/')
+	list = ScriptsList.from_repo(remote_repo, get_repodir())
 	list.path = get_datadir()+'/scripts.list'
 	list.save()
