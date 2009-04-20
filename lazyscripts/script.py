@@ -9,7 +9,7 @@ import os
 from lazyscripts.repo import git, create_scriptrepo, sign_repopath
 from lazyscripts import meta
 from lazyscripts.category import Category
-from lazyscripts.util import osapi
+#from lazyscripts.util import osapi
 
 class ScriptMeta(object):
 
@@ -134,7 +134,10 @@ class Script(object):
         if not cat_tree:
             return None
         script =  cls.from_blob(cat_tree.get(list_entry['id']))
-        script.selected = list_entry['selected']
+
+        if list_entry.has_key ('selected'):
+            script.selected = list_entry['selected']
+
         return script
 
     @classmethod

@@ -192,6 +192,4 @@ echo "export WGET=\"wget --tries=2 --timeout=120 -c\"" >> $ENV_EXPORT_SCRIPT
 
 
 echo  >> $ENV_EXPORT_SCRIPT
-#echo 'rm -rf scripts.list' >> $ENV_EXPORT_SCRIPT
-echo './lzs list build $SCRIPTS_REPO' >> $ENV_EXPORT_SCRIPT
 echo './lzs $@'  >> $ENV_EXPORT_SCRIPT
