@@ -1,32 +1,9 @@
 #!/bin/bash
 
+set -x
+
 DEB_SCRIPTS_REPO='git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git'
 SUSE_SCRIPTS_REPO='git://github.com/mrmoneyc/lazyscripts_pool_opensuse.git'
-
-function get_distro_info () {
-if which lsb_release ; then
-    export DISTRIB_ID=`lsb_release -is`
-    export DISTRIB_CODENAME=`lsb_release -cs`
-    export DISTRIB_VERSION=`lsb_release -rs`
-    if [ "$DISTRIB_ID" == "SUSE LINUX" ] ; then
-        case "$DISTRIB_VERSION" in
-            "11.1"|"11.0")
-                export DISTRIB_ID="openSUSE"
-            ;;
-        esac
-    fi
-    echo "export DISTRIB_CODENAME=`lsb_release -cs`" >> "$ENV_EXPORT_SCRIPT"
-    echo "export DISTRIB_VERSION=`lsb_release -rs`" >> "$ENV_EXPORT_SCRIPT"
-    echo "export DISTRIB_ID=`lsb_release -is`" >> "$ENV_EXPORT_SCRIPT"
-else
-    echo "Sorry, Lazyscripts can't distinguish your Linux distribution."
-    echo "Please choice your distribution in the list."
-    zenity --info --text "Sorry, Lazyscripts can't distinguish your Linux distribution. Please choice your distribution in the list by your self.\n      \nNote: If you can't find your Linux distribution in the list, It means Lazyscripts not support your distribution. Please contact develpers. http://code.google.com/p/lazyscripts/"
-    DISTRIB_ID=`zenity --list --title="Choice your linux distribution" --radiolist --column "" --column "Linux Distribution" FALSE Fedora FALSE others`
-    export DISTRIB_ID=${DISTRIB_ID}
-    echo "export DISTRIB_ID=${DISTRIB_ID}" >> "$ENV_EXPORT_SCRIPT"
-fi
-}
 
 function init_export_script () {
     mkdir -p tmp
@@ -40,29 +17,28 @@ function init_export_script () {
     echo "#!/bin/bash" > "$ENV_EXPORT_SCRIPT"
 }
 
-function choice_repo () {
-#    if [ "$DISTRIB_ID" == "SUSE LINUX" ] ; then
-#        DISTRIB_NAME="openSUSE"
-#    else
-#        DISTRIB_NAME="$DISTRIB_ID"
-#    fi
-    DISTRIB_NAME="$DISTRIB_ID"
-    AVAILABLE_REPO=($(cat distrib/repository.conf  | grep "${DISTRIB_NAME}" | cut -d " " -f 1 | grep "^[git].*[git]$"))
-    SHOW_REPO=$(for uri in ${AVAILABLE_REPO[*]} ; do echo -n "FALSE $uri " ; done)
-    USE_REPO=`zenity --list --title="Choice Scripts Repository You Want to Use" --radiolist --column "" --column "Repository URL" ${SHOW_REPO}`
-    REPO_URL=($(echo ${USE_REPO/|/ }))
-    export REPO_URL
-    export REPO_NUM=${#REPO_URL[@]}
-    echo "REPO_URL=($(echo ${USE_REPO/|/ }))" >> $ENV_EXPORT_SCRIPT
-    echo "export REPO_URL" >> $ENV_EXPORT_SCRIPT
-    echo "export REPO_NUM=${#REPO_URL[@]}" >> $ENV_EXPORT_SCRIPT
-    for ((num=0;num<${REPO_NUM};num=$num+1)); do 
-        echo "REPO_DIR[$num]=\"./scriptspoll/\`./lzs repo sign ${REPO_URL[${num}]}\`\"" >> $ENV_EXPORT_SCRIPT 
-        echo "git clone ${REPO_URL[$num]} \${REPO_DIR[$num]}" >> $ENV_EXPORT_SCRIPT
-    done
-    echo "export REPO_DIR" >> $ENV_EXPORT_SCRIPT
+function get_distro_info () {
+    if which lsb_release ; then
+        export DISTRIB_ID=`lsb_release -is`
+        export DISTRIB_CODENAME=`lsb_release -cs`
+        export DISTRIB_VERSION=`lsb_release -rs`
+        if [ "$DISTRIB_ID" == "SUSE LINUX" ] ; then
+            case "$DISTRIB_VERSION" in
+                "11.1"|"11.0")
+                    export DISTRIB_ID="openSUSE"
+                ;;
+            esac
+        fi
+        echo "export DISTRIB_CODENAME=`lsb_release -cs`" >> "$ENV_EXPORT_SCRIPT"
+        echo "export DISTRIB_VERSION=`lsb_release -rs`" >> "$ENV_EXPORT_SCRIPT"
+        echo "export DISTRIB_ID=`lsb_release -is`" >> "$ENV_EXPORT_SCRIPT"
+    else
+        echo "Sorry, Lazyscripts can't distinguish your Linux distribution."
+        exit
+    fi
 }
             
+# some workaround
 DIR=`dirname $0`
 cd "$DIR"
 
@@ -72,10 +48,9 @@ get_distro_info
 
 case "$DISTRIB_ID" in
     "Ubuntu" | "Debian")
+        #PLAT_NAME looks like "i686" or or other text
         export PLAT_NAME="`uname -a | cut -d " " -f 12`"
         echo "export PLAT_NAME=\"`uname -a | cut -d " " -f 12`\"" >> $ENV_EXPORT_SCRIPT
-	export SCRIPTS_REPO=$DEB_SCRIPTS_REPO
-	echo "SCRIPTS_REPO='${SCRIPTS_REPO}'" >> $ENV_EXPORT_SCRIPT
         echo "Check for required packsges..."
         if dpkg -l python-nose python-setuptools git-core ; then
             echo "Require packages installed."
@@ -85,77 +60,19 @@ case "$DISTRIB_ID" in
         fi
         
     ;;
-    "openSUSE")
-    export PLAT_NAME="`uname -i`"
-    echo "export PLAT_NAME=\"`uname -i`\"" $ENV_EXPORT_SCRIPT
-	export SCRIPTS_REPO=$SUSE_SCRIPTS_REPO
-	echo "SCRIPTS_REPO='${SCRIPTS_REPO}'" >> $ENV_EXPORT_SCRIPT
-    case $WINDOWMANAGER in
-        '/usr/bin/gnome')
-        export WIN_MGR='Gnome'
-        echo "export WIN_MGR=\"Gnome\"" >> $ENV_EXPORT_SCRIPT
-        ;;
-        '/usr/bin/startkde')
-        export WIN_MGR='KDE'
-        echo "export WIN_MGR=\"KDE\"" >> $ENV_EXPORT_SCRIPT
-        ;;
-        *)
-        echo "Lazysciprs can't identified your window manager"
-        export WIN_MGR=''
-        echo "export WIN_MGR=\"\"" >> $ENV_EXPORT_SCRIPT
-        ;;
-    esac
-    if rpm -q python-nose python-setuptools git-core ; then 
-        echo "Require packages installed."
-    else
-        echo "Require packages not installed."
-        echo "distrib/package_opensuse.sh" >> $ENV_EXPORT_SCRIPT
-    fi 
-    ;;
-    
-    "Fedora")
-    export PLAT_NAME="`uname -i`"
-    echo "export PLAT_NAME=\"`uname -i`\"" >> $ENV_EXPORT_SCRIPT
 
-    DISTRIB_VERSION=`zenity --list --title="Choice your linux distribution version" --radiolist --column "" --column "Linux Distribution Version" FALSE "Fedora 10"`
-    case $DISTRIB_VERSION in
-        "Fedora 10")
-        export DISTRIB_VERSION="10"
-        ;;
-    esac
-    echo "export DISTRIB_VERSION=${DISTRIB_VERSION}" >> $ENV_EXPORT_SCRIPT
-
-    WIN_MGR=`zenity --list --title="Choice your window manager" --radiolist --column "" --column "Linux Distribution Version" FALSE "Gnome" FALSE "KDE"`
-    export WIN_MGR=${WIN_MGR}
-    echo "export WIN_MGR=${WIN_MGR}" >> $ENV_EXPORT_SCRIPT
-    case $DISTRIB_VERSION in 
-         "Fedora 10")
-         DISTRIB_VERSION="10"
-         ;;
-    esac 
-cat >> ${ENV_EXPORT_SCRIPT} << EOF
-if [ -f "/var/run/yum.pid" ]; then
-    echo "Remove the lock file"
-    kill `cat /var/run/yum.pid`
-    rm -f /var/run/yum.pid
-fi  
-EOF
-    if rpm -q python-nose python-setuptools-devel git-core ; then
-        echo "Require packages installed."
-    else
-        echo "Require packages not installed."
-        echo "distrib/package_fedora.sh" >> $ENV_EXPORT_SCRIPT
-    fi
-
-    ;;
+    #else
     *)
-    zenity --info --text "Sorry, Lazyscripts not support your Distribution. The program will exit"
-    rm $ENV_EXPORT_SCRIPT
-    exit
+        echo "Sorry, Lazyscripts not support your Distribution. The program will exit"
+        rm $ENV_EXPORT_SCRIPT
+        exit
     ;;
 esac
 
-choice_repo
+# get scripts from github
+REPO_URL=`cat conf/repository.conf`
+REPO_DIR="./scriptspoll/`./lzs repo sign $REPO_URL`"
+git clone "$REPO_URL" "$REPO_DIR"
 
 # check the path of desktop dir
 XDG_USER_DIRS=~/.config/user-dirs.dirs
@@ -190,6 +107,8 @@ echo "export REAL_HOME=\"$HOME\"" >> $ENV_EXPORT_SCRIPT
 export WGET="wget --tries=2 --timeout=120 -c"
 echo "export WGET=\"wget --tries=2 --timeout=120 -c\"" >> $ENV_EXPORT_SCRIPT
 
+# a blank line
+echo >> $ENV_EXPORT_SCRIPT
 
-echo  >> $ENV_EXPORT_SCRIPT
+# FIXME: export-env just using to pass envirnoment variables, please don't use any command in it.
 echo './lzs $@'  >> $ENV_EXPORT_SCRIPT
