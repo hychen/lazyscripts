@@ -31,7 +31,7 @@ class Editor:
         self.scripts_liststore = gtk.ListStore \
             (gobject.TYPE_BOOLEAN, gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
 
-        self.scripts_list = ScriptsList ("../scripts.list")
+        self.scripts_list = ScriptsList (get_root()+"/scripts.list")
         self.scripts_list.update ()
 
         for entry in self.scripts_list.items():
