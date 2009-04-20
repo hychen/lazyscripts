@@ -1,10 +1,5 @@
 #!/bin/bash
 
-set -x
-
-DEB_SCRIPTS_REPO='git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git'
-SUSE_SCRIPTS_REPO='git://github.com/mrmoneyc/lazyscripts_pool_opensuse.git'
-
 function init_export_script () {
     mkdir -p tmp
     ENV_EXPORT_SCRIPT="tmp/env-export.sh"
