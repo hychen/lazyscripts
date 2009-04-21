@@ -9,7 +9,7 @@ import os
 from lazyscripts.repo import git, create_scriptrepo, sign_repopath
 from lazyscripts import meta
 from lazyscripts.category import Category
-#from lazyscripts.util import osapi
+from lazyscripts.util import osapi
 
 class ScriptMeta(object):
 

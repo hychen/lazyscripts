@@ -43,7 +43,8 @@ class Category(object):
         self._entries = []
         self._items = {}
         self._scripts_builder = scripts_builder
-        self._icon_name = icon_path_name[name]
+        if icon_path_name.has_key(name):
+            self._icon_name = icon_path_name[name]
 
     @property
     def name(self, lang=None):
