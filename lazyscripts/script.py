@@ -135,8 +135,7 @@ class Script(object):
             return None
         script =  cls.from_blob(cat_tree.get(list_entry['id']))
 
-        if list_entry.has_key ('selected'):
-            script.selected = list_entry['selected']
+        script.selected = list_entry.get('selected', False)
 
         return script
 
