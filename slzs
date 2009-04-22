@@ -43,7 +43,7 @@ fi
 #because ubuntu sudo can't keep some envornment variables,
 #so need env-export.sh to keep environment to scripts in scriptspool
 
-temp_dir="/tmp/lzs_run"
+temp_dir="tmp"
 mkdir -p "$temp_dir"
 
 ENV_EXPORT_SCRIPT="$temp_dir/user_env.sh"
@@ -60,9 +60,6 @@ export REAL_USER="$USER"
 export REAL_HOME="$HOME"
 echo "export REAL_USER=\"$USER\"" >> $ENV_EXPORT_SCRIPT
 echo "export REAL_HOME=\"$HOME\"" >> $ENV_EXPORT_SCRIPT
-
-# make temp directory and copy global_env.sh to temp directory
-cp "$DIR/bin/global_env.sh" "$temp_dir"
 
 ################################################################
 # run Lazyscripts with root access

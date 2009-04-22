@@ -122,7 +122,7 @@ class Script(object):
         create a excutabel file.
         """
         path = dir_path+self.id
-        osapi.create_excuteablefile(self.data, path)
+        osapi.create_excuteablefile(path, self.data)
 
         for subscript in self.get_subscripts():
             subscript.save(dir_path)
@@ -334,8 +334,10 @@ class ScriptsRunner:
         @param scripts Script
         """
         self._init_tmpdir()
+        self._copy_env_files ()
         excute_entries = [ 
             '#!/bin/bash\n'
+            'set -x\n'
             'cd '+self.tmp_dirname+'\n'
             'apt-get update\n\n' 
             'source global-env.sh\n'
@@ -347,7 +349,7 @@ class ScriptsRunner:
             script.save(self.tmp_dirname+'/')
         excute_entries.append("chown -R $REAL_USER: $REAL_HOME\n")
 
-        startup_file = osapi.create_excuteablefile(self.startup_path)
+        startup_file = osapi.create_excuteablefile(path=self.startup_path)
         startup_file.writelines(excute_entries)
 
     def _init_tmpdir(self):
@@ -358,3 +360,17 @@ class ScriptsRunner:
             import shutil
             shutil.rmtree(self.tmp_dirname)
         os.mkdir(self.tmp_dirname, 0777)
+
+    def _copy_env_files (self):
+        "copy environment variables export file"
+        root_path = self._get_root_path ()
+        if os.path.exists (self.tmp_dirname):
+            import shutil
+            shutil.copy (root_path + "/bin/global_env.sh", self.tmp_dirname)
+            shutil.copy (root_path + "/tmp/user_env.sh", self.tmp_dirname)
+
+    def _get_root_path (self):
+        from os import path as os_path
+        dir = os_path.dirname (__file__) + '/../'
+        root = os_path.abspath (dir)
+        return root
