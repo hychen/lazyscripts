@@ -6,6 +6,7 @@
 _i18n_name = {}
 _i18n_name['zhTW'] = {
     'Common':'共用',
+    'Development':'開發工具',
     'Productivity':'辦公軟體',
     'Multimedia':'多媒體',
     'Game':'遊戲',
@@ -52,7 +53,7 @@ class Category(object):
 
         if not lang:
             lang = self.lang
-        return _i18n_name[lang][self._name]
+        return _i18n_name[lang].get(self._name)
 
     def _lazyinit_scripts(self):
         "lazy initialize Script instance."
