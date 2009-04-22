@@ -332,7 +332,9 @@ class ScriptsRunner:
         excute_entries = [ 
             '#!/bin/bash\n'
             'cd '+self.tmp_dirname+'\n'
-            'apt-get update\n' ]
+            'apt-get update\n\n' 
+            'source global-env.sh\n'
+            'source user-env.sh\n' ]
 
         for script in scripts:
             excute_entries.append("%s/%s\n" % 

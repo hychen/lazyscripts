@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: UTF-8 -*-
-# Copyright (C) 2007 朱昱任 (Yuren Ju) <yurenju -AT- gmail.com>
-# Copyright (C) 2008 林哲瑋 Zhe-Wei Lin (billy3321,雨蒼) <bill3321 -AT- gmail.com>
-# Last Midified : 29 Dec 2008
 # read and change the config of source.list through aptsources module.
 # read everyline in source.list as sourcelist[:] object, every attribute means a column
 # Released under GNU General Public License
@@ -14,7 +11,7 @@ import aptsources
 from aptsources.sourceslist import SourcesList
 import aptsources.distro
 
-def main ():
+def add_official_repos ():
     comps = []
     sourceslist = SourcesList ()
     distro = aptsources.distro.get_distro ()

@@ -5,9 +5,15 @@
 # Lazyscript system command-line management program.
 #
 from os import system
+from os import path as os_path
 import sys
 
 from lazyscripts.util.detect import run_asroot
+
+def get_root_path():
+	dir = os_path.dirname(__file__)
+	root= os_path.abspath(dir)
+	return root
 
 def _check_root():
     if not run_asroot():
@@ -15,6 +21,9 @@ def _check_root():
         sys.exit()
 
 try:
+    #try to install requre packages
+    system (get_root_path () + "/bin/package_debian_ubuntu.sh")
+
     cmder=sys.argv[1]
     if 'repo' == cmder.strip():
         from lazyscripts.repo import sign_repopath

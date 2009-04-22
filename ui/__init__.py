@@ -16,9 +16,8 @@ from lazyscripts import info
 from lazyscripts.ui.gui import query_yes_no, show_error
 from lazyscripts.util import detect
 distro, codename = info.get_distro()
-if distro in ('Ubuntu','Debian') :
-    import distrib.add_official_repos_debian_ubuntu as add_official_repos
 
+from lazyscripts.util import package_repository
 
 try:
     locale.setlocale (locale.LC_ALL, "")
@@ -86,7 +85,7 @@ we need to modify your software sources,
 do you want to let lazyscripts modify your software sources?
 """)
     if query_yes_no (msg):
-        add_official_repos.main ()
+        package_repository.add_official_repos ()
         #os.system ('scripts/add_official_repos.py');
     else:
         show_error (_('Lazyscripts will not change your settings') +

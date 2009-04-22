@@ -1,22 +1,81 @@
 #!/bin/bash
 #
 # Lazyscripts launcher wrapper
-#
-# @author '2009 Hsin Yi Chen (陳信屹) <ossug.hychen@gmail.com>'
 
-# update lazyscripts.
+# some workaround
+DIR=`dirname $0`
+cd "$DIR"
 
-. startup.sh
+source "$DIR/bin/global_env.sh"
 
+# get scripts from github
+#REPO_URL=`cat conf/repository.conf`
+#REPO_DIR="./scriptspoll/`./lzs repo sign $REPO_URL`"
+#git clone "$REPO_URL" "$REPO_DIR"
+
+
+####################################################################
+# check the path of desktop dir
+XDG_USER_DIRS=~/.config/user-dirs.dirs
+if [ -f "$XDG_USER_DIRS" ]; then
+    . ~/.config/user-dirs.dirs
+fi
+
+if [ -z "$XDG_DESKTOP_DIR" ]; then
+    export DESKTOP_DIR=$HOME/Desktop
+
+else
+    export DESKTOP_DIR=$XDG_DESKTOP_DIR
+fi
+                                        
+# Ensure there is a desktop dir, if this doesn't exist, that's a bug of ubuntu.
+if [ ! -e "$DESKTOP_DIR" ]; then
+    mkdir -p  "$DESKTOP_DIR"
+fi
+                                                        
+# symlink desktop dir to ~/Desktop for compatibility
+if [ "$DESKTOP_DIR" != "$HOME/Desktop"  -a  ! -e "$HOME/Desktop" ]; then
+    ln -s "$DESKTOP_DIR" "$HOME/Desktop"
+fi
+
+
+####################################################################
+#because ubuntu sudo can't keep some envornment variables,
+#so need env-export.sh to keep environment to scripts in scriptspool
+
+temp_dir="/tmp/lzs_run"
+mkdir -p "$temp_dir"
+
+ENV_EXPORT_SCRIPT="$temp_dir/user_env.sh"
+if [ -f ${ENV_EXPORT_SCRIPT} ];then
+    rm $ENV_EXPORT_SCRIPT
+fi
+
+touch "$ENV_EXPORT_SCRIPT"
+chmod a+x "$ENV_EXPORT_SCRIPT"
+echo "#!/bin/bash" > "$ENV_EXPORT_SCRIPT"
+
+# Preserve the user name
+export REAL_USER="$USER"
+export REAL_HOME="$HOME"
+echo "export REAL_USER=\"$USER\"" >> $ENV_EXPORT_SCRIPT
+echo "export REAL_HOME=\"$HOME\"" >> $ENV_EXPORT_SCRIPT
+
+# make temp directory and copy global_env.sh to temp directory
+cp "$DIR/bin/global_env.sh" "$temp_dir"
+
+################################################################
 # run Lazyscripts with root access
+message_sudo="執行 'Lazyscripts 懶人包' 會修改系統設定，並會安裝新軟體，所以需要系統管理員權限。 請輸入系統管理密碼，才能繼續執行。 (在 Lazyscripts 下，預設這就是你登入系統時所用的密碼。)"
+
 case $DISTRIB_ID in
     "Ubuntu")
 
-    gksu --message "執行 'Lazyscripts 懶人包' 會修改系統設定，並會安裝新軟體，所以需要系統管理員權限。 請輸入系統管理密碼，才能繼續執行。 (在 Lazyscripts 下，預設這就是你登入系統時所用的密碼。)" --preserve-env tmp/env-export.sh $@
+    gksu --message "$message_sudo"  --preserve-env ./lzs "$@"
     ;;
     "Debian")
 
-    gksu --message "執行 'Lazyscripts 懶人包' 會修改系統設定，並會安裝新軟體，所以需要系統管理員權限。 請輸入系統管理密碼，才能繼續執行。 (在 Lazyscripts 下，預設這就是你登入系統時所用的密碼。)" tmp/env-export.sh $@
+    gksu --message "$message_sudo" ./lzs "$@"
     ;;
     *)
     echo "Lazyscripts not support $DISTRIB_ID ."
