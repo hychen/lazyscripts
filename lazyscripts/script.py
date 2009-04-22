@@ -9,7 +9,7 @@ import os
 from lazyscripts.repo import git, create_scriptrepo, sign_repopath
 from lazyscripts import meta
 from lazyscripts.category import Category
-#from lazyscripts.util import osapi
+from lazyscripts.util import osapi
 
 class ScriptMeta(object):
 
@@ -132,11 +132,16 @@ class Script(object):
         """get a script from a entry in script.list ."""
         cat_tree = repo.get(list_entry['category'])
         if not cat_tree:
-            return None
-        script =  cls.from_blob(cat_tree.get(list_entry['id']))
+            raise "%s is not exists scripts.list out of date." % \
+                list_entry['category']
 
-        if list_entry.has_key ('selected'):
-            script.selected = list_entry['selected']
+        blob = cat_tree.get(list_entry['id'])
+        if not blob:
+            raise "script %s is not exists, scripts.list may out of date." % \
+                            list_entry['id']
+
+        script =  cls.from_blob(cat_tree.get(list_entry['id']))
+        script.selected = list_entry.get('selected', False)
 
         return script
 
