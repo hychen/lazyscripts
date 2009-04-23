@@ -42,8 +42,9 @@ try:
         if 'build' == action:
             print 'createing scripts list'
             from lazyscripts.script import ScriptsList
+            print get_root_path ()
             list = ScriptsList.from_repo(sys.argv[3], local_dir= get_root_path () + '/scriptspoll')
-            list.path = get_root_path () + 'conf/scripts.list'
+            list.path = get_root_path () + '/conf/scripts.list'
             list.save()
 except IndexError:
     print 'see more information in this file content.'
