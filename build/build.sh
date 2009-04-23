@@ -9,7 +9,10 @@ read -p "Please type version: " VERSION
 filename="lazyscripts-$VERSION.tar.gz"
 
 # build tarball
+cd ..
 git archive --format=tar master | gzip -9 > "lazyscripts.tar.gz"
+mv "lazyscripts.tar.gz" "$CURRENT_PWD"
+cd "$CURRENT_PWD"
 
 # build self-extracting file from tarball
 gcc `pkg-config gtk+-2.0 --cflags --libs` -o sfx sfx.c
