@@ -108,7 +108,7 @@ int main(int argc, char** argv)
 
     g_chdir( extract_path );
     g_free( extract_path );
-    g_chdir( "lazyscript" );
+    g_chdir( "bin" );
     execl ("slzs", "gui" );
 
     show_error("錯誤，無法執行 lazyscripts！");

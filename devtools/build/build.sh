@@ -9,7 +9,7 @@ read -p "Please type version: " VERSION
 filename="lazyscripts-$VERSION.tar.gz"
 
 # build tarball
-cd ..
+cd ../..
 git archive --format=tar master | gzip -9 > "lazyscripts.tar.gz"
 mv "lazyscripts.tar.gz" "$CURRENT_PWD"
 cd "$CURRENT_PWD"
