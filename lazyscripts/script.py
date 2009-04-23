@@ -11,6 +11,12 @@ from lazyscripts import meta
 from lazyscripts.category import Category
 from lazyscripts.util import osapi
 
+def _get_root_path ():
+    from os import path as os_path
+    dir = os_path.dirname (__file__) + '/../'
+    root = os_path.abspath (dir)
+    return root
+
 class ScriptMeta(object):
 
     """
@@ -235,7 +241,7 @@ class ScriptSet(object):
                 if testmode:
                     local_dir = 't/datas/scriptspoll'
                 else:
-                    local_dir = 'scriptspoll'
+                    local_dir = _get_root_path () + '/scriptspoll'
                 set._repos[item.get('repo')] = create_scriptrepo(item.get('repo'), local_dir)
 
             if not set._repo_table.get(item.get('repo')):
@@ -363,14 +369,9 @@ class ScriptsRunner:
 
     def _copy_env_files (self):
         "copy environment variables export file"
-        root_path = self._get_root_path ()
+        root_path = _get_root_path ()
         if os.path.exists (self.tmp_dirname):
             import shutil
             shutil.copy (root_path + "/bin/global_env.sh", self.tmp_dirname)
             shutil.copy (root_path + "/tmp/user_env.sh", self.tmp_dirname)
 
-    def _get_root_path (self):
-        from os import path as os_path
-        dir = os_path.dirname (__file__) + '/../'
-        root = os_path.abspath (dir)
-        return root

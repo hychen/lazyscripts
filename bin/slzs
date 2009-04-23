@@ -5,8 +5,12 @@
 # some workaround
 DIR=`dirname $0`
 cd "$DIR"
+DIR="`pwd`"
+cd ..
+ROOT_DIR="`pwd`"
+cd "$DIR"
 
-source "$DIR/bin/global_env.sh"
+source "global_env.sh"
 
 # get scripts from github
 #REPO_URL=`cat conf/repository.conf`
@@ -43,7 +47,7 @@ fi
 #because ubuntu sudo can't keep some envornment variables,
 #so need env-export.sh to keep environment to scripts in scriptspool
 
-temp_dir="tmp"
+temp_dir="$ROOT_DIR/tmp"
 mkdir -p "$temp_dir"
 
 ENV_EXPORT_SCRIPT="$temp_dir/user_env.sh"

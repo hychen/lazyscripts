@@ -18,6 +18,7 @@ from lazyscripts.util import detect
 distro, codename = info.get_distro()
 
 from lazyscripts.util import package_repository
+from os import path as os_path
 
 try:
     locale.setlocale (locale.LC_ALL, "")
@@ -25,7 +26,7 @@ except:
     locale.setlocale (locale.LC_ALL, "en_US.UTF-8")
 
 APP_NAME = "lazyscripts"
-APP_PATH = os.path.abspath (os.getcwd())
+APP_PATH = os.path.abspath (os_path.dirname (__file__) + '/../')
 LOCALE_DIR = os.path.join (APP_PATH, 'locale')
 
 gettext.textdomain(APP_NAME)
@@ -284,7 +285,7 @@ class MainWin:
         win.add(vbox)
 
         # upper parts: main GUI
-        self.tool_list=tool_list=ToolListWidget('scripts.list')
+        self.tool_list=tool_list=ToolListWidget(APP_PATH + '/conf/scripts.list')
         tool_list.list.insert( 0, ('lazyscripts', _('Welcome'), WelcomePage()) )
         self.final_page=FinalPage()
         tool_list.list.append( ('gnome-app-install', _('fininsh'), self.final_page) )

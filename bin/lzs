@@ -6,14 +6,16 @@
 #
 from os import system
 from os import path as os_path
+from sys import path as python_path
 import sys
 
-from lazyscripts.util.detect import run_asroot
-
 def get_root_path():
-	dir = os_path.dirname(__file__)
+	dir = os_path.dirname(__file__) + '/../'
 	root= os_path.abspath(dir)
 	return root
+
+python_path.insert(0,get_root_path())
+from lazyscripts.util.detect import run_asroot
 
 def _check_root():
     if not run_asroot():
@@ -21,10 +23,10 @@ def _check_root():
         sys.exit()
 
 try:
-    #try to install requre packages
-    system (get_root_path () + "/bin/package_debian_ubuntu.sh")
-
     cmder=sys.argv[1]
+    #try to install requre packages
+    system (get_root_path () + "/bin/package_debian_ubuntu.sh " + cmder)
+
     if 'repo' == cmder.strip():
         from lazyscripts.repo import sign_repopath
         action=sys.argv[2]
@@ -41,7 +43,7 @@ try:
             print 'createing scripts list'
             from lazyscripts.script import ScriptsList
             list = ScriptsList.from_repo(sys.argv[3], local_dir='scriptspoll')
-            list.path = 'scripts.list'
+            list.path = get_root_path () + 'conf/scripts.list'
             list.save()
 except IndexError:
     print 'see more information in this file content.'
