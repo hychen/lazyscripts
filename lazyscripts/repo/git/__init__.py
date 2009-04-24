@@ -36,21 +36,18 @@ class Repo(git.Repo):
         s = "cd %s && git pull" % self.path.replace('.git','')
         system(s)
 
-    def get(self, obj_name, commit_id='HEAD', branch=None):
+    def get(self, obj_name, head="origin/stable"):
         """
         get object by commit.
 
-        @commit_id str
-        @obj_name str
+        @param str obj_name git blob/tree name
+        @param str head git commit id
         """
-        if not commit_id:
-            commit_id = 'HEAD'
-
-        if branch:
-            commit_id += branch+'~'+commit_id
+        if not head:
+            head = "origin/stable"
 
         try:
-           tree = self.commits(commit_id)[0].tree
+           tree = self.commits(head)[0].tree
         except IndexError:
             return None
 
