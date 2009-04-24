@@ -8,14 +8,14 @@
 # Please run as root.
 
 
-export ARCH_NAME="`uname -i`"
+export PLAT_NAME="`uname -i`"
 
 echo "正在下載並安裝lazyscripts執行所需的套件...."
 
 zypper ref
 zypper install git git-core python-setuptools
 
-case $ARCH_NAME in
+case $PLAT_NAME in
 
 i386)
 
@@ -37,7 +37,7 @@ easy_install GitPython
 
 *)
 
-echo "抱歉，Lazyscripts並不支援 ${ARCH_NAME} 作業系統平台。"
+echo "抱歉，Lazyscripts並不支援 ${PLAT_NAME} 作業系統平台。"
 ;;
 esac
 

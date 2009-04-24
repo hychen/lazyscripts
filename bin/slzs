@@ -69,7 +69,7 @@ echo "export REAL_HOME=\"$HOME\"" >> $ENV_EXPORT_SCRIPT
 # run Lazyscripts with root access
 message_sudo="執行 'Lazyscripts 懶人包' 會修改系統設定，並會安裝新軟體，所以需要系統管理員權限。 請輸入系統管理密碼，才能繼續執行。 (在 Lazyscripts 下，預設這就是你登入系統時所用的密碼。)"
 
-case $DISTRIB_ID in
+case $DISTRO_ID in
     "Ubuntu")
 
     gksu --message "$message_sudo"  --preserve-env ./lzs "$@"
@@ -79,6 +79,6 @@ case $DISTRIB_ID in
     gksu --message "$message_sudo" ./lzs "$@"
     ;;
     *)
-    echo "Lazyscripts not support $DISTRIB_ID ."
+    echo "Lazyscripts not support $DISTRO_ID ."
     ;;
 esac
