@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 CURRENT_PWD="`pwd`"
 cd "$CURRENT_PWD"
 
