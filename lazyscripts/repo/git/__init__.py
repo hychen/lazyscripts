@@ -14,7 +14,7 @@ def is_git_dir(d):
     return git.utils.is_git_dir(d)
 
 class Repo(git.Repo):
-    
+
     @property
     def categories(self):
         dir = []

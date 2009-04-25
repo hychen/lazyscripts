@@ -26,3 +26,8 @@ def test_from_repo():
 	list = ScriptsList.from_repo(remote_repo, get_repodir())
 	list.path = get_datadir()+'/scripts.list'
 	list.save()
+
+def test_get_by_distro():
+    list = ScriptsList.get_by_detect(True)
+    list.update()
+    assert len(list.items()) != 0

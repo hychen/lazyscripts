@@ -239,7 +239,8 @@ class ToolListWidget:
         else:
             lzs_loc = loc[0].replace ("_", "")
 
-        scripts_list = ScriptsList(scripts_list_file)
+#        scripts_list = ScriptsList(scripts_list_file)
+        scripts_list = ScriptsList.get_by_detect(True)
         scripts_list.update()
         script_set = ScriptSet.from_scriptslist(scripts_list)
         for category in script_set.categories():

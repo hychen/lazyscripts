@@ -6,9 +6,13 @@ import re
 import sys
 import os
 
-from lazyscripts.repo import git, create_scriptrepo, sign_repopath
+from lazyscripts.repo import git, \
+                            create_scriptrepo, \
+                            sign_repopath, \
+                            get_repo_for_distro    
 from lazyscripts import meta
 from lazyscripts.category import Category
+from lazyscripts.info import get_distro
 from lazyscripts.util import osapi
 
 def _get_root_path ():
@@ -228,6 +232,11 @@ class ScriptSet(object):
     def from_scriptslist(cls, scripts_list, testmode=False):
         """
         get script set from source list.
+
+        @param ScriptsList scripts_list
+        @param boolean testmode to make diffrent  \
+                    scriptspool directory.
+        @return ScriptSet
         """
         # get last version.
         scripts_list.update()
@@ -239,9 +248,9 @@ class ScriptSet(object):
             if not set._repos.has_key(item.get('repo')):
                 # clone the repostiry if the repositry is not exists.
                 if testmode:
-                    local_dir = 't/datas/scriptspoll'
+                    local_dir = _get_root_path()+'/t/datas/scriptspoll'
                 else:
-                    local_dir = _get_root_path () + '/scriptspoll'
+                    local_dir = _get_root_path() + '/scriptspoll'
                 set._repos[item.get('repo')] = create_scriptrepo(item.get('repo'), local_dir)
 
             if not set._repo_table.get(item.get('repo')):
@@ -279,15 +288,49 @@ class ScriptsList(object):
         cPickle.dump(self._items, open(self.path,'w'))
 
     def update(self):
-        self.content = self._load_from_file(self.path)
+        #@TODO:refacotry me!!!!! by hychen
+        if type(self.path) is str:
+            self.content = self._load_from_file(self.path)
+        else:
+            if not self.content:
+                self.content = self.path.read()
         self._items = self._unserilize(self.content)
-        
 
     def _load_from_file(self, path):
         return open(path, 'r').read()
 
     def _unserilize(self, string):
         return cPickle.loads(string)
+
+    @classmethod
+    def get_by_detect(cls, testmode=False):
+        """
+        get SctipsList instance by detection automatically.
+
+        @param boolean testmode 
+        @return obj ScriptsList
+        """
+        scripts_repo = get_repo_for_distro(get_distro(), testmode)
+        scripts_repo.rebase()
+        if not scripts_repo:
+            raise "can not get repositry automatically."
+
+        blob = scripts_repo.get('scripts.list')
+        if not blob:
+            raise "script.list is not exists in %s" % \
+                                            scripts_repo.path
+        return cls.from_blob(blob)
+
+    @classmethod
+    def from_blob(cls, blob):
+        """
+        make a scripts list file from git blob instance.
+
+        @param Git.Blob blob
+        @return ScritpsList
+        """
+        from StringIO import StringIO
+        return cls(StringIO(blob.data))
 
     @classmethod
     def from_repo(cls, repo_path, local_dir=None):

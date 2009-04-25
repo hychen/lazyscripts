@@ -8,6 +8,12 @@ from os import path as os_path
 
 from lazyscripts.repo import git
 
+def _get_root_path (): 
+    from os import path as os_path                                                                  
+    dir = os_path.dirname (__file__) + '/../../'
+    root = os_path.abspath (dir)
+    return root
+
 def sign_repopath(path):
     """
     create a signed repositery path to ensure the repositery path
@@ -17,13 +23,32 @@ def sign_repopath(path):
     """
     return md5(path).hexdigest()
 
-def get_scriptrepo(origin_path):
+def get_repo_for_distro(distro, testmode=False):
+    """
+    get a default scripts list file by distrobution.
+
+    @param tuple distro
+    """
+    if not distro:
+        raise "need distrobution information"
+    # @FIXME: hard code here.
+    if testmode:
+        dest = _get_root_path()+'/t/datas/scriptspoll'
+    else:
+        dest = _get_root_path()+'/scriptspoll'
+
+    if distro[0] in ('Ubuntu','Debian'):
+        return get_scriptrepo(\
+            "git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git",
+            dest)
+
+def get_scriptrepo(origin_path, dest):
     """
     get script repositry.
 
     @param path str the repositry path.
     """
-    newpath = sign_repopath(origin_path)
+    newpath = dest+'/'+sign_repopath(origin_path)
     repo = git.Repo(newpath)
     return repo
 
