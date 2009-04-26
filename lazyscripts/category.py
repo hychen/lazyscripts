@@ -14,6 +14,7 @@ _i18n_name['zhTW'] = {
     'Graphic':'圖像處理',
     'Entertain':'娛樂', 
     'Localization':'本地化',
+    'System':'系統工具',
     'Customize':'客制化'
     }
 
