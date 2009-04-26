@@ -383,7 +383,7 @@ class ScriptsRunner:
         @param scripts Script
         """
         self._init_tmpdir()
-        self._copy_env_files ()
+        self._copy_env_files()
         excute_entries = [ 
             '#!/bin/bash\n'
             'set -x\n'
@@ -396,7 +396,7 @@ class ScriptsRunner:
             excute_entries.append("%s/%s\n" % 
                                     (self.tmp_dirname, script.id))
             script.save(self.tmp_dirname+'/')
-        excute_entries.append("chown -R $REAL_USER: $REAL_HOME\n")
+        excute_entries.append("chown -R $REAL_USER: $REAL_HOME &> /dev/null\n")
 
         startup_file = osapi.create_excuteablefile(path=self.startup_path)
         startup_file.writelines(excute_entries)
@@ -410,11 +410,11 @@ class ScriptsRunner:
             shutil.rmtree(self.tmp_dirname)
         os.mkdir(self.tmp_dirname, 0777)
 
-    def _copy_env_files (self):
+    def _copy_env_files(self):
         "copy environment variables export file"
-        root_path = _get_root_path ()
-        if os.path.exists (self.tmp_dirname):
+        root_path = _get_root_path()
+        if os.path.exists(self.tmp_dirname):
             import shutil
-            shutil.copy (root_path + "/bin/global_env.sh", self.tmp_dirname)
-            shutil.copy (root_path + "/tmp/user_env.sh", self.tmp_dirname)
+            shutil.copy(root_path + "/bin/global_env.sh", self.tmp_dirname)
+            shutil.copy(root_path + "/tmp/user_env.sh", self.tmp_dirname)
 
