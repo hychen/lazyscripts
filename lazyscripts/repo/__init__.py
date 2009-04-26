@@ -38,7 +38,7 @@ def get_repo_for_distro(distro, testmode=False):
         dest = _get_root_path()+'/scriptspoll'
 
     if distro[0] in ('Ubuntu','Debian'):
-        return get_scriptrepo(\
+        return create_scriptrepo(\
             "git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git",
             dest)
 
