@@ -3,6 +3,8 @@
 
 import gettext
 import locale
+import time
+import thread
 
 import pygtk
 pygtk.require('2.0')
@@ -213,7 +215,9 @@ class ToolListWidget:
         tree.append_column(col)
         tree.set_headers_visible(False)
 
-        list=gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_PYOBJECT)
+        list = gtk.ListStore \
+            (gobject.TYPE_STRING, gobject.TYPE_STRING, \
+            gobject.TYPE_PYOBJECT)
         self.list=list
         self.load_tree(list, scripts_list_file)
 
@@ -231,6 +235,14 @@ class ToolListWidget:
 
         hbox.show_all()
 
+    def download_scripts (self, lock):
+        print "get_by_detect"
+        scripts_list = ScriptsList.get_by_detect()
+        print "update"
+        scripts_list.update()
+        self.script_set = ScriptSet.from_scriptslist(scripts_list)
+        lock.release ()
+
     def load_tree(self, list_store, scripts_list_file):
         loc = locale.getlocale (locale.LC_ALL)
         lzs_loc = ""
@@ -239,11 +251,18 @@ class ToolListWidget:
         else:
             lzs_loc = loc[0].replace ("_", "")
 
-#        scripts_list = ScriptsList(scripts_list_file)
-        scripts_list = ScriptsList.get_by_detect()
-        scripts_list.update()
-        script_set = ScriptSet.from_scriptslist(scripts_list)
-        for category in script_set.categories():
+        lock = thread.allocate_lock ()
+        lock.acquire ()
+        t = thread.start_new_thread (self.download_scripts, (lock,))
+
+        while lock.locked ():
+            while gtk.events_pending ():
+                gtk.main_iteration ()
+            time.sleep (0.05)
+        while gtk.events_pending ():
+            gtk.main_iteration ()
+
+        for category in self.script_set.categories():
             category.lang = lzs_loc
             tool_page = ToolPage()
             tool_page.title = category.name

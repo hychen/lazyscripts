@@ -14,9 +14,10 @@ from lazyscripts import meta
 from lazyscripts.category import Category
 from lazyscripts.info import get_distro
 from lazyscripts.util import osapi
+from StringIO import StringIO
+from os import path as os_path
 
 def _get_root_path ():
-    from os import path as os_path
     dir = os_path.dirname (__file__) + '/../'
     root = os_path.abspath (dir)
     return root
@@ -329,7 +330,6 @@ class ScriptsList(object):
         @param Git.Blob blob
         @return ScritpsList
         """
-        from StringIO import StringIO
         return cls(StringIO(blob.data))
 
     @classmethod

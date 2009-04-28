@@ -9,7 +9,6 @@ from os import path as os_path
 from lazyscripts.repo import git
 
 def _get_root_path (): 
-    from os import path as os_path                                                                  
     dir = os_path.dirname (__file__) + '/../../'
     root = os_path.abspath (dir)
     return root
