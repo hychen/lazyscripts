@@ -191,8 +191,9 @@ class FinalPage:
         return view
 
 class ToolListWidget:
-    def __init__(self, scripts_list_file):
+    def __init__(self, win):
         self.all_tools = []
+        self.win = win
 
         hbox = gtk.HBox(False, 2)
         self.hbox = hbox
@@ -219,7 +220,7 @@ class ToolListWidget:
             (gobject.TYPE_STRING, gobject.TYPE_STRING, \
             gobject.TYPE_PYOBJECT)
         self.list=list
-        self.load_tree(list, scripts_list_file)
+        self.load_tree(list)
 
         tree.set_model(list)
 
@@ -236,20 +237,22 @@ class ToolListWidget:
         hbox.show_all()
 
     def download_scripts (self, lock):
-        print "get_by_detect"
         scripts_list = ScriptsList.get_by_detect()
-        print "update"
         scripts_list.update()
         self.script_set = ScriptSet.from_scriptslist(scripts_list)
         lock.release ()
 
-    def load_tree(self, list_store, scripts_list_file):
+    def load_tree(self, list_store):
         loc = locale.getlocale (locale.LC_ALL)
         lzs_loc = ""
         if (loc[0] == None):
             lzs_loc = "enUS"
         else:
             lzs_loc = loc[0].replace ("_", "")
+
+        dlg = gtk.MessageDialog ()
+        dlg.set_markup ( _("Please waiting for download scripts."))
+        dlg.show_all ()
 
         lock = thread.allocate_lock ()
         lock.acquire ()
@@ -261,6 +264,8 @@ class ToolListWidget:
             time.sleep (0.05)
         while gtk.events_pending ():
             gtk.main_iteration ()
+
+        dlg.destroy ()
 
         for category in self.script_set.categories():
             category.lang = lzs_loc
@@ -305,7 +310,7 @@ class MainWin:
         win.add(vbox)
 
         # upper parts: main GUI
-        self.tool_list=tool_list=ToolListWidget(APP_PATH + '/conf/scripts.list')
+        self.tool_list=tool_list=ToolListWidget(win)
         tool_list.list.insert( 0, ('lazyscripts', _('Welcome'), WelcomePage()) )
         self.final_page=FinalPage()
         tool_list.list.append( ('gnome-app-install', _('fininsh'), self.final_page) )
