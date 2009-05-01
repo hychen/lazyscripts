@@ -3,7 +3,7 @@
 
 @author Hisn Yi Chen 陳信屹 (hychen) <ossug.hychen AT gmail.com>
 """
-from md5 import md5
+from hashlib import md5
 from os import path as os_path
 
 from lazyscripts.repo import git
