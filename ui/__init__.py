@@ -250,8 +250,14 @@ class ToolListWidget:
         else:
             lzs_loc = loc[0].replace ("_", "")
 
-        dlg = gtk.MessageDialog ()
+        dlg = gtk.MessageDialog \
+                (None, gtk.DIALOG_MODAL, \
+                gtk.MESSAGE_INFO, \
+                gtk.BUTTONS_NONE)
         dlg.set_markup ( _("Please waiting for download scripts."))
+        dlg_progress = gtk.ProgressBar ()
+        dlg_progress.grab_focus ()
+        dlg.vbox.pack_start (dlg_progress, False, True, 2)
         dlg.show_all ()
 
         lock = thread.allocate_lock ()
@@ -261,7 +267,8 @@ class ToolListWidget:
         while lock.locked ():
             while gtk.events_pending ():
                 gtk.main_iteration ()
-            time.sleep (0.05)
+            time.sleep (0.15)
+            dlg_progress.pulse ()
         while gtk.events_pending ():
             gtk.main_iteration ()
 
@@ -364,7 +371,7 @@ class MainWin:
     def on_about(self, item ):
         dlg = gtk.AboutDialog()
         dlg.set_name('Lazyscripts')
-        dlg.set_version(VERSION)
+        dlg.set_version("0.1")
         dlg.set_website('http://TBD/')
         if self.icon:
             dlg.set_logo(self.icon)

@@ -5,7 +5,6 @@
 # with all architecture.
 # Please run as root.
 
-
 function install_require_packages () {
     show_text="正在下載並安裝Lazyscripts執行所需的套件...."
     google_code_url="http://lazyscripts.googlecode.com"
@@ -21,12 +20,14 @@ function install_require_packages () {
     #use zenity if use gui flag
     if [ "$1"="gui" ]; then
         (echo 30;
-        apt-get update > /dev/null 2>&1;
+        /usr/sbin/synaptic --hide-main-window \
+        --non-interactive --update-at-startup
 
         echo 60;
-        apt-get -y --force-yes install \
-            git-core python-setuptools \
-            python-nose make > /dev/null 2>&1;
+        echo -e "git-core\tinstall\npython-setuptools\tinstall\npython-nose\tinstall\nmake\tinstall\n" > /tmp/package_list.txt
+        /usr/sbin/synaptic --hide-main-window \
+        --non-interactive -o Synaptic::closeZvt=true \
+        --set-selections-file "/tmp/package_list.txt"
 
         echo 90;
         wget -c "$google_code_url/files/$git_python_filename" > /dev/null 2>&1;
