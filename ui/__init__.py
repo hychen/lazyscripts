@@ -422,10 +422,10 @@ class MainWin:
                 it = category.list.iter_next(it)
 	
 class GUI:
-	def start(self):
-		"""
-		launchs the application.
-		"""
+    def start(self):
+        """
+        launchs the application.
+        """
         if not ensure_network ():
             show_error (_("no avalible internet connection, lazyscripts cannot execute."), _("error"))
             exit(1)
@@ -435,4 +435,4 @@ class GUI:
         gtk.main()
 
 if __name__ == '__main__':
-	GUI().start()
+    GUI().start()
