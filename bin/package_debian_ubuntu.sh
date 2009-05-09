@@ -24,7 +24,7 @@ function install_require_packages () {
         --non-interactive --update-at-startup
 
         echo 60;
-        echo -e "git-core\tinstall\npython-setuptools\tinstall\npython-nose\tinstall\nmake\tinstall\n" > /tmp/package_list.txt
+        echo -e "git-core\tinstall\n" > /tmp/package_list.txt
         /usr/sbin/synaptic --hide-main-window \
         --non-interactive -o Synaptic::closeZvt=true \
         --set-selections-file "/tmp/package_list.txt"
@@ -38,8 +38,7 @@ function install_require_packages () {
     else #if slzs console, use console mode
         apt-get update
         apt-get -y --force-yes install \
-            git-core python-setuptools \
-            python-nose make > /dev/null
+            git-core > /dev/null
         wget -c "$google_code_url/files/$git_python_filename"
         dpkg -i "$git_python_filename"
         rm "$git_python_filename"
