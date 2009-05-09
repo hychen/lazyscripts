@@ -21,9 +21,9 @@ import os, sys
 from lazyscripts.script import ScriptsList, ScriptSet, ScriptsRunner
 
 def get_root():
-	dir = os_path.dirname(__file__)+'/../'
-	root= os_path.abspath(dir)
-	return root
+    dir = os_path.dirname(__file__)+'/../'
+    root= os_path.abspath(dir)
+    return root
 
 class Editor:
     def __init__ (self):

@@ -2,13 +2,13 @@ from commands import getoutput
 import os
 
 def run_asroot():
-	"""
-	checks if the program runs as root.
+    """
+    checks if the program runs as root.
 
-	@return True if run as root.
-	"""
-	if 'root' == getoutput("whoami"):
-		return True
+    @return True if run as root.
+    """
+    if 'root' == getoutput("whoami"):
+        return True
 
 def test_network():
     """

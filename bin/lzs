@@ -10,9 +10,9 @@ from sys import path as python_path
 import sys
 
 def get_root_path():
-	dir = os_path.dirname(__file__) + '/../'
-	root= os_path.abspath(dir)
-	return root
+    dir = os_path.dirname(__file__) + '/../'
+    root= os_path.abspath(dir)
+    return root
 
 python_path.insert(0,get_root_path())
 from lazyscripts.util.detect import run_asroot
