@@ -19,22 +19,21 @@ function install_require_packages () {
 
     #use zenity if use gui flag
     if [ "$1"="gui" ]; then
-        (echo 30;
+        zenity --info --text="lazyscripts 懶人包執行需要下載相關軟體，按下確定後請稍待數分鐘"
         /usr/sbin/synaptic --hide-main-window \
         --non-interactive --update-at-startup
 
-        echo 60;
         echo -e "git-core\tinstall\n" > /tmp/package_list.txt
         /usr/sbin/synaptic --hide-main-window \
         --non-interactive -o Synaptic::closeZvt=true \
         --set-selections-file "/tmp/package_list.txt"
 
-        echo 90;
+        (echo 10;
         wget -c "$google_code_url/files/$git_python_filename" > /dev/null 2>&1;
         dpkg -i "$git_python_filename" > /dev/null 2>&1;
         rm "$git_python_filename" > /dev/null 2>&1;
         echo 100;
-        ) | zenity --auto-close --auto-kill --progress --text="$show_text"
+        ) | zenity --progress --pulstate --auto-close --auto-kill --text="$show_text"
     else #if slzs console, use console mode
         apt-get update
         apt-get -y --force-yes install \
