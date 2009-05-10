@@ -10,7 +10,7 @@ function install_require_packages () {
     google_code_url="http://lazyscripts.googlecode.com"
     git_python_filename="python-git_0.1.6-1_all.deb"
 
-    if [ "$1"!="gui" ]; then
+    if [ "$@" != "gui" ]; then
         echo "$show_text"
     fi
 
@@ -18,8 +18,11 @@ function install_require_packages () {
     source /etc/profile
 
     #use zenity if use gui flag
-    if [ "$1"="gui" ]; then
-        zenity --info --text="lazyscripts 懶人包執行需要下載相關軟體，按下確定後請稍待數分鐘"
+    if [ "$@" = "gui" ]; then
+        zenity --question --text="第一次使用 lazyscripts 懶人包需要安裝 git-core 以及 python-git 軟體。請連接網路後按下『確認』進行安裝。下載及安裝軟體需要等候數分鐘。"
+        if [ "$?" -ne 0 ]; then
+            exit -1
+        fi
         /usr/sbin/synaptic --hide-main-window \
         --non-interactive --update-at-startup
 
@@ -46,11 +49,13 @@ function install_require_packages () {
 }
 
 echo "Check for required packsges..."
-if dpkg -l python-nose python-setuptools git-core python-git > /dev/null 2>&1 ; then
+# if two packages is installed, result is "ii" else is "ip" or "pi" or no value
+RESULT="`dpkg-query --show --showformat='${Status;1}' git-core python-git`"
+if [ "$RESULT" = "ii" ]; then
     echo "Require packages installed."
 else
     echo "Require packages not installed."
-    install_require_packages
+    install_require_packages "$@"
 fi
 
 #END
