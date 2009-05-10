@@ -25,7 +25,9 @@ def _check_root():
 try:
     cmder=sys.argv[1]
     #try to install requre packages
-    system (get_root_path () + "/bin/package_debian_ubuntu.sh " + cmder)
+    exit_status = system (get_root_path () + "/bin/package_debian_ubuntu.sh " + cmder)
+    if exit_status != 0:
+        sys.exit (-1)
 
     if 'repo' == cmder.strip():
         from lazyscripts.repo import sign_repopath
