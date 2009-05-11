@@ -6,7 +6,7 @@
 # Please run as root.
 
 function install_require_packages () {
-    show_text="正在下載並安裝Lazyscripts執行所需的套件...."
+    show_text="正在下載並安裝 python-git 套件..."
     google_code_url="http://lazyscripts.googlecode.com"
     git_python_filename="python-git_0.1.6-1_all.deb"
 
@@ -36,7 +36,7 @@ function install_require_packages () {
         dpkg -i "$git_python_filename" > /dev/null 2>&1;
         rm "$git_python_filename" > /dev/null 2>&1;
         echo 100;
-        ) | zenity --progress --pulstate --auto-close --auto-kill --text="$show_text"
+        ) | zenity --progress --pulsate --auto-close --auto-kill --text="$show_text"
     else #if slzs console, use console mode
         apt-get update
         apt-get -y --force-yes install \
