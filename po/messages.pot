@@ -1,131 +1,135 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2009-03-29 23:19+CST\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-05-11 21:38+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
-"Content-Transfer-Encoding: ENCODING\n"
-"Generated-By: pygettext.py 1.5\n"
+"Content-Transfer-Encoding: 8bit\n"
 
-
-#: ui/__init__.py:40
+#: ui/__init__.py:44
 msgid "<b>Lazyscripts need internet connection to execute,"
 msgstr ""
 
-#: ui/__init__.py:41
+#: ui/__init__.py:45
 msgid "please select type of internet connection: </b>"
 msgstr ""
 
-#: ui/__init__.py:50
+#: ui/__init__.py:49
 msgid "Open netowrk manager to connect to internet"
 msgstr ""
 
-#: ui/__init__.py:62
+#: ui/__init__.py:53
 msgid "I already connect to internet"
 msgstr ""
 
-#: ui/__init__.py:63
-msgid ""
-", i don't need any other configuration \n"
+#: ui/__init__.py:54
+msgid ", i don't need any other configuration \n"
 msgstr ""
 
-#: ui/__init__.py:101
+#: ui/__init__.py:86
 msgid ""
 "\n"
 "we need to modify your software sources,\n"
 "do you want to let lazyscripts modify your software sources?\n"
 msgstr ""
 
-#: ui/__init__.py:115
+#: ui/__init__.py:94
 msgid "Lazyscripts will not change your settings"
 msgstr ""
 
-#: ui/__init__.py:116
+#: ui/__init__.py:95
 msgid ""
 "please ensure your software sources right\n"
 "\n"
 msgstr ""
 
-#: ui/__init__.py:117
+#: ui/__init__.py:96
 msgid "comment: please enable main, universe, "
 msgstr ""
 
-#: ui/__init__.py:118
+#: ui/__init__.py:97
 msgid "multiverse and restricted section"
 msgstr ""
 
-#: ui/__init__.py:157
+#: ui/__init__.py:133
 msgid "items"
 msgstr ""
 
-#: ui/__init__.py:201
+#: ui/__init__.py:165
 msgid "<b><big>Lazyscripts - Linux lazy pack"
 msgstr ""
 
-#: ui/__init__.py:202
+#: ui/__init__.py:166
 msgid ""
-"\357\274\214Linux end user's good friend</big></b>\n"
+", Linux end user's good friend</big></b>\n"
 "\n"
 "\n"
 msgstr ""
 
-#: ui/__init__.py:203
+#: ui/__init__.py:167
 msgid ""
-"Copyright (C) 2007, Design and developed by PCMan, Yuren Ju, hychen and billy\n"
+"Copyright (C) 2007, Design and developed by PCMan, Yuren Ju, hychen and "
+"billy\n"
 "\n"
 msgstr ""
 
-#: ui/__init__.py:204
+#: ui/__init__.py:168
 msgid "Project Lazyscripts - "
 msgstr ""
 
-#: ui/__init__.py:205
-msgid "<span color=\"blue\">FIXME: HERE IS WEBSITE URL</span>"
+#: ui/__init__.py:169
+msgid "<span color=\"blue\">http://sites.google.com/site/lazyscripts/</span>"
 msgstr ""
 
-#: ui/__init__.py:218
-msgid ""
-"execute action: \n"
+#: ui/__init__.py:181
+msgid "execute action: \n"
 msgstr ""
 
-#: ui/__init__.py:354
+#: ui/__init__.py:257
+msgid "Please waiting for download scripts."
+msgstr ""
+
+#: ui/__init__.py:306
 msgid "Lazyscripts - Linux lazy pack"
 msgstr ""
 
-#: ui/__init__.py:370
+#: ui/__init__.py:321
 msgid "Welcome"
 msgstr ""
 
-#: ui/__init__.py:375
+#: ui/__init__.py:323
 msgid "fininsh"
 msgstr ""
 
-#: ui/__init__.py:413
+#: ui/__init__.py:360
 msgid "do you want to quit lazyscripts?"
 msgstr ""
 
-#: ui/__init__.py:435
+#: ui/__init__.py:381
 msgid "Linux Lazy pack"
 msgstr ""
 
-#: ui/__init__.py:460
+#: ui/__init__.py:405
 msgid ""
 "\n"
-"\033[1;36mLazyscripts - linux lazy pack run finish!\033[1;32m   have fun for linux!\033[m\n"
+"[1;36mLazyscripts - linux lazy pack run finish![1;32m   have fun for linux!"
+"[m\n"
 msgstr ""
 
-#: ui/__init__.py:486
-msgid "error"
-msgstr ""
-
-#: ui/__init__.py:486
+#: ui/__init__.py:430
 msgid "no avalible internet connection, lazyscripts cannot execute."
 msgstr ""
 
+#: ui/__init__.py:430
+msgid "error"
+msgstr ""
