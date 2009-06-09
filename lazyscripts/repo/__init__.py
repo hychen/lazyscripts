@@ -7,8 +7,9 @@ from hashlib import md5
 from os import path as os_path
 
 from lazyscripts.repo import git
+from lazyscripts.config import Config
 
-def _get_root_path (): 
+def _get_root_path ():
     dir = os_path.dirname (__file__) + '/../../'
     root = os_path.abspath (dir)
     return root
@@ -28,6 +29,7 @@ def get_repo_for_distro(distro, testmode=False):
 
     @param tuple distro
     """
+    default_repo = None
     if not distro:
         raise "need distrobution information"
     # @FIXME: hard code here.
@@ -35,11 +37,16 @@ def get_repo_for_distro(distro, testmode=False):
         dest = _get_root_path()+'/t/datas/scriptspoll'
     else:
         dest = _get_root_path()+'/scriptspoll'
+        conf = Config(_get_root_path()+'/conf/repository.conf')
+        if conf.default_repo:
+          default_repo = conf.default_repo
 
-    if distro[0] in ('Ubuntu','Debian'):
-        return create_scriptrepo(\
-            "git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git",
-            dest)
+    if not default_repo:
+      if distro[0] in ('Ubuntu','Debian'):
+          default_repo = \
+            "git://github.com/billy3321/lazyscripts_pool_debian_ubuntu.git"
+
+    return create_scriptrepo(default_repo,dest)
 
 def get_scriptrepo(origin_path, dest):
     """
