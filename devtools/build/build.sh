@@ -10,14 +10,17 @@ filename="lazyscripts-$VERSION.tar.gz"
 
 # build tarball
 cd ../..
-git archive --format=tar master | gzip -9 > "lazyscripts.tar.gz"
+REPO=$(cat conf/repository.conf)
+REPO_SIGN=$(./bin/lzs repo sign $REPO |grep -v Check | grep -v Requ)
+
+git archive --format=tar $VERSION | gzip -9 > "lazyscripts.tar.gz"
 mv "lazyscripts.tar.gz" "$CURRENT_PWD"
 cd "$CURRENT_PWD"
 
 mkdir -p "temp"
 cd "temp"
 tar zxf ../lazyscripts.tar.gz
-cp -a ../../../scriptspoll/464df77ba280ba7a885291be2653b7da scriptspoll/
+cp -a ../../../scriptspoll/$REPO_SIGN scriptspoll/
 tar czf lazyscripts.tar.gz *
 cp lazyscripts.tar.gz ..
 cd ..
@@ -32,5 +35,3 @@ rm -f *.tar.gz
 tar -czf "$filename" lazyscripts
 
 rm sfx lazyscripts
-
-
