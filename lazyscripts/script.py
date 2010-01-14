@@ -34,6 +34,8 @@ def create_scriptdesc(path, name, authors):
         "[info]",
         "name[en_US] = %s" % name,
         "desc[en_US] = long description",
+        "name[zh_TW] = %s" % name,
+        "desc[zh_TW] = long description",
         "",
         "license     = ",
         "maintainers = %s" % ','.join(authors),
@@ -68,9 +70,13 @@ def create_scriptpkgdesc(dir):
 
 #{{{def is_scriptdir(path):
 def is_scriptdir(path):
+    parser = ConfigParser.ConfigParser()
+    parser.read(os.path.join(path,'desc.ini'))
+    #@XXX check desc.ini is script desc.init, not good way here.
     if os.path.isdir(path) and \
-        os.path.exists(os.path.join(path,'desc.ini')):
+        parser.has_section('attrs'):
             return True
+    del(parser)
     return False
 #}}}
 
@@ -166,13 +172,33 @@ class Script(object):
             if not attrname in ('maintainers','authors'):
                 setattr(self, attrname, self.parser.get('info',optname))
             else:
-                setattr(self, attrname, self.parser.get('info',optname).split('\n'))
+                attrs = self.parser.get('info',optname).split('\n')
+                if type(attrs) is list:
+                    setattr(self, attrname, attrs)
+                else:
+                    setattr(self, attrname, attrs[0])
     #}}}
 
     #{{{def _init_attrs(self):
     def _init_attrs(self):
         for optname in self.parser.options('attrs'):
             setattr(self, optname, self.parser.getboolean('attrs',optname))
+    #}}}
+
+    #{{{def get_pkginfo(self):
+    def get_pkginfo(self):
+        def _read(query):
+            distro = platform.dist()
+            if not distro:    return []
+
+            query = utils.ext_ospath_join(self.path, distro[0].lower(), query)
+            if not os.path.isfile(query):   return []
+            return [ e for e in open(query, 'r').read().split('\n') if not e.startswith('#') and e]
+
+        ret =  {'install':_read('install.txt'),
+                'remove':_read('remove.txt')}
+        del(_read)
+        return ret
     #}}}
 
     #{{{def is_avaliable(self, kwds)

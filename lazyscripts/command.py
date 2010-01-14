@@ -81,7 +81,7 @@ class ScriptCmd(Command):
         path = os.path.join(self.curdir, id)
 
         if self.argc == 3:
-            scriptname = args[2]
+            scriptname = self.args[2]
         else:
             scriptname = id
 
@@ -90,6 +90,38 @@ class ScriptCmd(Command):
         if not os.path.isdir(path):
             os.mkdir(path)
         return lzsscript.Script._init_script(path, scriptname, opts[0].user)
+    #}}}
+
+    #{{{def show(self):
+    def show(self):
+        if self.argc <=  1:
+            script_path = os.path.curdir;
+        else:
+            script_path = self.args[1]
+
+        if not lzsscript.is_scriptdir(script_path):
+            print "fetal: %s is not a script detectory." % script_path
+            return False
+
+        script = lzsscript.Script(script_path)
+        # get attritubte.
+        attrs = []
+        for attr in script.parser.options('attrs'):
+           if not getattr(script, attr):    continue
+           attrs.append(attr)
+        # get package info.
+        pkginfo = script.get_pkginfo()
+        _pkgs = ['-%s' % e for e in pkginfo['remove']] + \
+                  ['+%s' % e for e in pkginfo['install']]
+        msg_pkg = ' '.join(_pkgs)
+        msg = ["Script Name: %s" % script.name,
+               "Package Info: %s" % msg_pkg,
+               "Support With: %s" % " ".join(attrs),
+               "Script Maintaner: %s" % '\n'.join(script.maintainers),
+               "Script Author: %s " % '\n'.join(script.authors),
+               "Description: \n%s" % script.desc]
+
+        print "\n".join(msg)
     #}}}
 pass
 
@@ -140,6 +172,7 @@ class PoolCmd(Command):
         conf = env.resource('config')
         poolname = self.args[1]
         poolobj = self._load_pool(poolname)
+        pooldata = self.conf.get_pool(poolname)
         msgs = [
             "Pool Name: %s" % poolobj.get_i18n('info', 'name'),
             "Upstream Repo: %s" %  pooldata['upstream'],
@@ -158,7 +191,11 @@ class PoolCmd(Command):
             poolname = self.args[1]
         print "Syncing pool %s" % poolname
         poolobj = self._load_pool(poolname)
-        poolobj.gitapi.pull()
+        try:
+            poolobj.gitapi.pull()
+        except git.errors.GitCommandError, e:
+            print "fetal:sync %s faild." % poolobj.path
+            print e
     #}}}
 
     #{{{def _load_pool(self, poolname):

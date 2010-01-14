@@ -76,6 +76,14 @@ class LzsAdminrTestCase(unittest.TestCase):
             env.resource('config').get_pool('zenpool'))
         shutil.rmtree(path)
     #}}}
+
+    def test_show_script(self):
+        path = os.path.join(tempfile.gettempdir(), 'fakescript')
+        os.mkdir(path)
+        script = lzsscript.Script._init_script(path, 'test', 'test')
+        self._admin.onecmd("script show %s" % path)
+        shutil.rmtree(path)
+        pass
 pass
 
 def suite():
