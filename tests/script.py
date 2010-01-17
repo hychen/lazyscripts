@@ -43,7 +43,6 @@ class ScriptTestCase(unittest.TestCase):
         '[attrs]']
 
         self.scriptname = os.path.join(tempfile.gettempdir(), 'lzs-testscript')
-        os.mkdir(self.scriptname)
     #}}}
 
     #{{{def tearDown(self):
@@ -61,6 +60,7 @@ class ScriptTestCase(unittest.TestCase):
 
     #{{{def _write(self, filename, lines):
     def _write(self, filename, lines):
+        os.mkdir(self.scriptname)
         with open(os.path.join(self.scriptname,filename),'w') as f:
             f.write("\n".join(lines+[""]))
     #}}}
@@ -91,14 +91,14 @@ class ScriptTestCase(unittest.TestCase):
 
     #{{{def test_init_script(self):
     def test_init_script(self):
-        script = lzsscript.Script._init_script(self.scriptname, 'A',['B'])
+        script = lzsscript.Script.init_script(self.scriptname, 'A',['B'], True)
         self.assertEquals('A', script.name)
         self.assertEquals(['B'], script.authors)
         self.assertEquals('long description', script.desc)
         self.assertFalse(script.debian)
         self.assertFalse(script.amd64)
         self.assertRaises(lzsscript.DirectoryIsScriptDirError,
-        lzsscript.Script._init_script, self.scriptname, 'A',['B'])
+        lzsscript.Script.init_script, self.scriptname, 'A',['B'], False)
     #}}}
 pass
 

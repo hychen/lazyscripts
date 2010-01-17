@@ -144,11 +144,15 @@ class Script(object):
         self._init_attrs()
     #}}}
 
-    #{{{def _init_script(cls, path, name, author):
+    #{{{def init_script(cls, path, name, author):
     @classmethod
-    def _init_script(cls, path, name, author):
+    def init_script(cls, path, name, author, mkdir=False):
         if is_scriptdir(path):
             raise DirectoryIsScriptDirError("target direcotry is script already.")
+
+        if mkdir:
+            os.mkdir(path)
+
         create_scriptdesc(path, name, author)
         utils.create_executablefile(os.path.join(path, 'script'),
                                     ['# write your own script here.'])

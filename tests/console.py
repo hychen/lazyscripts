@@ -79,11 +79,9 @@ class LzsAdminrTestCase(unittest.TestCase):
 
     def test_show_script(self):
         path = os.path.join(tempfile.gettempdir(), 'fakescript')
-        os.mkdir(path)
-        script = lzsscript.Script._init_script(path, 'test', 'test')
+        script = lzsscript.Script.init_script(path, 'test', 'test', True)
         self._admin.onecmd("script show %s" % path)
         shutil.rmtree(path)
-        pass
 pass
 
 def suite():

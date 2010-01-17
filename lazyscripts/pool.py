@@ -194,12 +194,17 @@ class ScriptsPool(object):
     #}}}
 
     #{{{def scripts(self, set_id, lang):
-    def scripts(self, set_id, lang=None):
+    def scripts(self, set_id=None, lang=None):
         """get scripts by spefic set id.
 
         @param str set_id
         @return a dict contains many Script instance.
         """
+        if not set_id:
+            if not self._scripts:
+                for set_id in self.categories():
+                    self._scripts.setdefault(set_id, self._lazy_mk_set(set_id, lang))
+            return self._scripts
         return self._scripts.setdefault(set_id, self._lazy_mk_set(set_id, lang))
     #}}}
 

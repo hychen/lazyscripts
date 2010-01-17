@@ -132,21 +132,21 @@ class ScriptsPoolTestCase(unittest.TestCase):
 
     #{{{def test_add_and_remove_category(self):
     def test_add_and_remove_category(self):
-       pool = lzspool.ScriptsPool.init_pool(self.poolname,
-                            maintainers='Jabba <jabba@jabamo.org>')
-       pool.add_category('Game')
-       pool.add_category('Networking', {'zh_TW':'網路'})
-       pool.save()
-       self.assertEquals(['Game','Networking'], pool.categories())
-       self.assertEquals('網路', pool.get_i18n('category','Networking', 'zh_TW'))
-       pool.remove_category('Networking')
-       pool.save()
-       self.assertEquals(['Game'], pool.categories())
-       self.assertRaises(ConfigParser.NoOptionError, pool.parser.get,
-                                        'category','Networking[zh_TW]')
-       pool.add_category('me')
-       self.assertEquals(['Game'], pool.categories())
-       pool.remove_category('me')
+        pool = lzspool.ScriptsPool.init_pool(self.poolname,
+                             maintainers='Jabba <jabba@jabamo.org>')
+        pool.add_category('Game')
+        pool.add_category('Networking', {'zh_TW':'網路'})
+        pool.save()
+        self.assertEquals(['Game','Networking'], pool.categories())
+        self.assertEquals('網路', pool.get_i18n('category','Networking', 'zh_TW'))
+        pool.remove_category('Networking')
+        pool.save()
+        self.assertEquals(['Game'], pool.categories())
+        self.assertRaises(ConfigParser.NoOptionError, pool.parser.get,
+                                         'category','Networking[zh_TW]')
+        pool.add_category('me')
+        self.assertEquals(['Game'], pool.categories())
+        pool.remove_category('me')
    #}}}
 pass
 

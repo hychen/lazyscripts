@@ -24,6 +24,7 @@ from lazyscripts import env
 from lazyscripts import pool
 from lazyscripts import script as lzsscript
 from lazyscripts import gui
+from lazyscripts import git
 
 class Command(object):
     #{{{def __init__(self, args=None):
@@ -87,9 +88,43 @@ class ScriptCmd(Command):
 
         opts = self._getopts([optparse.make_option('-u', '--user', dest='user', default='')])
         print "Creating %s script template" % id
-        if not os.path.isdir(path):
-            os.mkdir(path)
-        return lzsscript.Script._init_script(path, scriptname, opts[0].user)
+        return lzsscript.Script.init_script(path, scriptname, opts[0].user, True)
+    #}}}
+
+    #{{{def show(self):
+    def show(self):
+        root = env.resource_name('pools')
+        if self.argc <=  1:
+            script_path = os.path.curdir;
+        else:
+            if pool.is_scriptspool(os.path.curdir):
+                script_path = self.args[1]
+            else:
+                script_path = os.path.join(root, self.args[1])
+
+        if not lzsscript.is_scriptdir(script_path):
+            print "fetal: %s is not a script detectory." % script_path
+            return False
+
+        script = lzsscript.Script(script_path)
+        # get attritubte.
+        attrs = []
+        for attr in script.parser.options('attrs'):
+           if not getattr(script, attr):    continue
+           attrs.append(attr)
+        # get package info.
+        pkginfo = script.get_pkginfo()
+        _pkgs = ['-%s' % e for e in pkginfo['remove']] + \
+                  ['+%s' % e for e in pkginfo['install']]
+        msg_pkg = ' '.join(_pkgs)
+        msg = ["Script Name: %s" % script.name,
+               "Package Info: %s" % msg_pkg,
+               "Support With: %s" % " ".join(attrs),
+               "Script Maintaner: %s" % '\n'.join(script.maintainers),
+               "Script Author: %s " % '\n'.join(script.authors),
+               "Description: \n%s" % script.desc]
+
+        print "\n".join(msg)
     #}}}
 
     #{{{def show(self):

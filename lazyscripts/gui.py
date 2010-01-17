@@ -250,6 +250,8 @@ class ToolListWidget:
     #{{{def download_scripts (self, lock):
     def download_scripts (self, lock):
          self.pool = env.resource('pool')
+        #@XXX dirty here.
+         self.pool.checkout('stable')
          lock.release ()
     #}}}
 

@@ -22,6 +22,7 @@ import platform
 import sys
 
 from lazyscripts import command as lzscmd
+from lazyscripts import pool as lzspool
 from lazyscripts import env
 
 class LzsAdmin(cmd.Cmd):
@@ -33,8 +34,29 @@ class LzsAdmin(cmd.Cmd):
     #}}}
 
     def do_update(self, lines):
-        #@XXX update package source.
-        self.do_pool('sync')
+        print "building scripts index..."
+        self._build_scripts_index()
+
+    #{{{def _build_scripts_index(self):
+    def _build_scripts_index(self):
+        root = env.resource_name('pools')
+        contents = []
+        for poolname in os.listdir(root):
+            poolpath = os.path.join(root, poolname)
+            pool = lzspool.ScriptsPool(poolpath)
+            for cat, scripts in pool.scripts(None, 'zh_TW').items():
+                if not scripts: continue
+                for script in scripts:
+                    contents.append("%s/%s/%s - %s " % (poolname, cat, script.id, script.name))
+
+        index_path = os.path.join(env.resource_name('caches'), 'SCRIPTS_INDEX')
+        with open(index_path, 'w') as f:
+            f.write("\n".join(contents+['']))
+    #}}}
+
+    def do_search(self, lines):
+        index_path = os.path.join(env.resource_name('caches'), 'SCRIPTS_INDEX')
+        os.system("grep %s %s" % (lines, index_path))
 
     def do_script(self, lines):
         lzscmd.ScriptCmd(lines).execute(self.curdir)
@@ -69,13 +91,12 @@ def gui_run():
         sys.exit()
 
     env.register_workspace()
+    env.prepare_runtimeenv()
     env.storageenv()
     distro = platform.dist()
     if not distro:
         print "distrobution no supported."
         sys.exit()
-
-    os.system('lzs pool sync')
 
     message_sudo="\"執行'Lazyscripts 懶人包' 會修改系統設定，並會安裝新軟體，所以需要系統管理員權限。 請輸入系統管理密碼，才能繼續執行。(在 Lazyscripts 下，預設這就是你登入系統時所用的密碼。)\""
 
