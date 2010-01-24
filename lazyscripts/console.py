@@ -44,7 +44,7 @@ class LzsAdmin(cmd.Cmd):
         for poolname in os.listdir(root):
             poolpath = os.path.join(root, poolname)
             pool = lzspool.ScriptsPool(poolpath)
-            for cat, scripts in pool.scripts(None, 'zh_TW').items():
+            for cat, scripts in pool.scripts(None, env.get_local()).items():
                 if not scripts: continue
                 for script in scripts:
                     contents.append("%s/%s/%s - %s " % (poolname, cat, script.id, script.name))

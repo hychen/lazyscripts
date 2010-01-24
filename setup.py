@@ -41,5 +41,6 @@ Lazyscripts is a script management tools.
     lzs = lazyscripts.console:run
     lzs-debinstall = lazyscripts.console:debinstall
     glzs = lazyscripts.console:gui_run
+    lzs-pcvt = lazyscripts.lengacy:run
     """
 )

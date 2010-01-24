@@ -139,7 +139,7 @@ class Script(object):
         self.selected = False
         self.path = path
         self.id = os.path.basename(path)
-
+        self.category = 'root'
         self._init_info()
         self._init_attrs()
     #}}}

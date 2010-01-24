@@ -25,11 +25,8 @@ get_pkgmgr - get package manager by distrobution name.
     "apt-get install foo"
 """
 
-__authors__ = [
-    '"Hsin Yi Chen" <ossug.hychen@gmail.com>'
-]
-
 import os
+import shutil
 
 class APTSourceListIsEmptyFile(Exception):    pass
 class PackageSystemNotFound(Exception):    pass
@@ -69,6 +66,17 @@ class DebManager(object):
     #{{{def cmd_add_sourceslist(self, path):
     def cmd_add_sourceslist(self, path):
         return "cp %s /etc/apt/sources.list.d" % path
+    #}}}
+
+    #{{{def update_sources_by(self, pool):
+    def update_sources_by(self, pool):
+        from distutils.dep_util import newer
+        src = pool.current_pkgsourcelist
+        if not src: return False
+
+        dest = "/etc/apt/sources.list.d/%s" % os.path.basename(src)
+        if newer(src, dest):
+            shutil.copy(src, dest)
     #}}}
 pass
 

@@ -2,7 +2,7 @@ import unittest
 import tempfile
 
 # load testsuites from module.
-from tests import console, config, pkgmgr, basepool, gitpool, script, env
+from tests import console, config, pkgmgr, basepool, gitpool, script, env, runner
 
 def suite():
     suite = unittest.TestSuite()
@@ -12,6 +12,7 @@ def suite():
     suite.addTest(gitpool.suite())
     suite.addTest(script.suite())
     suite.addTest(env.suite())
+    suite.addTest(runner.suite())
     suite.addTest(console.suite())
     return suite
 

@@ -34,6 +34,7 @@ def init_workspace(root):
     os.mkdir(root)
     os.mkdir(os.path.join(root, 'pools'))
     os.mkdir(os.path.join(root, 'log'))
+    os.mkdir(os.path.join(root, 'caches'))
     templateconf = pkg_resources.resource_filename(
                             'lazyscripts.template', 'config')
     shutil.copy(templateconf, os.path.join(root, 'config'))

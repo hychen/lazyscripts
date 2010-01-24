@@ -135,8 +135,8 @@ class ToolPage:
 
         for tool in self.tools:
             list.append ((tool.used,
-            ("<b>%s</b>：\n%s\n%s" % \
-            (tool.script.name, tool.script.desc, tool.script.license)), tool))
+            ("<b>%s</b>：\n%s" % \
+            (tool.script.name, tool.script.desc)), tool))
 
         view.set_model (list)
         view.show ()
@@ -257,12 +257,7 @@ class ToolListWidget:
 
     #{{{def load_tree(self, list_store):
     def load_tree(self, list_store):
-        loc = locale.getlocale (locale.LC_ALL)
-        if (loc[0] != None):
-            lzs_loc = loc[0]
-        else:
-            lzs_loc = ''
-
+        lzs_loc = env.get_local()
         dlg = gtk.MessageDialog \
                 (None, gtk.DIALOG_MODAL, \
                 gtk.MESSAGE_INFO, \
@@ -431,8 +426,9 @@ class MainWin:
                     selected_scripts.append(tool.script)
 
         runner = lzsrunner.ScriptsRunner(self)
+        runner.select_pool(self.tool_list.pool)
         runner.set_scripts(selected_scripts)
-        runner.run(run_as_root=True)
+        runner.run()
         self.final_page.term.connect('child-exited', self.on_complete)
     #}}}
 

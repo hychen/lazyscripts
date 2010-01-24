@@ -17,6 +17,7 @@
 # this software; if not, write to the Free Software Foundation, Inc., 59 Temple
 # Place, Suite 330, Boston, MA 02111-1307 USA
 import os
+import locale
 
 from lazyscripts import config
 from lazyscripts import pool
@@ -36,6 +37,14 @@ def get_realhome():
     if not os.path.exists(path):    return os.getenv('HOME')
     lines = open(path, 'r').readlines()
     return ''.join(lines[2][17:]).replace('\n','')
+#}}}
+
+#{{{def get_local():
+def get_local():
+    loc = locale.getlocale (locale.LC_ALL)
+    if loc:
+        return loc[0]
+    return None
 #}}}
 
 class Register:

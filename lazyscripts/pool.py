@@ -26,6 +26,7 @@ import shutil
 import tempfile
 
 from lazyscripts import git
+from lazyscripts import utils
 from lazyscripts import script as lzsscript
 
 class DirectoryIsAScriptPoolError(Exception):
@@ -90,9 +91,20 @@ class ScriptsPool(object):
     I18N_DEFFILE = 'i18n.ini'
     #}}}
 
+    #{{{def current_pkgsourcelist(self):
+    @property
+    def current_pkgsourcelist(self):
+        filename = "lzs_%s_%s_%s.list" % (platform.machine(),
+                                          self.dist[0].lower(),
+                                          self.dist[1])
+        if not os.path.exists(filename):    return None
+        return utils.ext_ospath_join(self.path, 'sources.d', filename)
+    #}}}
+
     #{{{def __init__(self, path):
     def __init__(self, path):
         self.path = path
+        self.dist = platform.dist()
         self.load()
     #}}}
 
@@ -180,7 +192,7 @@ class ScriptsPool(object):
             for lang, val in langdefs.items():
                 q = '%s[%s]' % (categoryname, lang)
                 self.parser.set('category', q, val)
-        self.parser.write(open(os.path.join(self.path,'desc.ini'),'w'))
+            self.parser.write(open(os.path.join(self.path,'desc.ini'),'w'))
     #}}}
 
     #{{{def remove_category(self, categoryname):
@@ -219,6 +231,7 @@ class ScriptsPool(object):
             # platform.
             if not script.is_avaliable(self.script_filters):
                 continue
+            script.category = set_id
             ret.append(script)
         return ret
     #}}}
