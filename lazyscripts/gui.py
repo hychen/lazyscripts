@@ -251,14 +251,15 @@ class ToolListWidget:
 
     #{{{def download_scripts (self, lock):
     def download_scripts (self, lock):
+        conf = env.resource('config')
         if not self.recommands_list:
             self.pool = env.resource('pool')
         else:
-            conf = env.resource('config')
             path = os.path.join(env.resource_name('pools'), conf.get_default('pool'))
             self.pool = lzspool.GitScriptsPool(path, self.win.recommands_list)
         #@XXX dirty here.
-        self.pool.checkout('stable')
+#	rev = conf.get_pool(conf.get_default('pool'))['rev']
+#        self.pool.checkout(rev)
         lock.release ()
     #}}}
 

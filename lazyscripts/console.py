@@ -105,7 +105,7 @@ def gui_run():
     if sys.argv[1:]:
         args = " ".join(sys.argv[1:])
 
-    cmd = "%s lzs gui run %s &" % (prefix, args)
+    cmd = "%s lzs gui run %s " % (prefix, args)
     print cmd
     os.system(cmd)
 #}}}

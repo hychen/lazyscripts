@@ -39,7 +39,7 @@ def find_pkginfo(scripts, distro, version=None):
     paths = [script.path for script in scripts]
     # check the distrobution has another pkg info.
     distro = distro.lower()
-    distro_dir = os.path.join(distro, 'def')
+    distro_dir = distro+'_def'
     if version:
         distro_ver_dir = os.path.join(distro, version)
         if os.path.isdir(distro_ver_dir):

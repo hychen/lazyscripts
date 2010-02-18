@@ -227,7 +227,8 @@ class PoolCmd(Command):
         print "Syncing pool %s" % poolname
         poolobj = self._load_pool(poolname)
         try:
-            poolobj.gitapi.pull()
+            poolobj.gitapi.pull('upstream')
+            poolobj.gitapi.checkout(self.conf.get_pool(poolname)['rev'])
         except git.errors.GitCommandError, e:
             print "fetal:sync %s faild." % poolobj.path
             print e
