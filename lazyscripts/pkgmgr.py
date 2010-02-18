@@ -56,16 +56,15 @@ class DebManager(object):
         return "%s %s" % (cmdprefix, argv)
     #}}}
 
-    #{{{def create_sourceslist(self, contents, path):
-    def create_sourceslist(self, contents, path):
-        if not contents:    raise APTSourceListIsEmptyFile()
-        open(path, 'w').write(contents)
-        os.system("uniq %s %s" % (path,path))
-    #}}}
+    #{{{def update_sources_by(self, pool):
+    def update_sources_by(self, pool):
+        from distutils.dep_util import newer
+        src = pool.current_pkgsourcelist
+        if not src: return False
 
-    #{{{def cmd_add_sourceslist(self, path):
-    def cmd_add_sourceslist(self, path):
-        return "cp %s /etc/apt/sources.list.d" % path
+        dest = "/etc/apt/sources.list.d/%s" % os.path.basename(src)
+        if newer(src, dest):
+            shutil.copy(src, dest)
     #}}}
 
     #{{{def update_sources_by(self, pool):

@@ -12,6 +12,7 @@ import gtk, gobject, vte
 import os, sys
 from lazyscripts import __VERSION__, __WEBURL__
 from lazyscripts import env
+from lazyscripts import pool as lzspool
 from lazyscripts import runner as lzsrunner
 
 from os import path as os_path
@@ -204,6 +205,7 @@ class ToolListWidget:
     def __init__(self, win):
         self.all_tools = []
         self.win = win
+        self.recommands_list = win.recommands_list
 
         hbox = gtk.HBox(False, 2)
         self.hbox = hbox
@@ -249,10 +251,15 @@ class ToolListWidget:
 
     #{{{def download_scripts (self, lock):
     def download_scripts (self, lock):
-         self.pool = env.resource('pool')
+        if not self.recommands_list:
+            self.pool = env.resource('pool')
+        else:
+            conf = env.resource('config')
+            path = os.path.join(env.resource_name('pools'), conf.get_default('pool'))
+            self.pool = lzspool.GitScriptsPool(path, self.win.recommands_list)
         #@XXX dirty here.
-         self.pool.checkout('stable')
-         lock.release ()
+        self.pool.checkout('stable')
+        lock.release ()
     #}}}
 
     #{{{def load_tree(self, list_store):
@@ -286,13 +293,9 @@ class ToolListWidget:
             tool_page = ToolPage()
             tool_page.title = self.pool.get_i18n('category', category, lzs_loc)
             tool_page.img = self.pool.get_iconpath(category)
-            recommand_scripts = self.pool.get_recommands(category)
+
             for script in self.pool.scripts(category, lzs_loc):
-                if script.id in recommand_scripts:
-                    recommand = True
-                else:
-                    recommand = False
-                tool = Tool (script, recommand)
+                tool = Tool (script, self.pool.recommand_script(category, script.id))
                 tool_page.tools.append(tool)
 
             tool_page.get_widget()
@@ -318,8 +321,9 @@ pass
 
 class MainWin:
     #{{{def __init__(self):
-    def __init__(self):
+    def __init__(self, recommands_list=None):
         win=gtk.Window(gtk.WINDOW_TOPLEVEL)
+        win.recommands_list = recommands_list
         win.maximize()
         win.set_title(_('Lazyscripts - Simple is More.'))
         try:
@@ -457,11 +461,11 @@ class MainWin:
     #}}}
 pass
 
-#{{{def startgui():
-def startgui():
+#{{{def startgui(recommands_list=None):
+def startgui(recommands_list=None):
     """
     launchs the application.
     """
-    MainWin()
+    MainWin(recommands_list)
     gtk.main()
 #}}}

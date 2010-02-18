@@ -101,9 +101,10 @@ class ScriptsPool(object):
         return utils.ext_ospath_join(self.path, 'sources.d', filename)
     #}}}
 
-    #{{{def __init__(self, path):
-    def __init__(self, path):
+    #{{{def __init__(self, path, recommands_list=None):
+    def __init__(self, path, recommands_list=None):
         self.path = path
+        self.recommands_list = recommands_list
         self.dist = platform.dist()
         self.load()
     #}}}
@@ -135,6 +136,7 @@ class ScriptsPool(object):
     #{{{def init_pool(dirpath, **kdws):
     @classmethod
     def init_pool(cls, dirpath, **kwds):
+        "create a scripts pool."
         if is_scriptspool(dirpath):
             raise DirectoryIsAScriptPoolError(
                 "The directory %s is a scriptspool already." % dirpath)
@@ -168,7 +170,7 @@ class ScriptsPool(object):
 
     #{{{def get_recommands(self, set_id):
     def get_recommands(self, set_id):
-        """get other language name, if no others, return en_US.
+        """get recommanded scripts.
 
         @param str set_id
         @param str lang Languange
@@ -180,13 +182,31 @@ class ScriptsPool(object):
         return []
     #}}}
 
+    #{{{def recommand_script(self, category, script_id):
+    def recommand_script(self, category, script_id):
+        if not self.parser.has_section(category):
+            return False
+        return script_id in self.parser.options(category)
+    #}}}
+
     #{{{def categories(self):
     def categories(self):
+        """get categories.
+
+        @return list which has name of categories.
+        """
         return self._set_ids
     #}}}
 
     #{{{def add_category(self, categoryname, langdefs=None):
     def add_category(self, categoryname, langdefs=None):
+        """add a category.
+
+        @param str category name
+        @langdefs dict a dict has lang-value paire.
+
+            e.x {'zh_TW':'名稱'}
+        """
         os.mkdir(os.path.join(self.path,categoryname))
         if langdefs:
             for lang, val in langdefs.items():
@@ -197,6 +217,10 @@ class ScriptsPool(object):
 
     #{{{def remove_category(self, categoryname):
     def remove_category(self, categoryname):
+        """remove a category.
+
+        @param str category name.
+        """
         shutil.rmtree(os.path.join(self.path,categoryname))
         # find matched categories.
         #  remove all .
@@ -238,15 +262,26 @@ class ScriptsPool(object):
 pass
 
 class GitScriptsPool(ScriptsPool):
-    #{{{def __init__(self, path):
-    def __init__(self, path):
+
+    """
+    Scripts Pool with git backend, version control support.
+    """
+    #{{{def __init__(self, path, recommands_list=None):
+    def __init__(self, path, recommands_list=None):
         self.gitapi = git.cmd.Git(path)
-        super(GitScriptsPool, self).__init__(path)
+        super(GitScriptsPool, self).__init__(path, recommands_list)
     #}}}
 
     #{{{def init_pool(dirpath, **kdws):
     @classmethod
     def init_pool(cls, dirpath, **kwds):
+        """
+        create a new scripts pool.
+
+        @param str dirpath directory path.
+        @param str upstream upstream git repository. (optional)
+        @param str origin remote git repository. (optional)
+        """
         if is_scriptspool(dirpath):
             raise DirectoryIsAScriptPoolError(
                 "the directory %s is a scriptspool already." % dirpath)
@@ -266,7 +301,7 @@ class GitScriptsPool(ScriptsPool):
             pool.gitapi.checkout('upstream/stable',b='stable')
 
         # if there is no desc.ini after pull remote respostiroy,
-        # means this totally new,
+        # means this totally new, do initialization.
         if not os.path.exists(os.path.join(dirpath,'desc.ini')):
             create_pooldescfile(dirpath, kwds.get('maintainers'))
             pool.gitapi.add('.')
@@ -276,7 +311,7 @@ class GitScriptsPool(ScriptsPool):
 
     #{{{def checkout(self, rev):
     def checkout(self, rev):
-        """checkout conentet by rev
+        """checkout content by rev
 
         @param str rev reversion of git.(tag/branch/commit)
         """

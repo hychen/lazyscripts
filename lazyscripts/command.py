@@ -91,8 +91,8 @@ class ScriptCmd(Command):
         return lzsscript.Script.init_script(path, scriptname, opts[0].user, True)
     #}}}
 
-    #{{{def show(self):
-    def show(self):
+    #{{{def info(self):
+    def info(self):
         root = env.resource_name('pools')
         if self.argc <=  1:
             script_path = os.path.curdir;
@@ -127,8 +127,8 @@ class ScriptCmd(Command):
         print "\n".join(msg)
     #}}}
 
-    #{{{def show(self):
-    def show(self):
+    #{{{def info(self):
+    def info(self):
         if self.argc <=  1:
             script_path = os.path.curdir;
         else:
@@ -165,7 +165,7 @@ class PoolCmd(Command):
     """
     pool add [pool name] [remote repo url]
     pool list
-    pool show [pool name]
+    pool info [pool name]
     pool pull [pool name]
     """
 
@@ -200,8 +200,8 @@ class PoolCmd(Command):
             print msg
     #}}}
 
-    #{{{def show(self):
-    def show(self):
+    #{{{def info(self):
+    def info(self):
         if self.argc <= 1:
             return False
         conf = env.resource('config')
@@ -249,10 +249,13 @@ pass
 class GuiCmd(Command):
 
     """
-    gui
+    gui run [recommands.ini]
     """
 
     #{{{def run(self):
     def run(self):
-        gui.startgui()
+        if self.argc > 1:
+            gui.startgui(self.args[1])
+        else:
+            gui.startgui()
     #}}}

@@ -101,7 +101,12 @@ def gui_run():
     message_sudo="\"執行'Lazyscripts 懶人包' 會修改系統設定，並會安裝新軟體，所以需要系統管理員權限。 請輸入系統管理密碼，才能繼續執行。(在 Lazyscripts 下，預設這就是你登入系統時所用的密碼。)\""
 
     prefix = 'gksu --message %s' % message_sudo
-    cmd = "%s lzs gui run &" % prefix
+    args = ''
+    if sys.argv[1:]:
+        args = " ".join(sys.argv[1:])
+
+    cmd = "%s lzs gui run %s &" % (prefix, args)
+    print cmd
     os.system(cmd)
 #}}}
 

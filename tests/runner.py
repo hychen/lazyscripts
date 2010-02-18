@@ -36,28 +36,34 @@ class RunnerManagerTestCase(unittest.TestCase):
         self.runner = lzsrunner.ScriptsRunner()
         self.scriptname = os.path.join(tempfile.gettempdir(), 'script4testrunner')
         self.poolname = os.path.join(tempfile.gettempdir(), 'pool4testrunner')
+        os.mkdir(self.poolname)
     #}}}
 
     #{{{def tearDown(self):
     def tearDown(self):
         shutil.rmtree(self.poolname)
-        shutil.rmtree(self.scriptname)
+        if os.path.exists(self.scriptname):
+            shutil.rmtree(self.scriptname)
         shutil.rmtree(os.path.join(tempfile.gettempdir(), 'lzs_root'))
         shutil.rmtree(self.mywps)
     #}}}
 
+    #{{{def _create_scripts(self, script_content):
     def _create_scripts(self, script_content):
         script = lzsscript.Script.init_script(self.scriptname, True, 'a',['b'])
         path = os.path.join(self.scriptname, 'script')
         with open(path, 'w') as f:
             f.write("\n".join(script_content+['']))
         return lzsscript.Script(self.scriptname)
+    #}}}
 
+    #{{{def _load_pool(self):
     def _load_pool(self):
-        os.mkdir(self.poolname)
         pool = lzspool.ScriptsPool.init_pool(self.poolname)
         return pool
+    #}}}
 
+    #{{{def test_shlib(self):
     def test_shlib(self):
         script = self._create_scripts(['#!/bin/bash',
                                        'source $(LIBROOT)/shlib.bash',
@@ -74,6 +80,28 @@ class RunnerManagerTestCase(unittest.TestCase):
         self.runner.select_pool(pool)
         self.runner.set_scripts([script])
         self.assertTrue('shlibused', self.runner.run())
+    #}}}
+
+    #{{{def test_selectionlist(self):
+    def test_selectionlist(self):
+        listpath = os.path.join(tempfile.gettempdir(),'testsel.ini')
+        with open(listpath, 'w') as f:
+            f.write("\n".join([
+            '[pool]',
+            'name=test',
+            'upstream=git://a',
+            'rev=stable',
+            '[Game]',
+            'wow=',
+            ''
+            ]))
+        list = lzsrunner.SelectionList(listpath)
+        self.assertEquals('git://a',list.pool('upstream'))
+        self.assertTrue(list.has_script('Game', 'wow'))
+        list.pool_name = "deb"
+        list.pool_upstream = "upstream"
+        list.pool_rev = "upstream"
+    #}}}
 pass
 
 def suite():

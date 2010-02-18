@@ -24,10 +24,9 @@ import ConfigParser
 import os
 import platform
 import shutil
+import time
 
 from lazyscripts import env
-from lazyscripts.pkgmgr import get_pkgmgr
-from lazyscripts.utils import create_executablefile
 
 #{{{def find_pkginfo(scripts, distro, version=None):
 def find_pkginfo(scripts, distro, version=None):
@@ -63,12 +62,14 @@ def find_pkginfo(scripts, distro, version=None):
 
 class TaskScript(file):
 
+    #{{{attrs
     header = ["#!/bin/bash",
               "LIB_ROOT=/tmp/lzs_root/shlib",
               "cd /tmp/lzs_root"]
 
     footer = ['chown -R $REAL_USER:$REAL_HOME &> /dev/null',
               'echo DONE!']
+    #}}}
 
     #{{{def __init__(self, cmd_queue=[]):
     def __init__(self, cmd_queue=[]):
@@ -95,7 +96,20 @@ class SelectionList(object):
     def __init__(self, path, scripts=[]):
         self.parser = ConfigParser.ConfigParser()
         self.path = path
-        self.scripts = scripts
+        self.parser.read(path)
+        self._scripts = scripts
+    #}}}
+
+    #{{{def pool(self, key):
+    def pool(self, key):
+        return self.parser.get('pool', key)
+    #}}}
+
+    #{{{def has_script(self, category, script_name):
+    def has_script(self, category, script_name):
+        if not self.parser.has_section(category):
+            return None
+        return script_name in self.parser.options(category)
     #}}}
 
     #{{{def save(self):
@@ -107,7 +121,7 @@ class SelectionList(object):
 
     #{{{def _convert(self):
     def _convert(self):
-        for script in self.scripts:
+        for script in self._scripts:
             if not self.parser.has_section(script.category):
                 self.parser.add_section(script.category)
             self.parser.set(script.category, script.id, '')
@@ -124,7 +138,7 @@ class ScriptsRunner(object):
         self.cmd_queue = []
         self._scripts = []
         self.distro = platform.dist()
-        self.pkgmgr = get_pkgmgr(self.distro[0])
+        self.pkgmgr = env.Register().pkgmgr
     #}}}
 
     #{{{def set_scripts(self, scripts):
@@ -182,8 +196,9 @@ class ScriptsRunner(object):
     #{{{def save_selection(self):
 
     def save_selection(self):
-        root = env.resource_name('caches')
-        sel = SelectionList(os.path.join(root, 'selection.ini'), self._scripts)
+        root = env.resource_name('log')
+        filename = "%s_selection.ini" % time.time()
+        sel = SelectionList(os.path.join(root, filename), self._scripts)
         sel.save()
     #}}}
 
