@@ -49,6 +49,23 @@ def get_local():
     return None
 #}}}
 
+#{{{def get_all_user():
+def get_all_users():
+        """
+        get all users informations in current system.
+
+        @return [$loginanme, $hiddenpwd, $uid, $gid, $real_name, $home_dir, $shell_path]
+        """
+        with open('/etc/passwd', 'r') as f:
+                for line in f:
+                        userinfos = line.strip().split(':')
+                        uid = int(userinfos[2])
+			# only want to get active users.
+                        if uid < 1000 or uid > 65533:
+                                continue
+                        yield userinfos
+#}}}
+
 class Register:
 
     #{{{desc
