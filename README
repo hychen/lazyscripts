@@ -1,0 +1,28 @@
+== License
+
+Core Program: GPLv2
+Scripts:      decalar by each scripts
+
+== Install & Usage
+
+currently, please useing python setuptools to install.
+
+	user@hsot# sudo ./setup install
+
+run with graphic 
+
+	user@host# glzs
+
+run with graphic and sync scripts by auto.
+
+	user@host# glzs --sync
+
+run with last selection 
+
+	user@host# glzs --selection last_selection.ini
+
+== More
+
+Project Home:    http://www.lazyscripts.org
+Source Code:     http://github.com/hychen/lazyscript/tree/master (Core Program)
+                 http://github.com/hychen/lzspool/tree/master (Scripts for Ubuntu)

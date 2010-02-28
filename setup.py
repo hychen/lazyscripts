@@ -16,15 +16,19 @@
 # You should have received a copy of the GNU General Public License along with
 # this software; if not, write to the Free Software Foundation, Inc., 59 Temple
 # Place, Suite 330, Boston, MA 02111-1307 USA
-
-from setuptools import setup, find_packages
+try:
+    from setuptools import setup, find_packages
+except ImportError:
+    print "please install setuptools first"
 
 setup(
     name = 'Lazyscripts',
     version = '0.2dev',
-    description = 'The stupid scripts manager',
+    description = 'The stupid scripts manager in Linux.',
     long_description = """
-Lazyscripts is a script management tools.
+Lazyscripts is just a stupid script distrubtion tool and quick-installer in linux, which aims to provide a easy way to setup your working enviroment for people who need to install a new distrubution such as Debian,Ubuntu, or who want to have much better experiences in linux.
+
+The original idea is from LazyBuntu, made by PCman in Taiwan. we usually need the script to customize to get somthing better, but theses customization may very hard to end users who new to linux, even the experienced end users. so that is why the lazyscript project starts.
 """,
     author = 'Hsin Yi Chen 陳信屹 (hychen)',
     author_email = 'ossug.hychen@gmail.com',
