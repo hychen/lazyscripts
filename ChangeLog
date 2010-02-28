@@ -1,3 +1,11 @@
+lazyscripts 0.2rc1 (2/28/2009):
+
+	* Re-write the core program
+	* Re-desing of the scripts formates
+	* Spport last selectoin applied
+	* Add utilties for Script develpoer
+	* Using python setupttools instad of orignal installation method
+
 lazyscripts 0.1 (7/7/2009):
 
 	* Initial release
