@@ -9,13 +9,9 @@ currently, please useing python setuptools to install.
 
 	user@hsot# sudo ./setup install
 
-run with graphic 
+run with graphic (with -a option if you running firstly)
 
-	user@host# glzs
-
-run with graphic and sync scripts by auto.
-
-	user@host# glzs --sync
+	user@host# glzs -a
 
 run with last selection 
 
