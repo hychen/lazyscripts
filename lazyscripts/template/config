@@ -4,6 +4,5 @@
 pool = debianlize
 
 [pool "debianlize"]
-upstream = git@github.com:hychen/lzspool.git
-origin = git@github.com:hychen/lzspool.git
+upstream = git://github.com/hychen/lzspool.git
 rev = stable
