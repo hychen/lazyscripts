@@ -208,6 +208,8 @@ class ScriptsRunner(object):
         (self.install_pkgs, self.remove_pkgs) = \
                     find_pkginfo(self._scripts,self.distro[0])
 
+        self.cmd_queue.append(self.pkgmgr.make_cmd('update'))
+
         if self.remove_pkgs:
             self.cmd_queue.append(self.pkgmgr.make_cmd('remove',
                                             self.remove_pkgs))
