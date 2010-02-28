@@ -289,16 +289,16 @@ class GitScriptsPool(ScriptsPool):
         pool = cls(dirpath)
         pool.gitapi.init()
 
-        hasbranch = False
+	# checkout local branch by each remote branch.
         for k in kwds:
             if k in ('upstream', 'origin') and kwds.has_key(k):
                 pool.gitapi.remote('add', k, kwds[k])
                 pool.gitapi.fetch(k)
-                hasbranch = True
-
-        # by default, we use stable branch.
-        if hasbranch:
-            pool.gitapi.checkout('upstream/stable',b='stable')
+		# get remote branch name.
+		ret=pool.gitapi.branch('-r')
+		branchs = [ e.replace('upstream/','').strip() for e in ret.split('\n')]
+		for branch in branchs:
+                	pool.gitapi.checkout('upstream/%s' % branch, b=branch)
 
         # if there is no desc.ini after pull remote respostiroy,
         # means this totally new, do initialization.
