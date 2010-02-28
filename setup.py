@@ -33,6 +33,10 @@ Lazyscripts is a script management tools.
     packages = find_packages(exclude=['tests']),
 
     test_suite = 'tests.suite',
+    package_data = {
+        # If any package contains *.txt or *.rst files, include them:
+        '': ['config']
+    },
 
     zip_safe = False,
 

@@ -49,7 +49,7 @@ def get_local():
     return None
 #}}}
 
-#{{{def get_all_user():
+#{{{def get_all_users():
 def get_all_users():
         """
         get all users informations in current system.

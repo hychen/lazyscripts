@@ -18,6 +18,7 @@
 # Place, Suite 330, Boston, MA 02111-1307 USA
 import cmd
 import os
+import optparse
 import platform
 import sys
 
@@ -98,15 +99,28 @@ def gui_run():
         print "distrobution no supported."
         sys.exit()
 
+    # argument process.
     message_sudo="\"執行'Lazyscripts 懶人包' 會修改系統設定，並會安裝新軟體，所以需要系統管理員權限。 請輸入系統管理密碼，才能繼續執行。(在 Lazyscripts 下，預設這就是你登入系統時所用的密碼。)\""
 
     prefix = 'gksu --message %s' % message_sudo
-    args = ''
-    if sys.argv[1:]:
-        args = " ".join(sys.argv[1:])
 
-    cmd = "%s lzs gui run %s " % (prefix, args)
-    print cmd
+    parser = optparse.OptionParser()
+    parser.add_option("-a", "--autosync",
+		  action="store_true",
+                  dest="autosync",
+                  default=False,
+                  help="sync scripts pool automatically")
+    parser.add_option("-s", "--selection",
+                  dest="selection_list")
+    (options, args) = parser.parse_args()
+
+    if options.autosync:
+	os.system("lzs pool sync")
+
+    if options.selection_list:
+        cmd = "%s lzs gui run %s" % (prefix, options.selection_list)
+    else:
+        cmd = "%s lzs gui run" % prefix
     os.system(cmd)
 #}}}
 
