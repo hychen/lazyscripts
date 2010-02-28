@@ -112,10 +112,15 @@ def gui_run():
                   help="sync scripts pool automatically")
     parser.add_option("-s", "--selection",
                   dest="selection_list")
+    parser.add_option("-r", "--rev",
+                  dest="rev")
     (options, args) = parser.parse_args()
 
     if options.autosync:
-	os.system("lzs pool sync")
+	if not options.rev:
+	    os.system("lzs pool sync")
+	else:
+	    os.system("lzs pool sync --rev %s" % options.rev)
 
     if options.selection_list:
         cmd = "%s lzs gui run %s" % (prefix, options.selection_list)

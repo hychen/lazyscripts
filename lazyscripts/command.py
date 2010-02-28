@@ -220,15 +220,20 @@ class PoolCmd(Command):
 
     #{{{def sync(self):
     def sync(self):
-        if self.argc <= 1:
+        (opts, args) = self._getopts([optparse.make_option('-r', '--rev', dest='rev')])
+        if len(args) <= 1:
             poolname = self.conf.get_default('pool')
         else:
-            poolname = self.args[1]
+            poolname = args[1]
         print "Syncing pool %s" % poolname
         poolobj = self._load_pool(poolname)
         try:
             poolobj.gitapi.pull('upstream')
-            poolobj.gitapi.checkout(self.conf.get_pool(poolname)['rev'])
+            if opts.rev:
+                want_rev = opts.rev
+            else:
+                want_rev = self.conf.get_pool(poolname)['rev']
+            poolobj.gitapi.checkout(want_rev)
         except git.errors.GitCommandError, e:
             print "fetal:sync %s faild." % poolobj.path
             print e
