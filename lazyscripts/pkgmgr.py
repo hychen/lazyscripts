@@ -36,7 +36,7 @@ class DebManager(object):
     """
     #{{{attrs
     CMDPREFIX_UPDATE = 'apt-get update'
-    CMDPREFIX_INSTALL = 'apt-get -y install'
+    CMDPREFIX_INSTALL = 'apt-get -y --force-yes install'
     CMDPREFIX_REMOVE = 'apt-get -y --force-yes --purge remove'
     #}}}
 
@@ -61,20 +61,8 @@ class DebManager(object):
         from distutils.dep_util import newer
         src = pool.current_pkgsourcelist
         if not src: return False
-
         dest = "/etc/apt/sources.list.d/%s" % os.path.basename(src)
-        if newer(src, dest):
-            shutil.copy(src, dest)
-    #}}}
-
-    #{{{def update_sources_by(self, pool):
-    def update_sources_by(self, pool):
-        from distutils.dep_util import newer
-        src = pool.current_pkgsourcelist
-        if not src: return False
-
-        dest = "/etc/apt/sources.list.d/%s" % os.path.basename(src)
-        if newer(src, dest):
+        if not os.path.exists(src) or newer(src, dest):
             shutil.copy(src, dest)
     #}}}
 pass

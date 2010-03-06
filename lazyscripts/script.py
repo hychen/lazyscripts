@@ -62,7 +62,7 @@ def create_scriptdesc(path, name, authors):
 def create_scriptpkgdesc(dir):
     dir = os.path.join(dir, platform.dist()[0].lower()+'_def')
     os.mkdir(dir)
-    for e in ('source','install','remove'):
+    for e in ('install','remove'):
         filepath = os.path.join(dir, '%s.txt' % e)
         with open(filepath, 'w') as f:
             f.write("#pkg %s list\n" % e)

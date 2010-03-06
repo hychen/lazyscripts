@@ -157,7 +157,8 @@ def storageenv(path=None):
     '#!/bin/bash',
     mkexport('USER'),
     mkexport('HOME'),
-    mkexport('LANG')
+    mkexport('LANG'),
+    'export DISTRO_ID=%s' % platform.dist()[0]
     ]
     if not path:
         path = DEFAULT_RUNTIME_ROOT_DIR

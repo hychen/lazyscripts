@@ -66,7 +66,7 @@ class GitScriptsPoolTestCase(unittest.TestCase):
         result = self.pool.gitapi.remote('show').split()
         self.assertEquals(['upstream'], result)
         result = self.pool.gitapi.branch('-a').split()
-        self.assertEquals(['*', 'stable', 'remotes/upstream/master',
+        self.assertEquals(['master','*', 'stable', 'remotes/upstream/master',
                             'remotes/upstream/stable'], result)
         result = self.pool.checkout('remotes/upstream/master')
     #}}}

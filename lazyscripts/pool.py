@@ -97,8 +97,9 @@ class ScriptsPool(object):
         filename = "lzs_%s_%s_%s.list" % (platform.machine(),
                                           self.dist[0].lower(),
                                           self.dist[1])
+        filename = utils.ext_ospath_join(self.path, 'sources.d', filename)
         if not os.path.exists(filename):    return None
-        return utils.ext_ospath_join(self.path, 'sources.d', filename)
+        return filename
     #}}}
 
     #{{{def __init__(self, path, recommands_list=None):

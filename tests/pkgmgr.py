@@ -53,7 +53,7 @@ class PackageManagerTestCase(unittest.TestCase):
         cmd = pkgmgr.make_cmd('ll', 'a b c')
         self.assertEquals(None, cmd)
         cmd = pkgmgr.make_cmd('install', 'a b c')
-        self.assertEquals('apt-get -y install a b c', cmd)
+        self.assertEquals('apt-get -y --force-yes install a b c', cmd)
 
         cmd = pkgmgr.make_cmd('remove', 'a b c')
         self.assertEquals('apt-get -y --force-yes --purge remove a b c', cmd)

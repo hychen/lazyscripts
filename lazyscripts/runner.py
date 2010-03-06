@@ -48,7 +48,8 @@ def find_pkginfo(scripts, distro, version=None):
     def cmd(action):
         return "find %s -name %s.txt | \
                 grep -e '%s/%s.txt' | \
-                xargs cat" % \
+                xargs cat | \
+                grep -v ^#" % \
                            (" ".join(paths),
                             action,
                             distro_dir,
@@ -64,8 +65,9 @@ class TaskScript(file):
 
     #{{{attrs
     header = ["#!/bin/bash",
-              "LIB_ROOT=/tmp/lzs_root/shlib",
-              "cd /tmp/lzs_root"]
+              "export LIB_ROOT=/tmp/lzs_root/shlib",
+              "cd /tmp/lzs_root",
+              "source %s" % env.DEFAULT_STORAGED_ENV_FILE]
 
     footer = ['chown -R $REAL_USER:$REAL_HOME &> /dev/null',
               'echo DONE!']
@@ -230,6 +232,6 @@ class ScriptsRunner(object):
 
     #{{{def _exec_scriptcmd(self, script):
     def _exec_scriptcmd(self, script):
-        return "cd %s && ./script" % os.path.basename(script.path)
+        return "cd %s && ./script && cd -" % os.path.basename(script.path)
     #}}}
 pass

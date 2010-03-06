@@ -23,7 +23,7 @@ except ImportError:
 
 setup(
     name = 'Lazyscripts',
-    version = '0.2dev',
+    version = '0.2rc2',
     description = 'The stupid scripts manager in Linux.',
     long_description = """
 Lazyscripts is just a stupid script distrubtion tool and quick-installer in linux, which aims to provide a easy way to setup your working enviroment for people who need to install a new distrubution such as Debian,Ubuntu, or who want to have much better experiences in linux.

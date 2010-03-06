@@ -63,25 +63,6 @@ class RunnerManagerTestCase(unittest.TestCase):
         return pool
     #}}}
 
-    #{{{def test_shlib(self):
-    def test_shlib(self):
-        script = self._create_scripts(['#!/bin/bash',
-                                       'source $(LIBROOT)/shlib.bash',
-                                       'self_test'])
-        pool = self._load_pool()
-        shlibpath = os.path.join(pool.path, 'shlib')
-        os.mkdir(shlibpath)
-
-        with open(os.path.join(shlibpath,'shlib.bash'),'w') as f:
-            f.write("\n".join(['function self_test(){',
-                                'echo shlibused',
-                                '}']+['']))
-
-        self.runner.select_pool(pool)
-        self.runner.set_scripts([script])
-        self.assertTrue('shlibused', self.runner.run())
-    #}}}
-
     #{{{def test_selectionlist(self):
     def test_selectionlist(self):
         listpath = os.path.join(tempfile.gettempdir(),'testsel.ini')
