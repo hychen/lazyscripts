@@ -1,0 +1,32 @@
+lazyscripts 0.2rc2 (3/26/2010):
+
+	* Fix shlib bugs
+	* Fix only one script can be run correctly.
+	* Using master branch of scripts.
+
+lazyscripts 0.2rc1 (2/28/2010):
+
+	* Re-write the core program
+	* Re-desing of the scripts formates
+	* Spport last selectoin applied
+	* Add utilties for Script develpoer
+	* Using python setupttools instad of orignal installation method
+
+lazyscripts 0.1 (7/7/2009):
+
+	* Initial release
+	* Support Ubuntu 9.04
+
+lazyscritps 0.1rc2 (5/14/2009):
+
+	* Bug Fixs
+
+lazyscritps 0.1rc1 (4/26/2009):
+
+	* Re-design the core program, extends all scripts from lazybuntu 0.1.6
+	* Introduced of new scripts update model
+
+lazybuntu 0.1.6
+
+	* Original idea and based scripts resporistory mad by PCMan
+	* Project home: http://lazybuntu.openfoundry.org/

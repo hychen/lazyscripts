@@ -1,0 +1,8 @@
+# vim: set syn=gitconfig:
+# Lazyscripts Configure File
+[defaults]
+pool = debianlize
+
+[pool "debianlize"]
+upstream = git://github.com/hychen/lzspool.git
+rev = master
