@@ -63,6 +63,7 @@ def find_pkginfo(scripts, distro, version=None):
     ret =  commands.getoutput(cmd("remove"))
     if ret:
       removepkgs = ret.strip().split('\n')
+
     del(cmd)
     return (installpkgs,removepkgs)
 #}}}
