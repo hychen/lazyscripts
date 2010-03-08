@@ -55,10 +55,6 @@ def find_pkginfo(scripts, distro, version=None):
                             distro_dir,
                             action)
 
-<<<<<<< HEAD:lazyscripts/runner.py
-    installpkgs =  commands.getoutput(cmd("install")).replace('\n',' ')
-    removepkgs =  commands.getoutput(cmd("remove")).replace('\n',' ')
-=======
     installpkgs = []
     removepkgs = []
     ret =  commands.getoutput(cmd("install"))
@@ -67,7 +63,7 @@ def find_pkginfo(scripts, distro, version=None):
     ret =  commands.getoutput(cmd("remove"))
     if ret:
       removepkgs = ret.strip().split('\n')
->>>>>>> master:lazyscripts/runner.py
+
     del(cmd)
     return (installpkgs,removepkgs)
 #}}}
