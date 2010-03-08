@@ -55,8 +55,19 @@ def find_pkginfo(scripts, distro, version=None):
                             distro_dir,
                             action)
 
+<<<<<<< HEAD:lazyscripts/runner.py
     installpkgs =  commands.getoutput(cmd("install")).replace('\n',' ')
     removepkgs =  commands.getoutput(cmd("remove")).replace('\n',' ')
+=======
+    installpkgs = []
+    removepkgs = []
+    ret =  commands.getoutput(cmd("install"))
+    if ret:
+      installpkgs =  ret.strip().split('\n')
+    ret =  commands.getoutput(cmd("remove"))
+    if ret:
+      removepkgs = ret.strip().split('\n')
+>>>>>>> master:lazyscripts/runner.py
     del(cmd)
     return (installpkgs,removepkgs)
 #}}}
@@ -213,11 +224,12 @@ class ScriptsRunner(object):
         self.cmd_queue.append(self.pkgmgr.make_cmd('update'))
 
         if self.remove_pkgs:
-            self.cmd_queue.append(self.pkgmgr.make_cmd('remove',
-                                            self.remove_pkgs))
+            for pkg in self.remove_pkgs:
+              self.cmd_queue.append(self.pkgmgr.make_cmd('remove',pkg))
+
         if self.install_pkgs:
-            self.cmd_queue.append(self.pkgmgr.make_cmd('install',
-                                            self.install_pkgs))
+            for pkg in self.install_pkgs:
+              self.cmd_queue.append(self.pkgmgr.make_cmd('install',pkg))
     #}}}
 
     #{{{def prepare_scriptcmds(self):
