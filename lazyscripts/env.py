@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this software; if not, write to the Free Software Foundation, Inc., 59 Temple
 # Place, Suite 330, Boston, MA 02111-1307 USA
+import commands
 import os
 import platform
 import locale
@@ -48,6 +49,22 @@ def get_local():
         return loc[0]
     return None
 #}}}
+
+#{{{get_laptop_info():
+def get_laptop_info():
+  """
+  get manufacturer, product name.
+  """
+  if os.getuid() != 0:
+    print "ERR: can not get laptop information (root permission requirment)."
+    return ()
+
+  cmd = "dmidecode -s %s"
+  manuf_name = commands.getoutput(cmd % "system-manufacturer")
+  prod_name = commands.getoutput(cmd % "system-product-name")
+  return (manuf_name, prod_name)
+#}}}
+
 
 #{{{def get_all_users():
 def get_all_users():
