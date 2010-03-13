@@ -208,10 +208,11 @@ class PoolCmd(Command):
         poolname = self.args[1]
         poolobj = self._load_pool(poolname)
         pooldata = self.conf.get_pool(poolname)
+        pooldata = self.conf.get_pool(poolname)
         msgs = [
             "Pool Name: %s" % poolobj.get_i18n('info', 'name'),
-            "Upstream Repo: %s" %  pooldata['upstream'],
-            "Remote Repo: %s" %  pooldata['origin'],
+            "Upstream Repo: %s" %  pooldata.get('upstream','None'),
+            "Remote Repo: %s" %  pooldata.get('origin','None'),
             "Maintainers: %s" %  poolobj.maintainers,
             "Description: %s" % poolobj.get_i18n('info', 'desc'),
         ]

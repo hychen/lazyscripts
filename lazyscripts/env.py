@@ -44,10 +44,14 @@ def get_realhome():
 
 #{{{def get_local():
 def get_local():
-    loc = locale.getlocale (locale.LC_ALL)
-    if loc:
-        return loc[0]
-    return None
+    lang = os.getenv('LANGUAGE')
+    try:
+      local = lang.split('.')[0]
+    except IndexError:
+      local = locale.getlocal(locale.LC_ALL)
+      if local:
+          local = local[0]
+    return local
 #}}}
 
 #{{{get_laptop_info():
