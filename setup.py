@@ -39,7 +39,7 @@ The original idea is from LazyBuntu, made by PCman in Taiwan. we usually need th
     test_suite = 'tests.suite',
     package_data = {
         # If any package contains *.txt or *.rst files, include them:
-        '': ['config']
+        '': ['config','data/*'],
     },
 
     zip_safe = False,
