@@ -1,3 +1,12 @@
+lazyscripts 0.2rc3 (3/13/2010):
+
+	* Add zh_TW localization support.
+	* Fix error when view pool information in console
+	* Fix bug undefined variable error when in non-sync mode
+	* Add get_laptop_info funciton - fetch manufacturer,product name
+	* Add progress dialog to show  pool syncing progress status
+	* Add Launcher in Gnome Menu
+
 lazyscripts 0.2rc2 (3/26/2010):
 
 	* Fix shlib bugs

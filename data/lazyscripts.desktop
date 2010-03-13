@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Lazyscripts
+Comment=Stupid Scripts Manager
+Exec=glzs -a
+Icon=lazyscritps
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+StartupNotify=false
+Categories=GNOME;GTK;System;

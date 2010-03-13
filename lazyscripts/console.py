@@ -106,7 +106,7 @@ def gui_run():
 
     parser = optparse.OptionParser()
     parser.add_option("-a", "--autosync",
-		  action="store_true",
+		action="store_true",
                   dest="autosync",
                   default=False,
                   help="sync scripts pool automatically")
@@ -126,7 +126,8 @@ def gui_run():
           "zenity --progress --title='Lazyscripts'",
           "--text='Downloading scripts...'",
           "--percentage=80" ,
-          "--auto-close --auto-kill"]
+          "--auto-close --auto-kill",
+          "--width=400"]
       os.system("%s | %s" % (cmd, ' '.join(progress_dialog_cmd)))
 
     if options.selection_list:

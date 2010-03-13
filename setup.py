@@ -22,6 +22,7 @@ import pkg_resources
 
 #@FIXME: very ugly for localization.
 PO_DIR = pkg_resources.resource_filename('lazyscripts', '../data/po')
+DESKTOP_FILE = pkg_resources.resource_filename('lazyscripts', '../data/lazyscripts.desktop')
 
 #{{{def build_local():
 def build_local():
@@ -33,14 +34,17 @@ def build_local():
         os.system("msgfmt -o %s %s" % (mopath, os.path.join(PO_DIR,file)))
 #}}}
 
+def install_desktop_file():
+    os.system("cp %s /usr/share/applications/" % DESKTOP_FILE)
+
 try:
-    from setuptools import setup, find_packages
+    from setuptools import *
 except ImportError:
     print "please install setuptools first"
 
 setup(
     name = 'Lazyscripts',
-    version = '0.2rc2',
+    version = '0.2rc3',
     description = 'The stupid scripts manager in Linux.',
     long_description = """
 Lazyscripts is just a stupid script distrubtion tool and quick-installer in linux, which aims to provide a easy way to setup your working enviroment for people who need to install a new distrubution such as Debian,Ubuntu, or who want to have much better experiences in linux.
@@ -73,5 +77,6 @@ The original idea is from LazyBuntu, made by PCman in Taiwan. we usually need th
     """
 )
 
-# Initilal Localization.
+# Extra actions.
 build_local()
+install_desktop_file()
