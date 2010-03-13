@@ -16,6 +16,23 @@
 # You should have received a copy of the GNU General Public License along with
 # this software; if not, write to the Free Software Foundation, Inc., 59 Temple
 # Place, Suite 330, Boston, MA 02111-1307 USA
+import glob
+import os
+import pkg_resources
+
+#@FIXME: very ugly for localization.
+PO_DIR = pkg_resources.resource_filename('lazyscripts', '../data/po')
+
+#{{{def build_local():
+def build_local():
+    for file in os.listdir(PO_DIR):
+        if not file.endswith('.po'):
+            break
+        lang = file[:-3]
+        mopath = "/usr/share/locale/%s/LC_MESSAGES/lazyscripts.mo" % lang
+        os.system("msgfmt -o %s %s" % (mopath, os.path.join(PO_DIR,file)))
+#}}}
+
 try:
     from setuptools import setup, find_packages
 except ImportError:
@@ -39,8 +56,11 @@ The original idea is from LazyBuntu, made by PCman in Taiwan. we usually need th
     test_suite = 'tests.suite',
     package_data = {
         # If any package contains *.txt or *.rst files, include them:
-        '': ['config','data/*'],
+        '': ['config']
     },
+    data_files = [
+        ('share/lazyscripts/po',glob.glob('data/po/*.po'))
+    ],
 
     zip_safe = False,
 
@@ -52,3 +72,6 @@ The original idea is from LazyBuntu, made by PCman in Taiwan. we usually need th
     lzs-pcvt = lazyscripts.lengacy:run
     """
 )
+
+# Initilal Localization.
+build_local()

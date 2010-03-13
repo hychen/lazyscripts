@@ -124,7 +124,7 @@ def gui_run():
       #@FIXME show the progress dialog with fake progress status.
       progress_dialog_cmd = [
           "zenity --progress --title='Lazyscripts'",
-          "--text='Syncing default scripts pool'",
+          "--text='Downloading scripts...'",
           "--percentage=80" ,
           "--auto-close --auto-kill"]
       os.system("%s | %s" % (cmd, ' '.join(progress_dialog_cmd)))

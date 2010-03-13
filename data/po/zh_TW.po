@@ -1,0 +1,83 @@
+# Copyright (C) 2010 Lazyscripts
+# Yuren Ju <yurenju@gmail.com, 2009.
+# Hsin-Yi Chen <ossug.hychen@gmail.com>, 2010
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: lazyscripts 0.2rc2\n"
+"POT-Creation-Date: 2010-03-13 21:59+CST\n"
+"PO-Revision-Date: 2010-03-13 21:59+CST\n"
+"Last-Translator: Hsin-Yi Chen <ossug.hychen@gmail.com>\n"
+"Language-Team: Traditional Chinese <ossug.hychen@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Poedit-Language: Chinese\n"
+"X-Poedit-Country: TAIWAN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: lazyscripts/gui.py:128
+msgid "items"
+msgstr "項目"
+
+#: lazyscripts/gui.py:168
+msgid "<b><big>Lazyscripts - Linux lazy pack"
+msgstr "<b><big>Lazyscripts - Linux 懶人包"
+
+#: lazyscripts/gui.py:169
+msgid ""
+", Linux end user's good friend</big></b>\n"
+"\n"
+"\n"
+msgstr ""
+"，Linux 新手的好朋友</big></b>\n"
+"幫你解決安裝後煩人的小設定，安裝一些好用軟體，\n"
+"省去在茫茫網海中搜尋的時間。\n"
+"\n"
+"請從左邊的清單中，點選各個分類，選擇你要套用的項目。\n"
+
+#: lazyscripts/gui.py:170
+msgid ""
+"Copyright (C) 2010, Design and developed by Lazyscripts Team\n"
+"\n"
+msgstr ""
+"Copyright (C) 2010, 由 Lazyscripts 開發團隊共同設計、開發\n"
+"\n"
+
+#: lazyscripts/gui.py:171
+msgid "Project Lazyscripts - "
+msgstr "Lazyscripts 專案"
+
+#: lazyscripts/gui.py:186
+msgid ""
+"execute action: \n"
+msgstr "開始執行\n"
+
+#: lazyscripts/gui.py:299
+msgid "Lazyscripts - Simple is More."
+msgstr ""
+
+#: lazyscripts/gui.py:314
+msgid "Welcome"
+msgstr "歡迎使用"
+
+#: lazyscripts/gui.py:316
+msgid "Result"
+msgstr "執行結果"
+
+#: lazyscripts/gui.py:355
+msgid "do you want to quit lazyscripts?"
+msgstr "你是否要離開 Lazyscripts 懶人包？"
+
+#: lazyscripts/gui.py:382
+msgid "Linux Lazy pack"
+msgstr "Linux 懶人包"
+
+#: lazyscripts/gui.py:412
+msgid ""
+"\n"
+"\033[1;36mLazyscripts - linux lazy pack run finish!\033[1;32m   have fun for linux!\033[m\n"
+msgstr ""
+"\n"
+"[1;36mLazyscripts - Linux 懶人包執行完成！[1;32m   祝你使用 Linux 愉快！[m\n"

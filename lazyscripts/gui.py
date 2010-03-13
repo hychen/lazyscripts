@@ -22,12 +22,9 @@ try:
 except:
     locale.setlocale (locale.LC_ALL, "en_US.UTF-8")
 
-APP_NAME = "lazyscripts"
-APP_PATH = os.path.abspath (os_path.dirname (__file__) + '/../')
-LOCALE_DIR = os.path.join (APP_PATH, 'locale')
-
+APP_NAME='lazyscripts'
+gettext.bindtextdomain(APP_NAME, '/usr/share/locale')
 gettext.textdomain(APP_NAME)
-gettext.bindtextdomain(APP_NAME, LOCALE_DIR)
 _ = gettext.gettext
 
 #{{{
@@ -249,47 +246,20 @@ class ToolListWidget:
         hbox.show_all()
     #}}}
 
-    #{{{def download_scripts (self, lock):
-    def download_scripts (self, lock):
+    #{{{def download_scripts (self):
+    def download_scripts (self):
         conf = env.resource('config')
         if not self.recommands_list:
             self.pool = env.resource('pool')
         else:
             path = os.path.join(env.resource_name('pools'), conf.get_default('pool'))
             self.pool = lzspool.GitScriptsPool(path, self.win.recommands_list)
-        #@XXX dirty here.
-#	rev = conf.get_pool(conf.get_default('pool'))['rev']
-#        self.pool.checkout(rev)
-        lock.release ()
     #}}}
 
     #{{{def load_tree(self, list_store):
     def load_tree(self, list_store):
+        self.download_scripts()
         lzs_loc = env.get_local()
-        dlg = gtk.MessageDialog \
-                (None, gtk.DIALOG_MODAL, \
-                gtk.MESSAGE_INFO, \
-                gtk.BUTTONS_NONE)
-        dlg.set_markup ( _("Please waiting for download scripts."))
-        dlg_progress = gtk.ProgressBar ()
-        dlg_progress.grab_focus ()
-        dlg.vbox.pack_start (dlg_progress, False, True, 2)
-        dlg.show_all ()
-
-        lock = thread.allocate_lock ()
-        lock.acquire ()
-        t = thread.start_new_thread (self.download_scripts, (lock,))
-
-        while lock.locked ():
-            while gtk.events_pending ():
-                gtk.main_iteration ()
-            time.sleep (0.15)
-            dlg_progress.pulse ()
-        while gtk.events_pending ():
-            gtk.main_iteration ()
-
-        dlg.destroy ()
-
         for category in self.pool.categories():
             tool_page = ToolPage()
             tool_page.title = self.pool.get_i18n('category', category, lzs_loc)
@@ -343,7 +313,7 @@ class MainWin:
         self.tool_list=tool_list=ToolListWidget(win)
         tool_list.list.insert( 0, ('lazyscripts', _('Welcome'), WelcomePage()) )
         self.final_page=FinalPage()
-        tool_list.list.append( ('gnome-app-install', _('fininsh'), self.final_page) )
+        tool_list.list.append( ('gnome-app-install', _('Result'), self.final_page) )
         sel=tool_list.left_pane.get_selection()
         sel.select_path('0')
 
@@ -406,8 +376,13 @@ class MainWin:
         dlg.set_website(__WEBURL__)
         if self.icon:
             dlg.set_logo(self.icon)
-        dlg.set_authors(['洪任諭 (PCMan) <pcman.tw@gmail.com>', '朱昱任 (Yuren Ju) <yurenju@gmail.com>', '林哲瑋 (billy3321,雨蒼) <billy3321@gmail.com>', '陳信屹 (Hychen) <ossug.hychen@gmail.com>'])
-        dlg.set_copyright('Copyright (C) 2007 by Lazyscripts project')
+        dlg.set_authors(['洪任諭 (PCMan) <pcman.tw@gmail.com>',
+                        '朱昱任 (Yuren Ju) <yurenju@gmail.com>',
+                        '林哲瑋 (billy3321,雨蒼) <billy3321@gmail.com>',
+                        '陳信屹 (Hychen) <ossug.hychen@gmail.com>',
+                        '王綱民(Aminzai) <lagunawang@gmail.com>',
+                        'Jeremy Chan (mrmoneyc) <moneyc.net@gmail.com>'])
+        dlg.set_copyright('Copyright (C) 2010 by Lazyscripts project')
         dlg.set_license('GNU General Public License V2')
         dlg.set_comments(_('Linux Lazy pack'))
         dlg.run()
