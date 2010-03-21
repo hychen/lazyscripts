@@ -13,9 +13,17 @@ run with graphic (with -a option if you running firstly)
 
 	user@host# glzs -a
 
-run with last selection 
+run with last selection
 
 	user@host# glzs --selection last_selection.ini
+
+== Build Deb
+
+    user@host# ./scripts/build_deb $tagname
+
+    for example
+
+    user@host# ./scripts/build_deb v0.2rc4
 
 == More
 
