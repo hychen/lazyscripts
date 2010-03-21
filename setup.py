@@ -23,7 +23,7 @@ import pkg_resources
 try:
     from setuptools import *
 except ImportError:
-    print "please install setuptools first"
+    print "please install python-setuptools first"
 
 setup(
     name = 'Lazyscripts',

@@ -38,10 +38,22 @@ class PackageManagerTestCase(unittest.TestCase):
     #{{{def test_getpkgmgr():
     def test_getpkgmgr(self):
         "test correct package manager getting function"
-        self.assertEquals(lzspkgmgr.DebManager,
-                          lzspkgmgr.get_pkgmgr('Debian').__class__)
-        self.assertEquals(lzspkgmgr.DebManager,
-                          lzspkgmgr.get_pkgmgr('Ubuntu').__class__)
+        for distro in ('Debian', 'Ubuntu', 'LinuxMint'):
+            self.assertEquals(lzspkgmgr.DebManager,
+                              lzspkgmgr.get_pkgmgr(distro).__class__)
+        for distro in ('suse linux','suse'):
+            self.assertEquals(lzspkgmgr.ZypperManager,
+                              lzspkgmgr.get_pkgmgr(distro).__class__)
+        for distro in ('fedora','centos','redhat'):
+            self.assertEquals(lzspkgmgr.YumManager,
+                              lzspkgmgr.get_pkgmgr(distro).__class__)
+        for distro in ('mandrake','mandriva'):
+            self.assertEquals(lzspkgmgr.UrpmiManager,
+                              lzspkgmgr.get_pkgmgr(distro).__class__)
+        self.assertEquals(lzspkgmgr.PacmanManager,
+                              lzspkgmgr.get_pkgmgr('Arch').__class__)
+        self.assertEquals(lzspkgmgr.PkgManager,
+                              lzspkgmgr.get_pkgmgr('OpenSolaris').__class__)
         self.assertRaises(lzspkgmgr.PackageSystemNotFound,
                                           lzspkgmgr.get_pkgmgr, '')
     #}}}
@@ -50,8 +62,8 @@ class PackageManagerTestCase(unittest.TestCase):
     def test_debmgr(self):
         "test Debian package manager"
         pkgmgr = lzspkgmgr.DebManager()
-        cmd = pkgmgr.make_cmd('ll', 'a b c')
-        self.assertEquals(None, cmd)
+        self.assertRaises(lzspkgmgr.PackagesCommandNotSupport,
+                                pkgmgr.make_cmd, 'll', 'a b c')
         cmd = pkgmgr.make_cmd('install', 'a b c')
         self.assertEquals('apt-get -y --force-yes install a b c', cmd)
 

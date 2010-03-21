@@ -30,16 +30,9 @@ import shutil
 
 class APTSourceListIsEmptyFile(Exception):    pass
 class PackageSystemNotFound(Exception):    pass
+class PackagesCommandNotSupport(Exception): pass
 
-class DebManager(object):
-    """Deb Package System Manager
-    """
-    #{{{attrs
-    CMDPREFIX_UPDATE = 'apt-get update'
-    CMDPREFIX_INSTALL = 'apt-get -y --force-yes install'
-    CMDPREFIX_REMOVE = 'apt-get -y --force-yes --purge remove'
-    #}}}
-
+class AbstractPkgManager(object):
     #{{{def make_cmd(self, act, argv=None):
     def make_cmd(self, act, argv=None):
         """make a command of package by action.
@@ -49,7 +42,8 @@ class DebManager(object):
         @return str package system command.
         """
         attr = "CMDPREFIX_%s" % act.upper()
-        if not hasattr(self, attr):    return None
+        if not hasattr(self, attr):
+            raise PackagesCommandNotSupport()
         cmdprefix = getattr(self, attr)
         if not cmdprefix:    return None
         if not argv:    return cmdprefix
@@ -61,9 +55,81 @@ class DebManager(object):
         from distutils.dep_util import newer
         src = pool.current_pkgsourcelist
         if not src: return False
-        dest = "/etc/apt/sources.list.d/%s" % os.path.basename(src)
+        dest = "%s/%s" % (self.SOURCELISTS_DIR, os.path.basename(src))
         if not os.path.exists(src) or newer(src, dest):
             shutil.copy(src, dest)
+    #}}}
+pass
+
+class DebManager(AbstractPkgManager):
+    """Deb Package System Manager(Debian, Ubuntu, LinuxMint)
+    """
+    #{{{attrs
+    CMDPREFIX_DETECT = 'dpkg -l'
+    CMDPREFIX_UPDATE = 'apt-get update'
+    CMDPREFIX_INSTALL = 'apt-get -y --force-yes install'
+    CMDPREFIX_REMOVE = 'apt-get -y --force-yes --purge remove'
+    SOURCELISTS_DIR = '/etc/apt/source.list.d'
+    #}}}
+pass
+
+class ZypperManager(AbstractPkgManager):
+    """Zypper Package System Manager(openSUSE)
+    """
+    #{{{attrs
+    CMDPREFIX_DETECT = 'rpm -q'
+    CMDPREFIX_UPDATE = 'zypper refresh'
+    CMDPREFIX_INSTALL = 'zypper -n install'
+    CMDPREFIX_REMOVE = 'zypper -n refresh'
+    SOURCELISTS_DIR = '/ect/zypp/repos.d'
+    #}}}
+pass
+
+class YumManager(AbstractPkgManager):
+    """Yum Package System Manager(Fedora, CentOS)
+    """
+    #{{{attrs
+    CMDPREFIX_DETECT = 'rpm -q'
+    CMDPREFIX_UPDATE = 'yum check-update'
+    CMDPREFIX_INSTALL = 'yum -y install'
+    CMDPREFIX_REMOVE = 'yum -y remove'
+    SOURCELISTS_DIR = '/etc/yum.repo.d'
+    #}}}
+pass
+
+class UrpmiManager(AbstractPkgManager):
+    """Urpmi Package System Manager(Mandriva)
+    """
+    #{{{attrs
+    CMDPREFIX_DETECT = 'rpm -q'
+    CMDPREFIX_UPDATE = 'urpmi.update --update'
+    CMDPREFIX_INSTALL = 'urpmi --auto'
+    CMDPREFIX_REMOVE = 'urpme --auto'
+    SOURCELISTS_DIR = '/etc/urpmi'
+    #}}}
+pass
+
+class PkgManager(AbstractPkgManager):
+    """Image Packaging System Manager(OpenSolaris)
+    """
+    #{{{attrs
+    CMDPREFIX_DETECT = 'pkg search -l'
+    CMDPREFIX_UPDATE = 'pkg refresh'
+    CMDPREFIX_INSTALL = 'pkg install'
+    CMDPREFIX_REMOVE = 'pkg uninstall'
+    SOURCELISTS_DIR = '/var/pkg/catalog'
+    #}}}
+pass
+
+class PacmanManager(AbstractPkgManager):
+    """Pacman Package System Manager(Arch)
+    """
+    #{{{attrs
+    CMDPREFIX_DETECT = 'pacman --noconfirm -Qs'
+    CMDPREFIX_UPDATE = 'pacman --noconfirm -Syy'
+    CMDPREFIX_INSTALL = 'pacman --noconfirm -S --needed'
+    CMDPREFIX_REMOVE = 'pacman --noconfirm -R'
+    SOURCELISTS_DIR = '/etc/pacman.d'
     #}}}
 pass
 
@@ -74,7 +140,18 @@ def get_pkgmgr(distro):
     @param str distro distrobution name.
     @return PackageManager
     """
-    if distro in ('Debian','Ubuntu'):
+    distro = distro.lower()
+    if distro in ('debian','ubuntu','linuxmint'):
         return DebManager()
+    elif distro in ('suse linux','suse'):
+        return ZypperManager()
+    elif distro in ('fedora','centos','redhat'):
+        return YumManager()
+    elif distro in ('mandrake','mandriva'):
+        return UrpmiManager()
+    elif distro == 'arch':
+        return PacmanManager()
+    elif distro == 'opensolaris':
+        return PkgManager()
     raise PackageSystemNotFound()
 #}}}
