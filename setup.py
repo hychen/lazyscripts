@@ -20,23 +20,6 @@ import glob
 import os
 import pkg_resources
 
-#@FIXME: very ugly for localization.
-PO_DIR = pkg_resources.resource_filename('lazyscripts', '../data/po')
-DESKTOP_FILE = pkg_resources.resource_filename('lazyscripts', '../data/lazyscripts.desktop')
-
-#{{{def build_local():
-def build_local():
-    for file in os.listdir(PO_DIR):
-        if not file.endswith('.po'):
-            break
-        lang = file[:-3]
-        mopath = "/usr/share/locale/%s/LC_MESSAGES/lazyscripts.mo" % lang
-        os.system("msgfmt -o %s %s" % (mopath, os.path.join(PO_DIR,file)))
-#}}}
-
-def install_desktop_file():
-    os.system("cp %s /usr/share/applications/" % DESKTOP_FILE)
-
 try:
     from setuptools import *
 except ImportError:
@@ -62,21 +45,14 @@ The original idea is from LazyBuntu, made by PCman in Taiwan. we usually need th
         # If any package contains *.txt or *.rst files, include them:
         '': ['config']
     },
-    data_files = [
-        ('share/lazyscripts/po',glob.glob('data/po/*.po'))
-    ],
-
-    zip_safe = False,
-
+    data_files = [],
+    zip_safe=False,
     entry_points = """
     [console_scripts]
-    lzs = lazyscripts.console:run
-    lzs-debinstall = lazyscripts.console:debinstall
-    glzs = lazyscripts.console:gui_run
-    lzs-pcvt = lazyscripts.lengacy:run
+        lzs = lazyscripts.console:run
+        lzs-debinstall = lazyscripts.console:debinstall
+        lzs-pcvt = lazyscripts.lengacy:run
+    [gui_scripts]
+        glzs = lazyscripts.console:gui_run
     """
 )
-
-# Extra actions.
-build_local()
-install_desktop_file()
