@@ -132,7 +132,6 @@ class Git(object):
                 if v is True:
                     args.append("-%s" % k)
                 elif type(v) is not bool:
-                    #args.append("-%s%s" % (k, v))
                     args.append("-%s" % k)
                     args.append("%s" % v)
             else:
