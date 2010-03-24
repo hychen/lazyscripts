@@ -69,7 +69,7 @@ class DebManager(AbstractPkgManager):
     CMDPREFIX_UPDATE = 'apt-get update'
     CMDPREFIX_INSTALL = 'apt-get -y --force-yes install'
     CMDPREFIX_REMOVE = 'apt-get -y --force-yes --purge remove'
-    SOURCELISTS_DIR = '/etc/apt/source.list.d'
+    SOURCELISTS_DIR = '/etc/apt/sources.list.d'
     #}}}
 pass
 

@@ -235,8 +235,13 @@ class ScriptsRunner(object):
             scriptfile = os.path.join(script.path, 'script')
             if not os.path.exists(scriptfile):
                 continue
-            # copy scripts.
-            self._cpone2root(script.path)
+            # copy scripts.to running root.
+            #@FIXME: the code is ugly.
+            src = script.path
+            dest = os.path.join(env.DEFAULT_RUNTIME_ROOT_DIR, script.category)
+            os.system("mkdir -p %s" % dest)
+            dest = os.path.join(dest, os.path.basename(src))
+            os.system("cp -a %s %s" % (src, dest))
             if not script.interact:
                 self.cmd_queue.append(self._exec_scriptcmd(script))
             else:
@@ -246,6 +251,7 @@ class ScriptsRunner(object):
 
     #{{{def _exec_scriptcmd(self, script):
     def _exec_scriptcmd(self, script):
-        return "cd %s && ./script && cd -" % os.path.basename(script.path)
+        return "cd %s/%s && ./script && cd -" % \
+                (script.category, os.path.basename(script.path))
     #}}}
 pass
