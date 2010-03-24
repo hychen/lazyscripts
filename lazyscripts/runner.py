@@ -230,12 +230,18 @@ class ScriptsRunner(object):
 
     #{{{def prepare_scriptcmds(self):
     def prepare_scriptcmds(self):
+        later = []
         for script in self._scripts:
             scriptfile = os.path.join(script.path, 'script')
-            if not os.path.exists(scriptfile):    continue
+            if not os.path.exists(scriptfile):
+                continue
             # copy scripts.
             self._cpone2root(script.path)
-            self.cmd_queue.append(self._exec_scriptcmd(script))
+            if not script.interact:
+                self.cmd_queue.append(self._exec_scriptcmd(script))
+            else:
+                later.append(self._exec_scriptcmd(script))
+        self.cmd_queue.extend(later)
     #}}}
 
     #{{{def _exec_scriptcmd(self, script):
