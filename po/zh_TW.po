@@ -18,7 +18,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: lazyscripts/gui.py:128
-msgid "items"
+msgid "Items"
 msgstr "項目"
 
 #: lazyscripts/gui.py:168
@@ -51,7 +51,7 @@ msgstr "Lazyscripts 專案"
 
 #: lazyscripts/gui.py:186
 msgid ""
-"execute action: \n"
+"Execute action: \n"
 msgstr "開始執行\n"
 
 #: lazyscripts/gui.py:299
@@ -67,7 +67,7 @@ msgid "Result"
 msgstr "執行結果"
 
 #: lazyscripts/gui.py:355
-msgid "do you want to quit lazyscripts?"
+msgid "Do you want to quit lazyscripts?"
 msgstr "你是否要離開 Lazyscripts 懶人包？"
 
 #: lazyscripts/gui.py:382
