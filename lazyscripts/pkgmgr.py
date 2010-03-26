@@ -69,7 +69,9 @@ class DebManager(AbstractPkgManager):
     CMDPREFIX_UPDATE = 'apt-get update'
     CMDPREFIX_INSTALL = 'apt-get -y --force-yes install'
     CMDPREFIX_REMOVE = 'apt-get -y --force-yes --purge remove'
+    CMDPREFIX_ADDREPO = ''
     SOURCELISTS_DIR = '/etc/apt/sources.list.d'
+    SOURCELISTS_CFG = '/etc/apt/sources.list'
     #}}}
 pass
 
@@ -81,7 +83,9 @@ class ZypperManager(AbstractPkgManager):
     CMDPREFIX_UPDATE = 'zypper refresh'
     CMDPREFIX_INSTALL = 'zypper -n install'
     CMDPREFIX_REMOVE = 'zypper -n refresh'
+    CMDPREFIX_ADDREPO = 'zypper -n ar'
     SOURCELISTS_DIR = '/ect/zypp/repos.d'
+    SOURCELISTS_CFG = '/etc/zypp/zypper.conf'
     #}}}
 pass
 
@@ -93,7 +97,9 @@ class YumManager(AbstractPkgManager):
     CMDPREFIX_UPDATE = 'yum check-update'
     CMDPREFIX_INSTALL = 'yum -y install'
     CMDPREFIX_REMOVE = 'yum -y remove'
+    CMDPREFIX_ADDREPO = ''
     SOURCELISTS_DIR = '/etc/yum.repo.d'
+    SOURCELISTS_CFG = '/etc/yum.conf'
     #}}}
 pass
 
@@ -105,7 +111,9 @@ class UrpmiManager(AbstractPkgManager):
     CMDPREFIX_UPDATE = 'urpmi.update --update'
     CMDPREFIX_INSTALL = 'urpmi --auto'
     CMDPREFIX_REMOVE = 'urpme --auto'
-    SOURCELISTS_DIR = '/etc/urpmi'
+    CMDPREFIX_ADDREPO = 'urpmi.addmedia '
+    SOURCELISTS_DIR = ''
+    SOURCELISTS_CFG = '/etc/urpmi/urpmi.cfg'
     #}}}
 pass
 
@@ -117,7 +125,9 @@ class PkgManager(AbstractPkgManager):
     CMDPREFIX_UPDATE = 'pkg refresh'
     CMDPREFIX_INSTALL = 'pkg install'
     CMDPREFIX_REMOVE = 'pkg uninstall'
-    SOURCELISTS_DIR = '/var/pkg/catalog'
+    CMDPREFIX_ADDREPO = 'pkg set-publisher -O'
+    SOURCELISTS_DIR = ''
+    SOURCELISTS_CFG = '/var/pkg/cfg_cache'
     #}}}
 pass
 
@@ -129,7 +139,9 @@ class PacmanManager(AbstractPkgManager):
     CMDPREFIX_UPDATE = 'pacman --noconfirm -Syy'
     CMDPREFIX_INSTALL = 'pacman --noconfirm -S --needed'
     CMDPREFIX_REMOVE = 'pacman --noconfirm -R'
+    CMDPREFIX_ADDREPO = ''
     SOURCELISTS_DIR = '/etc/pacman.d'
+    SOURCELISTS_CFG = '/etc/pacman.conf'
     #}}}
 pass
 
