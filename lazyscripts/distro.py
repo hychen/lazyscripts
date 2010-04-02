@@ -19,6 +19,7 @@
 import commands
 import platform
 
+from lazyscripts import env
 from lazyscripts import pkgmgr
 
 class DistrobutionNotFound(Exception):
@@ -76,5 +77,12 @@ class Distribution(object):
     def _reduce_version(self):
         if self.name == 'opensolaris' and not self.version:
             self.version = commands.getoutput('cat /etc/release | grep "OpenSolaris" | cut -d " " -f 27')
+    #}}}
+
+    #{{{def get_support_pools(self):
+    def get_support_pools(self):
+        """Delegation layer"""
+        conf = env.resource('config')
+        return conf.get_support_pools_by(self.name)
     #}}}
 pass

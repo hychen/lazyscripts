@@ -72,7 +72,6 @@ def get_laptop_info():
   return (manuf_name, prod_name)
 #}}}
 
-
 #{{{def get_all_users():
 def get_all_users():
         """

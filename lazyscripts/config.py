@@ -146,4 +146,11 @@ class Configuration(object):
          with open(self.filename,'wb') as fp:
              self.parser.write(fp)
     #}}}
+
+    #{{{def get_support_pools(self, distroname):
+    def get_support_pools_by(self, distroname):
+        for section in self.parser.sections():
+            if self.parser.has_option(section, distroname):
+                yield ((section[6:-1], self.parser.get(section, 'desc')))
+    #}}}
 pass
