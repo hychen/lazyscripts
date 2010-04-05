@@ -1,4 +1,0 @@
-* Do not show the scritps user already executed before.
-* Use compatable graphic sudo for different window manager/desktop enviroment.
-* Fix the error cause of that multy user shares the same running enviroment.
-* Fix the builtin platform python package can not detect OpenSolaris and Arch.
