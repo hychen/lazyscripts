@@ -47,7 +47,13 @@ class Distribution(object):
         # Because built-in funciton may not recognize all distrobution.
         self._reduce_name()
         self._reduce_version()
-        self.pkgmgr = pkgmgr.get_pkgmgr(self.name)
+    #}}}
+
+    #{{{def pkgmgr(self):
+    @property
+    def pkgmgr(self):
+        "lazy initialize for package manager."
+        return self.__dict__.setdefault('_pkgmgr', pkgmgr.get_pkgmgr(self.name))
     #}}}
 
     #{{{def _reduce_name(self):

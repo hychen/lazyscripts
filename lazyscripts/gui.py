@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import commands
 import gettext
 import locale
 import time
@@ -88,6 +88,27 @@ def show_error(msg, title=None, parent=None):
 
     dlg.run ()
     dlg.destroy ()
+#}}}
+
+#{{{def select_defaultpool(poollist):
+def select_defaultpool(poollist):
+    import re
+    show_pools = ""
+    for pool in poollist:
+        show_pools += 'FALSE %s %s ' % (pool[0],re.escape(pool[1]))
+
+    select_cmd = ' '.join(["zenity",
+                          "--height=350",
+                          "--width=600",
+                          "--list",
+                          "--title=\"Choice Scripts Pool You Want to Use\"",
+                          "--radiolist",
+                          "--column \"\"",
+                          "--column \"Scripts Pool Name\"",
+                          "--column \"Description\"",
+                          "%s" % show_pools])
+    select_pool = commands.getoutput(select_cmd)
+    return select_pool
 #}}}
 
 class Tool:

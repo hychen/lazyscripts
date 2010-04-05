@@ -218,12 +218,17 @@ class PoolCmd(Command):
         ]
         print '\n'.join(msgs)
     #}}}
-
     #{{{def sync(self):
+
     def sync(self):
         (opts, args) = self._getopts([optparse.make_option('-r', '--rev', dest='rev')])
         if len(args) <= 1:
             poolname = self.conf.get_default('pool')
+            if not poolname:
+                from lazyscripts.distro import Distribution
+                poolname = gui.select_defaultpool(Distribution().get_support_pools())
+                self.conf.set_default(pool=poolname)
+                self.conf.save()
         else:
             poolname = args[1]
         print "Syncing pool %s" % poolname

@@ -67,6 +67,7 @@ class Configuration(object):
 
         @param dict **kwds
         """
+        self._is_dirty = True
         if not self.parser.has_section('defaults'):
             self.parser.add_section('defaults')
         for key, val in kwds.items():
