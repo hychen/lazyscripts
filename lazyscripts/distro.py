@@ -61,10 +61,11 @@ class Distribution(object):
         if not self.name:
             if os.path.exists('/etc/arch-release'):
                 self.name = 'arch'
-            if os.path.exists('/usr/bin/pkg') and \
-                 commands.getoutput('cat /etc/release | grep "OpenSolaris"'):
+            elif os.path.exists('/usr/bin/pkg') and \
+                commands.getoutput('cat /etc/release | grep "OpenSolaris"'):
                 self.name = 'opensolaris'
-            raise DistrobutionNotFound()
+            else:
+                raise DistrobutionNotFound()
         elif self.name == 'SuSE':
             if commands.getoutput('cat /etc/SuSE-release | grep "openSUSE"'):
                 self.name = 'opensuse'
