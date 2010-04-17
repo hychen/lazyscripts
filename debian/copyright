@@ -1,0 +1,26 @@
+This package was debianized by Hsin-Yi Chen <ossug.hychen@gmail.com> on
+Sat, 17 Apr 2010 22:17:35 +0800.
+
+It was downloaded from http://www.lazyscripts.org
+
+Upstream Author:
+
+    Hsin-Yi Chen <ossug.hychen@gmail.com>
+
+Copyright:
+
+    Copyright (C) 2010 Hsin-Yi Chen <ossug.hychen@gmail.com>
+
+License:
+
+    GPL version 2
+
+The Debian packaging is:
+
+    Copyright (C) 2010 Hsin-Yi Chen (hychen) <ossug.hychen@gmail.com>
+
+and is licensed under the GPL version 2,
+see `/usr/share/common-licenses/GPL-2'.
+
+Please also look if there are files or directories which have a
+different copyright/license attached and list them here.

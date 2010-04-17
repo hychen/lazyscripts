@@ -7,7 +7,6 @@ import commands
 class BuildDeb(object):
 
     BUILD_DIR = 'bdist'
-    DEBIAN_DIR = 'data/debian_template'
 
     #{{{def prepare():
     def prepare(self):
@@ -26,7 +25,7 @@ class BuildDeb(object):
 
         self.TARGET_DIR = os.path.join(self.BUILD_DIR, pkgname)
         #Copy debian direcotry into dist source.
-        cmd = "cp -a %s %s/debian" % (self.DEBIAN_DIR, self.TARGET_DIR)
+#  cmd = "cp -a %s %s/debian" % (self.DEBIAN_DIR, self.TARGET_DIR)
         os.system(cmd)
 
         #Change metadata.
