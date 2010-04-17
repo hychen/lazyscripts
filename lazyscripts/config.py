@@ -150,8 +150,10 @@ class Configuration(object):
 
     #{{{def get_support_pools(self, distroname):
     def get_support_pools_by(self, distroname):
+        poollist = []
         for section in self.parser.sections():
             if self.parser.has_option(section, distroname):
-                yield ((section[6:-1], self.parser.get(section, 'desc')))
+                poollist.append(((section[6:-1], self.parser.get(section, 'desc'))))
+        return poollist
     #}}}
 pass

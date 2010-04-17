@@ -108,6 +108,9 @@ def select_defaultpool(poollist):
                           "--column \"Description\"",
                           "%s" % show_pools])
     select_pool = commands.getoutput(select_cmd)
+    if not select_pool:
+        print "Abort! default pool is required."
+        exit()
     return select_pool
 #}}}
 
