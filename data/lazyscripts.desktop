@@ -2,7 +2,7 @@
 Name=Lazyscripts
 Comment=Stupid Scripts Manager
 Exec=glzs -a
-Icon=lazyscritps
+Icon=lazyscripts
 Terminal=false
 X-MultipleArgs=false
 Type=Application
