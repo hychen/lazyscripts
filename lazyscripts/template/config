@@ -3,12 +3,6 @@
 [defaults]
 pool =
 
-[pool "hychen-debianlize"]
-upstream = git://github.com/hychen/lzspool.git
-rev = master
-desc = hychen's debianlize scripts pool.
-ubuntu = 9.10, 10.04
-
 [pool "debianlize"]
 upstream = git://github.com/aminzai/lzs_pool_debianlize.git
 rev = master
@@ -27,12 +21,5 @@ opensuse = 11.1, 11.2, 11.3
 upstream = git://github.com/billy3321/lzs_pool_redhatlize.git
 rev = master
 desc = billy's debianlize scripts pool.
-fedora = 11, 12
-centos = 5.3, 5.4
-
-[pool "kevin-redhatlize"]
-upstream = git://github.com/chiehwen/lzs_pool_redhatlize.git
-rev = master
-desc = kevin's debianlize scripts pool.
 fedora = 11, 12
 centos = 5.3, 5.4
