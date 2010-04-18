@@ -20,7 +20,7 @@
 
 get_pkgmgr - get package manager by distrobution name.
 
-    >>> pkgmgr = get_pkgmgr("Ubuntu")
+    >>> pkgmgr = get_pkgmgr("ubuntu")
     >>> pkgmgr.make_cmd('install', 'foo')
     "apt-get install foo"
 """

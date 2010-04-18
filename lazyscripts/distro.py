@@ -58,6 +58,7 @@ class Distribution(object):
 
     #{{{def _reduce_name(self):
     def _reduce_name(self):
+        self.name = self.name.lower()
         if not self.name:
             if os.path.exists('/etc/arch-release'):
                 self.name = 'arch'
@@ -66,7 +67,7 @@ class Distribution(object):
                 self.name = 'opensolaris'
             else:
                 raise DistrobutionNotFound()
-        elif self.name == 'SuSE':
+        elif self.name == 'susE':
             if commands.getoutput('cat /etc/SuSE-release | grep "openSUSE"'):
                 self.name = 'opensuse'
         elif self.name == 'redhat':
