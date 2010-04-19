@@ -1,3 +1,36 @@
+lazyscripts 0.2rc4 (4/20/2010):
+
+    [changes]
+
+    * first debianlize for ubuntu lucid.
+    * use distuils-extra. but ./setup install will not install po fiels and desktops.
+    * refactory pkgmgr module, add abstractpkgmanager class.
+    * execute the scripts which require user interact later than non-interact scripts.
+    * use distrobution insted built-in platform.dist function
+    * ask user choice prefer scripts pool when first running.
+    * add new default pools in configure template file.
+    * add get_support_pools of distrobution class.
+    * add cmdprefix_addrepo and sources_cfg attribute defines of packagemanager.
+    * add zyper, urpmi, pacman, yum, opensolaris pkg support. (thanks to billy)
+
+    [bug fix]
+
+    * fix error in muilty users case.
+        ex: a user ran lazyscripts, and b ran lazyscripts will show error.
+            cause b has no permission to access runtime direcotry.
+    * fix pool sync faild because git pull compalin no branch specify
+    * fix asking pool selection when only 1 supported pool of user's distribution.
+    * fix distribution not found in opensolaris and arch.
+    * fix platform.dist can not recongnize some distribution.
+    * fix message typo of graphic interface..
+    * fix duplicate directory name of scritps in runiing root.
+    * fix the bug of git command on centos.
+        git checkout -bmaster upstream/master will cause error in centos.
+        the git need -b master not -bmaster.
+    * fix get_local error because the followoing(thanks to billy3321):
+        * language variable only exists in ubuntu/debian.
+        * the value of lang is zh_tw:zh.utf-8 in debian, and make the local settings wrong.
+
 lazyscripts 0.2rc3 (3/13/2010):
 
 	* Add zh_TW localization support.
