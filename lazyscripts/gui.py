@@ -5,6 +5,7 @@ import gettext
 import locale
 import time
 import thread
+import shutil
 
 import pygtk
 pygtk.require('2.0')
@@ -377,6 +378,7 @@ class MainWin:
     #{{{def confirm_close(self):
     def confirm_close(self):
         if self.complete or query_yes_no(_('Do you want to quit lazyscripts?'), self.win):
+            if os.path.exists('/tmp/lzs_root/'): shutil.rmtree('/tmp/lzs_root/')
             gtk.main_quit()
             return True
         return False
@@ -439,6 +441,7 @@ class MainWin:
     #{{{def on_complete(self, data):
     def on_complete(self, data):
         self.final_page.term.feed(_('\n\x1b[1;36mLazyscripts - linux lazy pack run finish!\x1b[1;32m   have fun for linux!\x1b[m\n'))
+        if os.path.exists('/tmp/lzs_root/'): shutil.rmtree('/tmp/lzs_root/')
 
         self.cancel_btn.set_label(gtk.STOCK_CLOSE)
         self.complete=True
