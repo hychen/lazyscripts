@@ -43,7 +43,13 @@ class Distribution(object):
 
     #{{{def __init__(self):
     def __init__(self):
-        (self.name, self.version, self.codename) = platform.dist()
+        # linux_distribution is insted of dist
+        # Ref: http://docs.python.org/library/platform.html
+        if platform.python_version() < '2.6.0':
+            (self.name, self.version, self.codename) = platform.dist()
+        else:
+            (self.name, self.version, self.codename) = platform.linux_distribution()
+
         # Because built-in funciton may not recognize all distrobution.
         self._reduce_name()
         self._reduce_version()
