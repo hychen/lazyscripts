@@ -153,7 +153,7 @@ class Configuration(object):
         poollist = []
         for section in self.parser.sections():
             if self.parser.has_option(section, distroname):
-                poollist.append(((section[6:-1], self.parser.get(section, 'desc'))))
+                poollist.append((section[6:-1], self.parser.get(section, 'desc')))
         return poollist
     #}}}
 pass
