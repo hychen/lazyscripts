@@ -174,7 +174,7 @@ def prepare_runtimeenv():
 #{{{def storageenv(path=None):
 def storageenv(path=None):
     "Save Bash Shell enviroment variabe."
-    mkexport = lambda val: 'export REAL_"%s=%s"' % \
+    mkexport = lambda val: 'export REAL_%s="%s"' % \
                     (val.upper(),os.getenv(val.upper()))
     contents = [
     '#!/bin/bash',
