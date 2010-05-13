@@ -6,3 +6,10 @@
 build
 dist
 bdist
+debian/files
+debian/lazyscripts.debhelper.log
+debian/lazyscripts.postinst.debhelper
+debian/lazyscripts.preinst.debhelper
+debian/lazyscripts.prerm.debhelper
+debian/lazyscripts.substvars
+debian/lazyscripts/

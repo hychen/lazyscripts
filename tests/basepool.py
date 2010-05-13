@@ -73,7 +73,7 @@ class ScriptsPoolTestCase(unittest.TestCase):
         self._write('recommand.ini', [])
         self._mk_categories(('Network','Game','noncat'))
         pool = self._load_pool()
-        self.assertEquals(['Game','Network'], pool.categories())
+        self.assertEquals(['Network','Game'], pool.categories())
     #}}}
 
     #{{{def test_load_and_get_i18n(self):
