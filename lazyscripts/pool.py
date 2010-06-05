@@ -25,6 +25,7 @@ import platform
 import shutil
 import tempfile
 
+from lazyscripts import distro
 from lazyscripts import git
 from lazyscripts import utils
 from lazyscripts import script as lzsscript
@@ -95,8 +96,8 @@ class ScriptsPool(object):
     @property
     def current_pkgsourcelist(self):
         filename = "lzs_%s_%s_%s.list" % (platform.machine(),
-                                          self.dist[0].lower(),
-                                          self.dist[1])
+                                          self.dist.name,
+                                          self.dist.codename)
         filename = utils.ext_ospath_join(self.path, 'sources.d', filename)
         if not os.path.exists(filename):    return None
         return filename
@@ -106,7 +107,7 @@ class ScriptsPool(object):
     def __init__(self, path, recommands_list=None):
         self.path = path
         self.recommands_list = recommands_list
-        self.dist = platform.dist()
+        self.dist = distro.Distribution()
         self.load()
     #}}}
 
@@ -118,7 +119,7 @@ class ScriptsPool(object):
                                e.istitle()]
         self._scripts = {}
         self.script_filters = {}
-        self.script_filters[platform.dist()[0]] = True
+        self.script_filters[self.dist.name] = True
         self.parser = ConfigParser.ConfigParser()
         self.parser.read(os.path.join(self.path, 'desc.ini'))
         self.parser.read(os.path.join(self.path, 'recommands.ini'))

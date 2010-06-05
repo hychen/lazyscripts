@@ -22,7 +22,6 @@
 import commands
 import ConfigParser
 import os
-import platform
 import shutil
 import time
 

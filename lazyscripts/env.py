@@ -22,6 +22,7 @@ import platform
 import locale
 
 from lazyscripts import config
+from lazyscripts import distro
 from lazyscripts import pool
 from lazyscripts import template
 from lazyscripts import utils
@@ -102,7 +103,7 @@ class Register:
 
         workspace = os.path.join(get_realhome(),'.lazyscripts')
 
-        pkgmgr = lzspkgmgr.get_pkgmgr(platform.dist()[0])
+        pkgmgr = lzspkgmgr.get_pkgmgr(distro.Distribution().name)
 
     # storage for the instance reference
     __instance = None
@@ -179,7 +180,7 @@ def storageenv(path=None):
     mkexport('USER'),
     mkexport('HOME'),
     mkexport('LANG'),
-    'export DISTRO_ID=%s' % platform.dist()[0]
+    'export DISTRO_ID="%s"' % distro.Distribution().name
     ]
     if not path:
         path = DEFAULT_RUNTIME_ROOT_DIR

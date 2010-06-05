@@ -149,7 +149,7 @@ class Configuration(object):
     #}}}
 
     #{{{def get_support_pools(self, distroname):
-    def get_support_pools_by(self, distroname):
+    def get_support_pools(self, distroname):
         poollist = []
         for section in self.parser.sections():
             if self.parser.has_option(section, distroname):

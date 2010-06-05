@@ -19,10 +19,10 @@
 import cmd
 import os
 import optparse
-import platform
 import sys
 
 from lazyscripts import command as lzscmd
+from lazyscripts import distro
 from lazyscripts import pool as lzspool
 from lazyscripts import env
 
@@ -94,8 +94,8 @@ def gui_run():
     env.register_workspace()
     env.prepare_runtimeenv()
     env.storageenv()
-    distro = platform.dist()
-    if not distro:
+    dist = distro.Distribution().name
+    if not dist:
         print "distrobution no supported."
         sys.exit()
 
