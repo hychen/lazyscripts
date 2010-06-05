@@ -39,7 +39,7 @@ def get_realhome():
     path = os.path.join(DEFAULT_RUNTIME_ROOT_DIR, DEFAULT_STORAGED_ENV_FILE)
     if not os.path.exists(path):    return os.getenv('HOME')
     lines = open(path, 'r').readlines()
-    return ''.join(lines[2][17:]).replace('\n','')
+    return ''.join(lines[2][17:]).replace('\n','').replace('"','')
 #}}}
 
 #{{{def get_local():
