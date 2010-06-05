@@ -44,9 +44,7 @@ def get_realhome():
 
 #{{{def get_local():
 def get_local():
-    lang = os.getenv('LANGUAGE')
-    if not lang:
-        lang = os.getenv('LANG')
+    lang = os.getenv('LANG')
     try:
         # zh_TW.UTF-8 or zh_TW:zh.UTF-8
         local = lang[0:5]

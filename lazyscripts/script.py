@@ -137,6 +137,8 @@ class Script(object):
         self.parser.read(os.path.join(path, self.DESC_DEFFILE))
 
         self.selected = False
+        self.name = 'Script has a initial name, please report bug to script maintainer'
+        self.desc = ''
         self.path = path
         self.id = os.path.basename(path)
         self.category = 'root'
@@ -168,10 +170,8 @@ class Script(object):
             if not optname[0:4] in self.I18N_ATTRS:
                 attrname = optname
             # skip if lang of attribute value is not we wanted.
-            elif optname[5:10] != self.lang.lower():  continue
-
-            # skip if attribute has set already.
-            if hasattr(self, attrname): continue
+            elif optname[5:10] != self.lang.lower():
+                continue
 
             if not attrname in ('maintainers','authors'):
                 setattr(self, attrname, self.parser.get('info',optname))
