@@ -54,6 +54,23 @@ class Distribution(object):
         self._reduce_version()
     #}}}
 
+    #{{{def pkgsrc_name(self):
+    @property
+    def pkgsrc_name(self):
+        """The source list file name of Package Manager
+
+        @return str
+        """
+        if self.name in ('ubuntu', 'debian', 'linuxmint'):
+            extend = 'list'
+        elif self.name in ('fedora', 'redhat', 'centos'):
+            extend = 'sh'
+        return "lzs_%s_%s_%s.%s" % (platform.machine(),
+                                          self.name,
+                                          self.version,
+                                          extend)
+    #}}}
+
     #{{{def pkgmgr(self):
     @property
     def pkgmgr(self):

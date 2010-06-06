@@ -95,10 +95,9 @@ class ScriptsPool(object):
     #{{{def current_pkgsourcelist(self):
     @property
     def current_pkgsourcelist(self):
-        filename = "lzs_%s_%s_%s.list" % (platform.machine(),
-                                          self.dist.name,
-                                          self.dist.codename)
-        filename = utils.ext_ospath_join(self.path, 'sources.d', filename)
+        filename = utils.ext_ospath_join(self.path,
+                                        'sources.d',
+                                        self.dist.pkgsrc_name)
         if not os.path.exists(filename):    return None
         return filename
     #}}}
