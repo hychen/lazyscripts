@@ -27,6 +27,7 @@ import shutil
 import time
 
 from lazyscripts import env
+from lazyscripts import distro
 
 #{{{def find_pkginfo(scripts, distro, version=None):
 def find_pkginfo(scripts, distro, version=None):
@@ -146,8 +147,8 @@ class ScriptsRunner(object):
         self.ui = ui
         self.cmd_queue = []
         self._scripts = []
-        self.distro = platform.dist()
-        self.pkgmgr = env.Register().pkgmgr
+        self.distro = distro.Distribution()
+        self.pkgmgr = self.distro.pkgmgr
     #}}}
 
     #{{{def set_scripts(self, scripts):
@@ -215,7 +216,7 @@ class ScriptsRunner(object):
     def prepare_pkgscmds(self):
         "prepare commands."
         (self.install_pkgs, self.remove_pkgs) = \
-                    find_pkginfo(self._scripts,self.distro[0])
+                    find_pkginfo(self._scripts,self.distro.name)
 
         self.cmd_queue.append(self.pkgmgr.make_cmd('update'))
 
@@ -230,16 +231,28 @@ class ScriptsRunner(object):
 
     #{{{def prepare_scriptcmds(self):
     def prepare_scriptcmds(self):
+        later = []
         for script in self._scripts:
             scriptfile = os.path.join(script.path, 'script')
-            if not os.path.exists(scriptfile):    continue
-            # copy scripts.
-            self._cpone2root(script.path)
-            self.cmd_queue.append(self._exec_scriptcmd(script))
+            if not os.path.exists(scriptfile):
+                continue
+            # copy scripts.to running root.
+            #@FIXME: the code is ugly.
+            src = script.path
+            dest = os.path.join(env.DEFAULT_RUNTIME_ROOT_DIR, script.category)
+            os.system("mkdir -p %s" % dest)
+            dest = os.path.join(dest, os.path.basename(src))
+            os.system("cp -a %s %s" % (src, dest))
+            if not script.interact:
+                self.cmd_queue.append(self._exec_scriptcmd(script))
+            else:
+                later.append(self._exec_scriptcmd(script))
+        self.cmd_queue.extend(later)
     #}}}
 
     #{{{def _exec_scriptcmd(self, script):
     def _exec_scriptcmd(self, script):
-        return "cd %s && ./script && cd -" % os.path.basename(script.path)
+        return "cd %s/%s && ./script && cd -" % \
+                (script.category, os.path.basename(script.path))
     #}}}
 pass

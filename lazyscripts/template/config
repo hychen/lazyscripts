@@ -1,8 +1,25 @@
 # vim: set syn=gitconfig:
 # Lazyscripts Configure File
 [defaults]
-pool = debianlize
+pool =
 
 [pool "debianlize"]
-upstream = git://github.com/hychen/lzspool.git
+upstream = git://github.com/aminzai/lzs_pool_debianlize.git
 rev = master
+desc = aminzai's debianlize scripts pool.
+ubuntu = 9.10, 10.04
+debian = 5
+linuxmint = 8
+
+[pool "suselize"]
+upstream = git://github.com/mrmoneyc/lzs_pool_suselize.git
+rev = master
+desc = mrmoneyc's debianlize scripts pool.
+opensuse = 11.1, 11.2, 11.3
+
+[pool "billys-redhatlize"]
+upstream = git://github.com/billy3321/lzs_pool_redhatlize.git
+rev = master
+desc = billy's debianlize scripts pool.
+fedora = 11, 12
+centos = 5.3, 5.4

@@ -189,13 +189,13 @@ class PoolCmd(Command):
 
     #{{{def list(self):
     def list(self):
-        current = ' '
         for pool in self.conf.pools():
+            current = ' '
             if pool == self.conf.get_default('pool'):
                 current = '*'
             data = self.conf.get_pool(pool)
-            msg = "%s  %s (%s)" % (current, pool, data['rev'])
-            if data['upstream']:
+            msg = " %s %s (%s)" % (current, pool, data['rev'])
+            if data.get('upstream'):
                 msg += ' - %s' % data['upstream']
             print msg
     #}}}
@@ -223,21 +223,40 @@ class PoolCmd(Command):
     def sync(self):
         (opts, args) = self._getopts([optparse.make_option('-r', '--rev', dest='rev')])
         if len(args) <= 1:
-            poolname = self.conf.get_default('pool')
+            poolname = self._get_user_preferpool()
         else:
             poolname = args[1]
         print "Syncing pool %s" % poolname
         poolobj = self._load_pool(poolname)
         try:
-            poolobj.gitapi.pull('upstream')
             if opts.rev:
                 want_rev = opts.rev
             else:
                 want_rev = self.conf.get_pool(poolname)['rev']
             poolobj.gitapi.checkout(want_rev)
+            poolobj.gitapi.pull('upstream')
         except git.errors.GitCommandError, e:
             print "fetal:sync %s faild." % poolobj.path
             print e
+    #}}}
+
+    #{{{def _get_user_preferpool(self):
+    def _get_user_preferpool(self):
+        return self.conf.get_default('pool') or \
+               self._ask_user_selectpool()
+    #}}}
+
+    #{{{def _ask_user_selectpool(self):
+    def _ask_user_selectpool(self):
+        from lazyscripts.distro import Distribution
+        pools = Distribution().get_support_pools()
+        if len(pools) == 1:
+            poolname = pools[0][0]
+        else:
+            poolname = gui.select_defaultpool(pools)
+        self.conf.set_default(pool=poolname)
+        self.conf.save()
+        return poolname
     #}}}
 
     #{{{def _load_pool(self, poolname):

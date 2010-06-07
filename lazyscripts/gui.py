@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import commands
 import gettext
 import locale
 import time
 import thread
+import shutil
 
 import pygtk
 pygtk.require('2.0')
@@ -90,6 +91,30 @@ def show_error(msg, title=None, parent=None):
     dlg.destroy ()
 #}}}
 
+#{{{def select_defaultpool(poollist):
+def select_defaultpool(poollist):
+    import re
+    show_pools = ""
+    for pool in poollist:
+        show_pools += 'FALSE %s %s ' % (pool[0],re.escape(pool[1]))
+
+    select_cmd = ' '.join(["zenity",
+                          "--height=350",
+                          "--width=600",
+                          "--list",
+                          "--title=\"Choice Scripts Pool You Want to Use\"",
+                          "--radiolist",
+                          "--column \"\"",
+                          "--column \"Scripts Pool Name\"",
+                          "--column \"Description\"",
+                          "%s" % show_pools])
+    select_pool = commands.getoutput(select_cmd)
+    if not select_pool:
+        print "Abort! default pool is required."
+        exit()
+    return select_pool
+#}}}
+
 class Tool:
     #{{{def __init__ (self, script, used=True):
     def __init__ (self, script, used=True):
@@ -125,7 +150,7 @@ class ToolPage:
         col.set_attributes (render, active=0)
         view.append_column (col)
 
-        col = gtk.TreeViewColumn (_("items"))
+        col = gtk.TreeViewColumn (_("Items"))
         render=gtk.CellRendererText ()
         col.pack_start (render)
         col.set_attributes (render, markup=1)
@@ -183,7 +208,7 @@ class FinalPage:
         hbox=gtk.HBox(False, 0)
         term=vte.Terminal()
         term.set_scrollback_lines(65535)    # Will this value be too big?
-        term.feed(_('execute action: \n'))
+        term.feed(_('Execute action: \n'))
         term.set_cursor_blinks(True)
         self.term=term
         scroll=gtk.VScrollbar( term.get_adjustment() )
@@ -352,7 +377,8 @@ class MainWin:
 
     #{{{def confirm_close(self):
     def confirm_close(self):
-        if self.complete or query_yes_no(_('do you want to quit lazyscripts?'), self.win):
+        if self.complete or query_yes_no(_('Do you want to quit lazyscripts?'), self.win):
+            if os.path.exists('/tmp/lzs_root/'): shutil.rmtree('/tmp/lzs_root/')
             gtk.main_quit()
             return True
         return False
@@ -381,7 +407,7 @@ class MainWin:
                         '林哲瑋 (billy3321,雨蒼) <billy3321@gmail.com>',
                         '陳信屹 (Hychen) <ossug.hychen@gmail.com>',
                         '王綱民(Aminzai) <lagunawang@gmail.com>',
-                        'Jeremy Chan (mrmoneyc) <moneyc.net@gmail.com>'])
+                        '張君平(mrmoneyc) <moneyc.net@gmail.com>'])
         dlg.set_copyright('Copyright (C) 2010 by Lazyscripts project')
         dlg.set_license('GNU General Public License V2')
         dlg.set_comments(_('Linux Lazy pack'))
@@ -415,6 +441,7 @@ class MainWin:
     #{{{def on_complete(self, data):
     def on_complete(self, data):
         self.final_page.term.feed(_('\n\x1b[1;36mLazyscripts - linux lazy pack run finish!\x1b[1;32m   have fun for linux!\x1b[m\n'))
+        if os.path.exists('/tmp/lzs_root/'): shutil.rmtree('/tmp/lzs_root/')
 
         self.cancel_btn.set_label(gtk.STOCK_CLOSE)
         self.complete=True

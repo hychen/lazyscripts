@@ -45,12 +45,15 @@ def get_realhome():
 #{{{def get_local():
 def get_local():
     lang = os.getenv('LANGUAGE')
+    if not lang:
+        lang = os.getenv('LANG')
     try:
-      local = lang.split('.')[0]
-    except IndexError:
-      local = locale.getlocal(locale.LC_ALL)
-      if local:
-          local = local[0]
+        # zh_TW.UTF-8 or zh_TW:zh.UTF-8
+        local = lang[0:5]
+    except TypeError:
+        local = locale.getlocal(locale.LC_ALL)
+        if local:
+            local = local[0]
     return local
 #}}}
 
@@ -68,7 +71,6 @@ def get_laptop_info():
   prod_name = commands.getoutput(cmd % "system-product-name")
   return (manuf_name, prod_name)
 #}}}
-
 
 #{{{def get_all_users():
 def get_all_users():

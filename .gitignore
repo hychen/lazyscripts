@@ -1,6 +1,8 @@
 *.pyc
+*~
 *.swp
 *.bak
 *egg-info*
 build
 dist
+bdist
