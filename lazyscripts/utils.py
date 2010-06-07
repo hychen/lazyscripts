@@ -40,3 +40,34 @@ def ext_ospath_join(*paths):
         root = os.path.join(root,e)
     return root
 #}}}
+
+#{{{def import_gpg_keys(self, path):
+def import_gpgkeys(self, key_config):
+    """import GPG keys.
+
+    @param str path key list path
+    """
+    for section in key_config.sections():
+        if section[:9] == 'keyserver':
+            keysrv_url = key_config.get(section, 'url')
+            key_ids = key_config.get(section, 'id').split('\n')
+            if not keysrv_url or not key_ids:
+                print "missing keyserver url or key ids. %s" % section
+                continue
+            import_gpgkeys_from_keyserver(keysrv_url, keyids)
+#}}}
+
+#{{{def import_gpgkeys_from_keyserver(keysrv_url, keyids):
+def import_gpgkeys_from_keyserver(keysrv_url, keyids):
+    """Download and import gpgkeys from keyserver.
+
+    @param str keysrv_url keyserver url
+    @param list keyids
+    """
+    for key in keyids:
+        if not key:
+            print "skip because key id is empty."
+        else:
+            os.system('gpg --keyserver %s --recv-key %s' % (keysrv_url,
+                                                                  key))
+#}}}

@@ -25,8 +25,12 @@ get_pkgmgr - get package manager by distrobution name.
     "apt-get install foo"
 """
 
+import commands
+import ConfigParser
 import os
 import shutil
+
+from distutils.dep_util import newer
 
 class APTSourceListIsEmptyFile(Exception):    pass
 class PackageSystemNotFound(Exception):    pass
@@ -51,15 +55,86 @@ class AbstractPkgManager(object):
     #}}}
 
     #{{{def update_sources_by(self, pool):
-    def update_sources_by(self, pool):
-        from distutils.dep_util import newer
-        src = pool.current_pkgsourcelist
+    def update_sources_by_file(self, pool):
+        (src, keylist) = pool.current_pkgsourcelist
         if not src: return False
+        self.addkeys(keylist)
         dest = "%s/%s" % (self.SOURCELISTS_DIR, os.path.basename(src))
         if not os.path.exists(src) or newer(src, dest):
             shutil.copy(src, dest)
     #}}}
-pass
+
+    #{{{def update_sources_by_cmd(self, pool):
+    def update_sources_by_cmd(self, pool):
+        (src,keylist) = pool.current_pkgsourcelist
+        if not src: return False
+        self.addkeys(keylist)
+        os.system(src)
+    #}}}
+
+    #{{{def addkeys(self, keylist):
+    def addkeys(self, keylist):
+        """Add GPG key of package repo to verify packages.
+
+        @param str keylist a .ini file
+        """
+        #@FIXME: some package manager does not have key manager.
+        if not self.keymgr: return False
+        key_config = ConfigParser.ConfigParser()
+        key_config.read(keylist)
+        for section in key_config.sections():
+            if section == 'Download':
+                key_urls = key_config.get('Download', 'urls').split('\n')
+                for url in key_urls:
+                    if not url: continue
+                    self.keymgr.import_keyfile(url)
+            elif section[:9] == 'keyserver':
+                keysrv_url = key_config.get(section, 'url')
+                key_ids = key_config.get(section, 'id').split('\n')
+                for key in key_ids:
+                    if not key: continue
+                    self.keymgr.import_key_from_keyserver(keysrv_url, key)
+        #}}}
+    pass
+
+class DebKeyManager(object):
+    """APT Key Manager(Debian, Ubuntu, LinuxMint)
+    """
+    #{{{def has_key(self, key):
+    def has_key(self, key):
+        """check is key already imported
+
+        @param str key key string
+        @return bool True if the key exists
+        """
+        if commands.getoutput('apt-key list | grep -w %s' % key):
+            return True
+    #}}}
+
+    #{{{def import_key_from_keyserver(self, keysrv_url, keyid):
+    def import_key_from_keyserver(self, keysrv_url, keyid):
+        if not self.has_key(keyid):
+            os.system('apt-key adv --keyserver %s --recv-keys %s' % (keysrv_url, keyid))
+    #}}}
+
+    #{{{def import_keyfile(self, path):
+    def import_keyfile(self, path):
+        """Add key from http or file.
+
+        @param str path http url or file path (file is default)
+        """
+        if path.startswith('http://') or \
+           path.startswith('https://') or \
+           path.startswith('ftp://'):
+            os.system('wget -q %s -O- | apt-key add -' % path)
+        else:
+            os.system('apt-key add %s' % path)
+    #}}}
+
+    #{{{def remove_key(self, keyid):
+    def remove_key(self, keyid):
+        os.system('apt-key del %s' % keyid)
+    #}}}
 
 class DebManager(AbstractPkgManager):
     """Deb Package System Manager(Debian, Ubuntu, LinuxMint)
@@ -72,6 +147,12 @@ class DebManager(AbstractPkgManager):
     CMDPREFIX_ADDREPO = ''
     SOURCELISTS_DIR = '/etc/apt/sources.list.d'
     SOURCELISTS_CFG = '/etc/apt/sources.list'
+    #}}}
+
+    #{{{def __init__(self):
+    def __init__(self):
+        self.update_sources = self.update_sources_by_file
+        self.keymgr = DebKeyManager()
     #}}}
 pass
 
@@ -87,6 +168,10 @@ class ZypperManager(AbstractPkgManager):
     SOURCELISTS_DIR = '/ect/zypp/repos.d'
     SOURCELISTS_CFG = '/etc/zypp/zypper.conf'
     #}}}
+
+    #{{{def __init__(self):
+    def __init__(self): self.update_sources = self.update_sources_by_cmd
+    #}}}
 pass
 
 class YumManager(AbstractPkgManager):
@@ -98,23 +183,32 @@ class YumManager(AbstractPkgManager):
     CMDPREFIX_INSTALL = 'yum -y install'
     CMDPREFIX_REMOVE = 'yum -y remove'
     CMDPREFIX_ADDREPO = ''
+    CMDPREFIX_ADDKEY = 'rpm --import'
     SOURCELISTS_DIR = '/etc/yum.repo.d'
     SOURCELISTS_CFG = '/etc/yum.conf'
+    #}}}
+
+    #{{{def __init__(self):
+    def __init__(self): self.update_sources = self.update_sources_by_file
     #}}}
 pass
 
 class UrpmiManager(AbstractPkgManager):
-    """Urpmi Package System Manager(Mandriva)
-    """
-    #{{{attrs
-    CMDPREFIX_DETECT = 'rpm -q'
-    CMDPREFIX_UPDATE = 'urpmi.update --update'
-    CMDPREFIX_INSTALL = 'urpmi --auto'
-    CMDPREFIX_REMOVE = 'urpme --auto'
-    CMDPREFIX_ADDREPO = 'urpmi.addmedia '
-    SOURCELISTS_DIR = ''
-    SOURCELISTS_CFG = '/etc/urpmi/urpmi.cfg'
-    #}}}
+        """Urpmi Package System Manager(Mandriva)
+        """
+        #{{{attrs
+        CMDPREFIX_DETECT = 'rpm -q'
+        CMDPREFIX_UPDATE = 'urpmi.update --update'
+        CMDPREFIX_INSTALL = 'urpmi --auto'
+        CMDPREFIX_REMOVE = 'urpme --auto'
+        CMDPREFIX_ADDREPO = 'urpmi.addmedia '
+        SOURCELISTS_DIR = ''
+        SOURCELISTS_CFG = '/etc/urpmi/urpmi.cfg'
+        #}}}
+
+        #{{{def __init__(self):
+        def __init__(self): self.update_sources = self.update_sources_by_cmd
+        #}}}
 pass
 
 class PkgManager(AbstractPkgManager):
@@ -129,6 +223,10 @@ class PkgManager(AbstractPkgManager):
     SOURCELISTS_DIR = ''
     SOURCELISTS_CFG = '/var/pkg/cfg_cache'
     #}}}
+
+    #{{{def __init__(self):
+    def __init__(self): self.update_sources = self.update_sources_by_cmd
+    #}}}
 pass
 
 class PacmanManager(AbstractPkgManager):
@@ -142,6 +240,10 @@ class PacmanManager(AbstractPkgManager):
     CMDPREFIX_ADDREPO = ''
     SOURCELISTS_DIR = '/etc/pacman.d'
     SOURCELISTS_CFG = '/etc/pacman.conf'
+    #}}}
+
+    #{{{def __init__(self):
+    def __init__(self): self.update_sources = self.update_sources_by_cmd
     #}}}
 pass
 

@@ -99,7 +99,10 @@ class ScriptsPool(object):
                                         'sources.d',
                                         self.dist.pkgsrc_name)
         if not os.path.exists(filename):    return None
-        return filename
+        keylist = utils.ext_ospath_join(self.path,
+                                        'sources.d',
+                                        'keylist.txt')
+        return filename, keylist
     #}}}
 
     #{{{def __init__(self, path, recommands_list=None):

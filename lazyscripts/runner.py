@@ -160,8 +160,7 @@ class ScriptsRunner(object):
     def select_pool(self, pool):
         self.pool = pool
 
-        # @FIXME: need to add key.
-        self.pkgmgr.update_sources_by(self.pool)
+        self.pkgmgr.update_sources(self.pool)
 
         # copy shlib.
         self._cpone2root(os.path.join(self.pool.path,'shlib'))
