@@ -1,3 +1,27 @@
+lazyscripts (0.2.1) lucid; urgency=low
+
+    [changes]
+
+    * correct software version
+
+ -- Hsin-Yi Chen (hychen) <ossug.hychen@gmail.com>  Sat, 12 Jun 2010 10:12:07 +0800
+
+lazyscripts (0.2) lucid; urgency=low
+
+    [changes]
+
+    * Add redhatlize distribution source update support
+
+    [bug gix]
+
+    * fix GPG of 3rd package repository does not be added automatically
+    * fix some distribution can not be recongize
+    * fix running aboort if script does not have desc or name colum.
+    * fix basepool test case abort.
+    * fix user's lazyscript directory can not create first running.
+
+ -- Hsin-Yi Chen (hychen) <ossug.hychen@gmail.com>  Sat, 12 Jun 2010 10:12:07 +0800
+
 lazyscripts (0.2.rc4hychen) lucid; urgency=low
 
     [changes]
