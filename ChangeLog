@@ -1,3 +1,9 @@
+lazyscripts 0.2.1 (6/12/2010):
+
+    [changes]
+    * Add GPG Keys of third party APT archive automatically.
+    * Add redhatlize distribution support of pool.pkgsourcelist function
+
 lazyscripts 0.2rc4 (4/20/2010):
 
     [changes]

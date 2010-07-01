@@ -25,14 +25,6 @@ run with last selection
 
 	user@host# glzs --selection last_selection.ini
 
-== Build Deb
-
-    user@host# ./scripts/build_deb $tagname
-
-    for example
-
-    user@host# ./scripts/build_deb v0.2rc4
-
 == More
 
 Project Home:    http://www.lazyscripts.org
