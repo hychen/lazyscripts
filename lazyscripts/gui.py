@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import commands
-import gettext
-import locale
 import time
 import thread
 import shutil
@@ -15,18 +13,6 @@ from lazyscripts import __VERSION__, __WEBURL__
 from lazyscripts import env
 from lazyscripts import pool as lzspool
 from lazyscripts import runner as lzsrunner
-
-from os import path as os_path
-
-try:
-    locale.setlocale (locale.LC_ALL, "")
-except:
-    locale.setlocale (locale.LC_ALL, "en_US.UTF-8")
-
-APP_NAME='lazyscripts'
-gettext.bindtextdomain(APP_NAME, '/usr/share/locale')
-gettext.textdomain(APP_NAME)
-_ = gettext.gettext
 
 #{{{
 def query_yes_no(msg, parent=None):
