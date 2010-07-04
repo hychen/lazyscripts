@@ -6,6 +6,7 @@ POFILE=${PODIR}/${DOMAIN}.pot
 FIRST AUTHOR=Hsin-Yi Chen <ossug.hychen@gmail.com>, ${COPYRIGHT_YEAR}
 REV_DATE=`date '+%F %R+%Z'`
 LANGUAGE_TEAM=Lazyscripts Developers <lazyscripts-dev@googlegroups.com>
+PODESC=lazyscripts is a script management tool
 
 all:
 	@echo please read Makefile for more details!
@@ -19,8 +20,5 @@ update_pot:
 	@sed -i "s/FIRST AUTHOR <EMAIL@ADDRESS>, YEAR/Hsin-Yi Chen <ossug.hychen@gmail.com>, ${COPYRIGHT_YEAR}/" ${POFILE}
 	@sed -i "s/YEAR-MO-DA HO:MI+ZONE/${REV_DATE}/" ${POFILE}
 	@sed -i 's/LANGUAGE <LL@li.org>/${LANGUAGE_TEAM}/' ${POFILE}
+	@sed -i 's/SOME DESCRIPTIVE TITLE/${PODESC}/' ${POFILE}
 	@echo done!
-
-clean_mo:
-	@echo cleaning mo files
-	@rm ${PODIR}/*.mo

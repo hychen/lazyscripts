@@ -13,75 +13,74 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
-"X-Poedit-Language: Chinese\n"
-"X-Poedit-Country: TAIWAN\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: UNITED STATES\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: lazyscripts/console.py:38
 msgid "console.lzsadmin.update.building_index"
-msgstr "正在建立腳本索引檔..."
+msgstr "Building scripts index..."
 
 #: lazyscripts/console.py:91
 msgid "console.gui_run.dont_run_as_root"
-msgstr "請勿以系統管理者權限執行"
+msgstr "Please do not run as root"
 
 #: lazyscripts/console.py:99
 msgid "console.gui_run.distro_is_not_supported"
-msgstr "不支援此發行版本"
+msgstr "Distribution does be not supported"
 
 #: lazyscripts/console.py:102
 msgid "console.gui_run.gksu_msg"
-msgstr "\"執行'Lazyscripts 懶人包' 會修改系統設定，並會安裝新軟體，所以需要系統管理員權限。 請輸入系統管理密碼，才能繼續執行。(在 Lazyscripts 下，預設這就是你登入系統時所用的密碼。)\""
-
+msgstr "\"Lazyscritps will modify system wide configuration and install softwares,the System Administor permission is required. (In Lazyscripts, the password is what you used for login)\""
 
 #: lazyscripts/console.py:126
 msgid "console.gui_run.downloading_scripts"
-msgstr "正在下載最新的腳本..."
+msgstr "Downloading scripts..."
 
 #: lazyscripts/gui/gtklib.py:92
 msgid "gui.gtklib.select_defaultpool.title"
-msgstr "請選擇您想使用的腳本庫"
+msgstr "Please choice a scripts pool you want to use"
 
 #: lazyscripts/gui/gtklib.py:95
 msgid "gui.gtklib.select_defaultpool.poolname"
-msgstr "腳本庫名稱"
+msgstr "Scripts Pool Name"
 
 #: lazyscripts/gui/gtklib.py:96
 msgid "gui.gtklib.select_default.desc"
-msgstr "說明"
+msgstr "Description"
 
 #: lazyscripts/gui/gtklib.py:100
 msgid "gui.gtklib.select_defaultpool.abort_with_empty_retrunvalue"
-msgstr "終止! 回傳值為空"
+msgstr "Abort! scripts pool not found"
 
 #: lazyscripts/gui/gtklib.py:154
 msgid "gui.gtklib.toolpage.items"
-msgstr "項目"
+msgstr "Items"
 
 #: lazyscripts/gui/gtklib.py:194
 msgid "gui.gtklib.welcomepage.markup.desc\n"
 msgstr ""
-"<b><big>Lazyscripts - 少就是多!</big></b>\n"
+"<b><big>Lazyscripts - Simple is more!</big></b>\n"
 "\n"
 "\n"
-"幫你解決安裝後煩人的小設定，安裝一些好用軟體，\n"
-"省去在茫茫網海中搜尋的時間。\n"
+"To help you to fine tune system and install useful softwares after installed Linux.\n"
+"It saves your time for finding solutions in internet.\n"
 "\n"
-"請從左邊的清單中，點選各個分類，選擇你要套用的項目。\n"
+"Please click each catogry in left list and select which items you want to apply.\n"
 
 #: lazyscripts/gui/gtklib.py:195
 msgid "gui.gtklib.welcomepage.markup.copyright\n"
 msgstr ""
-"Copyright (C) %s, 由 Lazyscripts 開發團隊共同設計、開發\n"
+"Copyright (C) %s, Design and developed by Lazyscripts Developers\n"
 "\n"
 
 #: lazyscripts/gui/gtklib.py:196
 msgid "gui.gtklib.welcomepage.markup.project_web_prefix"
-msgstr "Lazyscripts 專案- "
+msgstr "Project Lazyscripts - "
 
 #: lazyscripts/gui/gtklib.py:211
 msgid "gui.gtklib.finalpage.execute_action\n"
-msgstr "執行動作: \n"
+msgstr "Execute action: \n"
 
 #: lazyscripts/gui/gtklib.py:324
 msgid "gui.gtklib.mainwin.title"
@@ -89,15 +88,15 @@ msgstr "Lazyscripts"
 
 #: lazyscripts/gui/gtklib.py:340
 msgid "gui.gtklib.mainwin.welcome"
-msgstr "歡迎"
+msgstr "Welcome"
 
 #: lazyscripts/gui/gtklib.py:342
 msgid "gui.gtklib.mainwin.result"
-msgstr "結果"
+msgstr "Result"
 
 #: lazyscripts/gui/gtklib.py:381
 msgid "gui.gtklib.mainwin.confrim_close"
-msgstr "確定結束?"
+msgstr "Do you realy want to quite?"
 
 #: lazyscripts/gui/gtklib.py:401
 msgid "gui.gtklib.mainwin.about.name"
@@ -105,7 +104,7 @@ msgstr "Lazyscripts"
 
 #: lazyscripts/gui/gtklib.py:414
 msgid "gui.gtklib.mainwin.about.comments"
-msgstr "腳本管理工具"
+msgstr "An useful script management tool"
 
 #: lazyscripts/gui/gtklib.py:444
 msgid ""
@@ -113,4 +112,4 @@ msgid ""
 "gui.gtklib.mainwin.complete.finished-install\n"
 msgstr ""
 "\n"
-"[1;36mLazyscripts - Linux 懶人包執行完成！[1;32m   祝你使用 Linux 愉快！[m\n"
+"\033[1;36mLazyscripts - linux lazy pack run finish!\033[1;32m   have fun for linux!\033[m\n"
