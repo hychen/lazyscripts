@@ -121,14 +121,14 @@ def gui_run():
           cmd = "lzs pool sync"
       else:
           cmd = "lzs pool sync --rev %s" % options.rev
-      #@FIXME show the progress dialog with fake progress status.
-      progress_dialog_cmd = [
-          "zenity --progress --title='Lazyscripts'",
-          "--text='Downloading scripts...'",
-          "--percentage=80" ,
-          "--auto-close --auto-kill",
-          "--width=400"]
-      os.system("%s | %s" % (cmd, ' '.join(progress_dialog_cmd)))
+
+      gui.gtklib.show_progress(cmd,
+                        'Lazyscripts',
+                        _('Downloading scripts'),
+                        80,
+                        400,
+                        True,
+                        True)
 
     if options.selection_list:
         cmd = "%s lzs gui run %s" % (prefix, options.selection_list)

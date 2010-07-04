@@ -101,6 +101,18 @@ def select_defaultpool(poollist):
     return select_pool
 #}}}
 
+def show_progress(cmd, titile, text, percentage, width, autoclose, autokill):
+    progress_dialog_cmd = [
+        "zenity --progress --title='%s'" % title,
+        "--text='%s'" % text,
+        "--percentage=%s" % str(percentage),
+        "--width=%s" % width]
+    if autoclose:
+        progress_dialog_cmd.append("--auto-close")
+    if autokill:
+        progress_dialog_cmd.append("--auto-kill")
+    os.system("%s | %s" % (cmd, ' '.join(progress_dialog_cmd)))
+
 class Tool:
     #{{{def __init__ (self, script, used=True):
     def __init__ (self, script, used=True):
