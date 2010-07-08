@@ -21,16 +21,21 @@ import os
 import pkg_resources
 
 try:
-    from setuptools import *
+    from setuptools import setup, find_packages
 except ImportError:
     print "please install python-setuptools first"
+
+#@FIXME: a workround to fix icon, gettet files and extra datas does not be installed
+#        while doing ./setup install while python-setuptools and distutils-extra are
+#        both installed (LP: #601623)
+from distutils.command import install as _install
 
 setup(
     name = 'Lazyscripts',
     version = '0.2.1',
-    description = 'The stupid scripts manager in Linux.',
+    description = 'The scripts manager in Linux.',
     long_description = """
-Lazyscripts is just a stupid script distrubtion tool and quick-installer in linux, which aims to provide a easy way to setup your working enviroment for people who need to install a new distrubution such as Debian,Ubuntu, or who want to have much better experiences in linux.
+Lazyscripts is just a scripts distrubtion tool and quick-installer in linux, which aims to provide a easy way to setup your working enviroment for people who need to install a new distrubution such as Debian,Ubuntu, or who want to have much better experiences in linux.
 
 The original idea is from LazyBuntu, made by PCman in Taiwan. we usually need the script to customize to get somthing better, but theses customization may very hard to end users who new to linux, even the experienced end users. so that is why the lazyscript project starts.
 """,
@@ -54,5 +59,6 @@ The original idea is from LazyBuntu, made by PCman in Taiwan. we usually need th
         lzs-pcvt = lazyscripts.lengacy:run
     [gui_scripts]
         glzs = lazyscripts.console:gui_run
-    """
+    """,
+    cmdclass = {'install':_install.install}
 )
