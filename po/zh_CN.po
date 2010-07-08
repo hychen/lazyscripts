@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.2.1\n"
 "POT-Creation-Date: 2010-07-04 19:48+CST\n"
-"PO-Revision-Date: 2010-07-04 20:22+0800\n"
+"PO-Revision-Date: 2010-07-04 21:42+0800\n"
 "Last-Translator: Hsin-Yi Chen (hychen) <ossug.hychen@gmail.com>\n"
 "Language-Team: Lazyscripts Developers <lazyscripts-dev@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -14,49 +14,48 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 "X-Poedit-Language: Chinese\n"
-"X-Poedit-Country: TAIWAN\n"
+"X-Poedit-Country: CHINA\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: lazyscripts/console.py:38
 msgid "console.lzsadmin.update.building_index"
-msgstr "正在建立腳本索引檔..."
+msgstr "正在建立脚本索引档..."
 
 #: lazyscripts/console.py:91
 msgid "console.gui_run.dont_run_as_root"
-msgstr "請勿以系統管理者權限執行"
+msgstr "请勿以系统管理者权限执行"
 
 #: lazyscripts/console.py:99
 msgid "console.gui_run.distro_is_not_supported"
-msgstr "不支援此發行版本"
+msgstr "不支援此发行版本"
 
 #: lazyscripts/console.py:102
 msgid "console.gui_run.gksu_msg"
-msgstr "\"執行'Lazyscripts 懶人包' 會修改系統設定，並會安裝新軟體，所以需要系統管理員權限。 請輸入系統管理密碼，才能繼續執行。(在 Lazyscripts 下，預設這就是你登入系統時所用的密碼。)\""
-
+msgstr "\"执行'Lazyscripts 懒人包' 会修改系统设定，并会安装新软体，所以需要系统管理员权限。 请输入系统管理密码，才能继续执行。(在 Lazyscripts 下，预设这就是你登入系统时所用的密码。)\""
 
 #: lazyscripts/console.py:126
 msgid "console.gui_run.downloading_scripts"
-msgstr "正在下載最新的腳本..."
+msgstr "正在下载最新的脚本..."
 
 #: lazyscripts/gui/gtklib.py:92
 msgid "gui.gtklib.select_defaultpool.title"
-msgstr "請選擇您想使用的腳本庫"
+msgstr "请选择您想使用的脚本库"
 
 #: lazyscripts/gui/gtklib.py:95
 msgid "gui.gtklib.select_defaultpool.poolname"
-msgstr "腳本庫名稱"
+msgstr "脚本库名称"
 
 #: lazyscripts/gui/gtklib.py:96
 msgid "gui.gtklib.select_default.desc"
-msgstr "說明"
+msgstr "说明"
 
 #: lazyscripts/gui/gtklib.py:100
 msgid "gui.gtklib.select_defaultpool.abort_with_empty_retrunvalue"
-msgstr "終止! 回傳值為空"
+msgstr "终止! 回传值为空"
 
 #: lazyscripts/gui/gtklib.py:154
 msgid "gui.gtklib.toolpage.items"
-msgstr "項目"
+msgstr "项目"
 
 #: lazyscripts/gui/gtklib.py:194
 msgid "gui.gtklib.welcomepage.markup.desc\n"
@@ -64,24 +63,24 @@ msgstr ""
 "<b><big>Lazyscripts - 少就是多!</big></b>\n"
 "\n"
 "\n"
-"幫你解決安裝後煩人的小設定，安裝一些好用軟體，\n"
-"省去在茫茫網海中搜尋的時間。\n"
+"帮你解决安装後烦人的小设定，安装一些好用软体，\n"
+"省去在茫茫网海中搜寻的时间。\n"
 "\n"
-"請從左邊的清單中，點選各個分類，選擇你要套用的項目。\n"
+"请从左边的清单中，点选各个分类，选择你要套用的项目。\n"
 
 #: lazyscripts/gui/gtklib.py:195
 msgid "gui.gtklib.welcomepage.markup.copyright\n"
 msgstr ""
-"Copyright (C) %s, 由 Lazyscripts 開發團隊共同設計、開發\n"
+"Copyright (C) %s, 由 Lazyscripts 开发团队共同设计丶开发\n"
 "\n"
 
 #: lazyscripts/gui/gtklib.py:196
 msgid "gui.gtklib.welcomepage.markup.project_web_prefix"
-msgstr "Lazyscripts 專案- "
+msgstr "Lazyscripts 专案- "
 
 #: lazyscripts/gui/gtklib.py:211
 msgid "gui.gtklib.finalpage.execute_action\n"
-msgstr "執行動作: \n"
+msgstr "执行动作: \n"
 
 #: lazyscripts/gui/gtklib.py:324
 msgid "gui.gtklib.mainwin.title"
@@ -89,15 +88,15 @@ msgstr "Lazyscripts"
 
 #: lazyscripts/gui/gtklib.py:340
 msgid "gui.gtklib.mainwin.welcome"
-msgstr "歡迎"
+msgstr "欢迎"
 
 #: lazyscripts/gui/gtklib.py:342
 msgid "gui.gtklib.mainwin.result"
-msgstr "結果"
+msgstr "结果"
 
 #: lazyscripts/gui/gtklib.py:381
 msgid "gui.gtklib.mainwin.confrim_close"
-msgstr "確定結束?"
+msgstr "确定结束?"
 
 #: lazyscripts/gui/gtklib.py:401
 msgid "gui.gtklib.mainwin.about.name"
@@ -105,7 +104,7 @@ msgstr "Lazyscripts"
 
 #: lazyscripts/gui/gtklib.py:414
 msgid "gui.gtklib.mainwin.about.comments"
-msgstr "腳本管理工具"
+msgstr "脚本管理工具"
 
 #: lazyscripts/gui/gtklib.py:444
 msgid ""
@@ -113,4 +112,4 @@ msgid ""
 "gui.gtklib.mainwin.complete.finished-install\n"
 msgstr ""
 "\n"
-"[1;36mLazyscripts - Linux 懶人包執行完成！[1;32m   祝你使用 Linux 愉快！[m\n"
+"[1;36mLazyscripts - Linux 懒人包执行完成！[1;32m   祝你使用 Linux 愉快！[m\n"

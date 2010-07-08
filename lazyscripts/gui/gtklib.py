@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import commands
-import gettext
-import locale
 import time
 import thread
 import shutil
@@ -15,18 +13,6 @@ from lazyscripts import __VERSION__, __WEBURL__
 from lazyscripts import env
 from lazyscripts import pool as lzspool
 from lazyscripts import runner as lzsrunner
-
-from os import path as os_path
-
-try:
-    locale.setlocale (locale.LC_ALL, "")
-except:
-    locale.setlocale (locale.LC_ALL, "en_US.UTF-8")
-
-APP_NAME='lazyscripts'
-gettext.bindtextdomain(APP_NAME, '/usr/share/locale')
-gettext.textdomain(APP_NAME)
-_ = gettext.gettext
 
 #{{{
 def query_yes_no(msg, parent=None):
@@ -98,21 +84,36 @@ def select_defaultpool(poollist):
     for pool in poollist:
         show_pools += 'FALSE %s %s ' % (pool[0],re.escape(pool[1]))
 
-    select_cmd = ' '.join(["zenity",
-                          "--height=350",
-                          "--width=600",
-                          "--list",
-                          "--title=\"Choice Scripts Pool You Want to Use\"",
-                          "--radiolist",
-                          "--column \"\"",
-                          "--column \"Scripts Pool Name\"",
-                          "--column \"Description\"",
-                          "%s" % show_pools])
+    select_cmd = ' '.join(
+                ["zenity",
+                "--height=350",
+                "--width=600",
+                "--list",
+                "--title=\"%s\"" % _('gui.gtklib.select_defaultpool.title'),
+                "--radiolist",
+                "--column \"\"",
+                "--column \"%s\"" % _('gui.gtklib.select_defaultpool.poolname'),
+                "--column \"%s\"" % _('gui.gtklib.select_default.desc'),
+                "%s" % show_pools])
     select_pool = commands.getoutput(select_cmd)
     if not select_pool:
-        print "Abort! default pool is required."
+        print _('gui.gtklib.select_defaultpool.abort_with_empty_retrunvalue')
         exit()
     return select_pool
+#}}}
+
+#{{{def show_progress(cmd, titile, text, percentage, width, autoclose, autokill):
+def show_progress(cmd, titile, text, percentage, width, autoclose, autokill):
+    progress_dialog_cmd = [
+        "zenity --progress --title='%s'" % title,
+        "--text='%s'" % text,
+        "--percentage=%s" % str(percentage),
+        "--width=%s" % width]
+    if autoclose:
+        progress_dialog_cmd.append("--auto-close")
+    if autokill:
+        progress_dialog_cmd.append("--auto-kill")
+    os.system("%s | %s" % (cmd, ' '.join(progress_dialog_cmd)))
 #}}}
 
 class Tool:
@@ -150,7 +151,7 @@ class ToolPage:
         col.set_attributes (render, active=0)
         view.append_column (col)
 
-        col = gtk.TreeViewColumn (_("Items"))
+        col = gtk.TreeViewColumn (_("gui.gtklib.toolpage.items"))
         render=gtk.CellRendererText ()
         col.pack_start (render)
         col.set_attributes (render, markup=1)
@@ -190,11 +191,10 @@ class WelcomePage:
         view=gtk.Viewport()
         label=gtk.Label()
         label.set_markup(
-            _('<b><big>Lazyscripts - Linux lazy pack') +
-            _(', Linux end user\'s good friend</big></b>\n\n\n') +
-            _('Copyright (C) 2010, Design and developed by Lazyscripts Team\n\n') +
-            _('Project Lazyscripts - ') +
-            '<span color="blue">%s</span>' % __WEBURL__)
+            _('gui.gtklib.welcomepage.markup.desc\n') +
+            _('gui.gtklib.welcomepage.markup.copyright\n') % '2010' +
+            _('gui.gtklib.welcomepage.markup.project_web_prefix') +
+              '<span color="blue">%s</span>' % __WEBURL__)
 
         view.add(label)
         view.show_all()
@@ -208,7 +208,7 @@ class FinalPage:
         hbox=gtk.HBox(False, 0)
         term=vte.Terminal()
         term.set_scrollback_lines(65535)    # Will this value be too big?
-        term.feed(_('Execute action: \n'))
+        term.feed(_('gui.gtklib.finalpage.execute_action\n'))
         term.set_cursor_blinks(True)
         self.term=term
         scroll=gtk.VScrollbar( term.get_adjustment() )
@@ -321,7 +321,7 @@ class MainWin:
         win=gtk.Window(gtk.WINDOW_TOPLEVEL)
         win.recommands_list = recommands_list
         win.maximize()
-        win.set_title(_('Lazyscripts - Simple is More.'))
+        win.set_title(_('gui.gtklib.mainwin.title'))
         try:
             self.icon=gtk.icon_theme_get_default().load_icon('gnome-app-install', 48,0)
         except:
@@ -336,9 +336,10 @@ class MainWin:
 
         # upper parts: main GUI
         self.tool_list=tool_list=ToolListWidget(win)
-        tool_list.list.insert( 0, ('lazyscripts', _('Welcome'), WelcomePage()) )
+        tool_list.list.insert( 0, ('lazyscripts',
+                                    _('gui.gtklib.mainwin.welcome'), WelcomePage()) )
         self.final_page=FinalPage()
-        tool_list.list.append( ('gnome-app-install', _('Result'), self.final_page) )
+        tool_list.list.append( ('gnome-app-install', _('gui.gtklib.mainwin.result'), self.final_page) )
         sel=tool_list.left_pane.get_selection()
         sel.select_path('0')
 
@@ -377,7 +378,7 @@ class MainWin:
 
     #{{{def confirm_close(self):
     def confirm_close(self):
-        if self.complete or query_yes_no(_('Do you want to quit lazyscripts?'), self.win):
+        if self.complete or query_yes_no(_('gui.gtklib.mainwin.confrim_close'), self.win):
             if os.path.exists('/tmp/lzs_root/'): shutil.rmtree('/tmp/lzs_root/')
             gtk.main_quit()
             return True
@@ -397,7 +398,7 @@ class MainWin:
     #{{{def on_about(self, item ):
     def on_about(self, item ):
         dlg = gtk.AboutDialog()
-        dlg.set_name('Lazyscripts')
+        dlg.set_name(_('gui.gtklib.mainwin.about.name'))
         dlg.set_version(__VERSION__)
         dlg.set_website(__WEBURL__)
         if self.icon:
@@ -410,7 +411,7 @@ class MainWin:
                         '張君平(mrmoneyc) <moneyc.net@gmail.com>'])
         dlg.set_copyright('Copyright (C) 2010 by Lazyscripts project')
         dlg.set_license('GNU General Public License V2')
-        dlg.set_comments(_('Linux Lazy pack'))
+        dlg.set_comments(_('gui.gtklib.mainwin.about.comments'))
         dlg.run()
         dlg.destroy()
     #}}}
@@ -440,7 +441,7 @@ class MainWin:
 
     #{{{def on_complete(self, data):
     def on_complete(self, data):
-        self.final_page.term.feed(_('\n\x1b[1;36mLazyscripts - linux lazy pack run finish!\x1b[1;32m   have fun for linux!\x1b[m\n'))
+        self.final_page.term.feed(_('\ngui.gtklib.mainwin.complete.finished-install\n'))
         if os.path.exists('/tmp/lzs_root/'): shutil.rmtree('/tmp/lzs_root/')
 
         self.cancel_btn.set_label(gtk.STOCK_CLOSE)

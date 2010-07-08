@@ -35,7 +35,7 @@ class LzsAdmin(cmd.Cmd):
     #}}}
 
     def do_update(self, lines):
-        print "building scripts index..."
+        print _("console.lzsadmin.update.building_index")
         self._build_scripts_index()
 
     #{{{def _build_scripts_index(self):
@@ -88,7 +88,7 @@ def run(args=None):
 #{{{def gui_run():
 def gui_run():
     if os.getuid() == 0:
-        print "please do not run as root."
+        print _('console.gui_run.dont_run_as_root')
         sys.exit()
 
     env.register_workspace()
@@ -96,14 +96,13 @@ def gui_run():
     env.storageenv()
     dist = distro.Distribution().name
     if not dist:
-        print "distrobution no supported."
+        print _('console.gui_run.distro_is_not_supported')
         sys.exit()
 
-    # argument process.
-    message_sudo="\"執行'Lazyscripts 懶人包' 會修改系統設定，並會安裝新軟體，所以需要系統管理員權限。 請輸入系統管理密碼，才能繼續執行。(在 Lazyscripts 下，預設這就是你登入系統時所用的密碼。)\""
-
+    message_sudo= _('console.gui_run.gksu_msg')
     prefix = 'gksu --message %s' % message_sudo
 
+    # argument process.
     parser = optparse.OptionParser()
     parser.add_option("-a", "--autosync",
 		action="store_true",
@@ -121,14 +120,14 @@ def gui_run():
           cmd = "lzs pool sync"
       else:
           cmd = "lzs pool sync --rev %s" % options.rev
-      #@FIXME show the progress dialog with fake progress status.
-      progress_dialog_cmd = [
-          "zenity --progress --title='Lazyscripts'",
-          "--text='Downloading scripts...'",
-          "--percentage=80" ,
-          "--auto-close --auto-kill",
-          "--width=400"]
-      os.system("%s | %s" % (cmd, ' '.join(progress_dialog_cmd)))
+
+      gui.gtklib.show_progress(cmd,
+                        'Lazyscripts',
+                        _('console.gui_run.downloading_scripts'),
+                        80,
+                        400,
+                        True,
+                        True)
 
     if options.selection_list:
         cmd = "%s lzs gui run %s" % (prefix, options.selection_list)

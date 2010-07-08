@@ -282,7 +282,7 @@ class GuiCmd(Command):
     #{{{def run(self):
     def run(self):
         if self.argc > 1:
-            gui.startgui(self.args[1])
+            gui.gtklib.startgui(self.args[1])
         else:
-            gui.startgui()
+            gui.gtklib.startgui()
     #}}}
