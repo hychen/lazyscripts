@@ -55,8 +55,6 @@ The original idea is from LazyBuntu, made by PCman in Taiwan. we usually need th
     entry_points = """
     [console_scripts]
         lzs = lazyscripts.console:run
-        lzs-debinstall = lazyscripts.console:debinstall
-        lzs-pcvt = lazyscripts.lengacy:run
     [gui_scripts]
         glzs = lazyscripts.console:gui_run
     """,
