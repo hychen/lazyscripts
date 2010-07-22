@@ -25,6 +25,7 @@ from lazyscripts import command as lzscmd
 from lazyscripts import distro
 from lazyscripts import pool as lzspool
 from lazyscripts import env
+from lazyscripts import gui
 
 class LzsAdmin(cmd.Cmd):
 
