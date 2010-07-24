@@ -25,6 +25,7 @@ except ImportError:
     print "please install python-setuptools first"
 
 from distutils.core import setup
+from distutils.command.install import install
 
 setup(
     name = 'Lazyscripts',
@@ -47,4 +48,5 @@ The original idea is from LazyBuntu, made by PCman in Taiwan. we usually need th
         '': ['config']
     },
     zip_safe=False,
+    cmdclass = {'install': install}
 )
