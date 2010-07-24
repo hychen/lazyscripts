@@ -18,17 +18,13 @@
 # Place, Suite 330, Boston, MA 02111-1307 USA
 import glob
 import os
-import pkg_resources
 
 try:
-    from setuptools import setup, find_packages
+    from setuptools import find_packages
 except ImportError:
     print "please install python-setuptools first"
 
-#@FIXME: a workround to fix icon, gettet files and extra datas does not be installed
-#        while doing ./setup install while python-setuptools and distutils-extra are
-#        both installed (LP: #601623)
-from distutils.command import install as _install
+from distutils.core import setup
 
 setup(
     name = 'Lazyscripts',
@@ -44,19 +40,11 @@ The original idea is from LazyBuntu, made by PCman in Taiwan. we usually need th
     license = 'GPLv2',
     url = 'http://www.lazyscripts.org',
     packages = find_packages(exclude=['tests']),
-
+    scripts = ['scripts/lzs','scripts/glzs'],
     test_suite = 'tests.suite',
     package_data = {
         # If any package contains *.txt or *.rst files, include them:
         '': ['config']
     },
-    data_files = [],
     zip_safe=False,
-    entry_points = """
-    [console_scripts]
-        lzs = lazyscripts.console:run
-    [gui_scripts]
-        glzs = lazyscripts.console:gui_run
-    """,
-    cmdclass = {'install':_install.install}
 )

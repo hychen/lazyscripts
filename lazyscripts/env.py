@@ -171,7 +171,15 @@ def prepare_runtimeenv():
     except:
         locale.setlocale (locale.LC_ALL, "en_US.UTF-8")
 
-    gettext.install("lazyscripts", localedir="/usr/share/locale")
+    # find module path, does it in /usr/local?
+
+    module_prefix = os.path.abspath(__file__)[:10]
+    if module_prefix == '/usr/local':
+        localedir = '/usr/local/share/locale'
+    else:
+        localedir = '/usr/share/locale'
+
+    gettext.install("lazyscripts", localedir=localedir)
     "prepare runtime enviroment which caches objects is generated."
     if not os.path.exists(DEFAULT_RUNTIME_ROOT_DIR):
         return os.mkdir(DEFAULT_RUNTIME_ROOT_DIR, 0755)
