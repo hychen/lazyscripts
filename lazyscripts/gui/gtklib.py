@@ -102,8 +102,8 @@ def select_defaultpool(poollist):
     return select_pool
 #}}}
 
-#{{{def show_progress(cmd, titile, text, percentage, width, autoclose, autokill):
-def show_progress(cmd, titile, text, percentage, width, autoclose, autokill):
+#{{{def show_progress(cmd, title, text, percentage, width, autoclose, autokill):
+def show_progress(cmd, title, text, percentage, width, autoclose, autokill):
     progress_dialog_cmd = [
         "zenity --progress --title='%s'" % title,
         "--text='%s'" % text,
