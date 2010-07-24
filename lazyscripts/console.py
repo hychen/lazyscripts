@@ -88,6 +88,7 @@ def run(args=None):
 
 #{{{def gui_run():
 def gui_run():
+    from lazyscripts import wm
     if os.getuid() == 0:
         print _('console.gui_run.dont_run_as_root')
         sys.exit()
@@ -101,7 +102,7 @@ def gui_run():
         sys.exit()
 
     message_sudo= _('console.gui_run.gksu_msg')
-    prefix = 'gksu --message %s' % message_sudo
+    # prefix = 'gksu --message %s' % message_sudo
 
     # argument process.
     parser = optparse.OptionParser()
@@ -131,8 +132,9 @@ def gui_run():
                         True)
 
     if options.selection_list:
-        cmd = "%s lzs gui run %s" % (prefix, options.selection_list)
+        cmd = "lzs gui run %s" % options.selection_list
     else:
-        cmd = "%s lzs gui run" % prefix
-    os.system(cmd)
+        cmd = "lzs gui run"
+    gui_cmd = wm.WindowManager().make_guisudocmd(cmd, message_sudo)
+    os.system(gui_cmd)
 #}}}
