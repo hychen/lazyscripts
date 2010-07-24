@@ -1,3 +1,11 @@
+lazyscripts (1:0.2.2~git-4a5e878) lucid; urgency=low
+
+  [changes]
+
+  * use stable branch scripts pool by default
+
+ -- Hsin-Yi Chen (hychen) <ossug.hychen@gmail.com>  Sat, 24 Jul 2010 23:33:04 +0800
+
 lazyscripts (1:0.2.2~git-4fc1e6c) lucid; urgency=low
 
   [changes]
