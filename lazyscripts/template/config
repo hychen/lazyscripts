@@ -5,7 +5,7 @@ pool =
 
 [pool "hychen-debianlize"]
 upstream = git://github.com/hychen/lzspool.git
-rev = master
+rev = stable
 desc = hychen's debianlize scripts pool.
 ubuntu = 9.10, 10.04
 debian = 5
@@ -14,7 +14,7 @@ lang = zh_TW
 
 [pool "debianlize"]
 upstream = git://github.com/aminzai/lzs_pool_debianlize.git
-rev = master
+rev = stable
 desc = aminzai's debianlize scripts pool.
 ubuntu = 9.10, 10.04
 debian = 5
@@ -23,7 +23,7 @@ lang = zh_TW
 
 [pool "debianlize-zh_CN"]
 upstream = git://github.com/billy3321/lzs_pool_debianlize_zhCN.git
-rev = master
+rev = stable
 desc = billy3321's debianlize scripts pool of zhCN.
 ubuntu = 9.10, 10.04
 debian = 5
@@ -32,21 +32,21 @@ lang = zh_CN
 
 [pool "suselize"]
 upstream = git://github.com/mrmoneyc/lzs_pool_suselize.git
-rev = master
+rev = stable
 desc = mrmoneyc's suselize scripts pool.
 opensuse = 11.1, 11.2, 11.3
 lang = zh_TW
 
 [pool "suselize-frFR"]
 upstream = git://github.com/billy3321/lzs_pool_suselize_frFR.git
-rev = master
+rev = stable
 desc = billy3321's suselize scripts pool.
 opensuse = 11.1, 11.2, 11.3
 lang = fr_FR, en_US
 
 [pool "billys-redhatlize"]
 upstream = git://github.com/billy3321/lzs_pool_redhatlize.git
-rev = master
+rev = stable
 desc = billy's redhatlize scripts pool.
 fedora = 11, 12, 13
 centos = 5.3, 5.4
@@ -54,7 +54,7 @@ lang = zh_TW
 
 [pool "billys-redhatlize-zhCN"]
 upstream = git://github.com/billy3321/lzs_pool_redhatlize_zhCN.git
-rev = master
+rev = stable
 desc = billy's redhatlize scripts pool.
 fedora = 11, 12, 13
 centos = 5.3, 5.4
@@ -62,8 +62,7 @@ lang = zh_CN
 
 [pool "billys-mandriva"]
 upstream = git://github.com/billy3321/lzs_pool_mandriva.git
-rev = master
+rev = stable
 desc = billy's mandriva scripts pool.
 mandriva = 2009.1, 2010.0
 lang = zh_TW
-
