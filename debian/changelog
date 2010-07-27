@@ -1,3 +1,9 @@
+lazyscripts (1:0.2.3~git-4f874e1) lucid; urgency=low
+
+  * Fix deb does not have any py files.
+
+ -- Hsin-Yi Chen (hychen) <ossug.hychen@gmail.com>  Sun, 25 Jul 2010 02:54:32 +0800
+
 lazyscripts (1:0.2.2~git-4a5e878) lucid; urgency=low
 
   [changes]
