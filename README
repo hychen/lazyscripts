@@ -10,6 +10,8 @@ Scripts:      decalar by each scripts
     gettext
     zenity
     python-dev or python-devel
+    python-gtk2 or python-gtk
+    intltool
 
 == Install & Usage
 
